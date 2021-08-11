@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Focus Admin: Data Table</title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- Styles -->
+    <link href="{{ url_for('static',filename ='assets/css/lib/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename ='assets/css/lib/themify-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename ='assets/css/lib/menubar/sidebar.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename ='assets/css/lib/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename ='assets/css/lib/helper.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename ='assets/css/style.css') }}" rel="stylesheet">
+</head>
+
+<body class=" pace-done"><div class="pace  pace-inactive"><div class="pace-progress" style="transform: translate3d(100%, 0px, 0px);" data-progress-text="100%" data-progress="99">
+    <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div></div>
+  
+    <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
+        <div class="nano has-scrollbar">
+            <div class="nano-content active" tabindex="0" style="right: -17px;">
+                <ul>
+                    <div class="logo"><a href="/"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Focus</span></a></div>
+                    <li class="label">Main</li>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-home"></i> Dashboard <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li><a href="/" class="active">Dashboard 1</a></li>
+                        </ul>
+                        
+                    <li class="label">Car</li>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-home"></i> Car information <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li class="active"><a href="/test" class="active">Car 1</a></li>
+                        </ul>
+                </ul>
+            </div>
+        <div class="nano-pane"><div class="nano-slider" style="height: 25px; transform: translate(0px);"></div></div></div>
+    </div>
+        <!-- /# sidebar -->
+
+
+    <div class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="float-left">
+                        <div class="hamburger sidebar-toggle">
+                            <span class="line"></span>
+                            <span class="line"></span>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8 p-r-0 title-margin-right">
+                    </div>
+                    <!-- /# column -->
+                    <div class="col-lg-4 p-l-0 title-margin-left">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Car</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                </div>
+                <!-- /# row -->
+                <section id="main-content">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>Data Table </h4>
+                                    
+                                </div>
+                            </div>
+                            <!-- /# card -->
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <!-- jquery vendor -->
+    <script src="{{ url_for('static',filename ='assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/jquery.nanoscroller.min.js') }}"></script>
+    <!-- nano scroller -->
+    <script src="{{ url_for('static',filename ='assets/js/lib/menubar/sidebar.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/preloader/pace.min.js') }}"></script>
+    <!-- sidebar -->
+    
+    <!-- bootstrap -->
+
+    <script src="{{ url_for('static',filename ='assets/js/lib/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/scripts.js') }}"></script>
+    <!-- scripit init-->
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/jszip.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/vfs_fonts.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
+    <script src="{{ url_for('static',filename ='assets/js/lib/data-table/datatables-init.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
