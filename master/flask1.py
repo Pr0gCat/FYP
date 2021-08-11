@@ -16,7 +16,6 @@ def init_DB():
 	db_path = os.path.join(BASE_DIR, "data.db")
 	try:
 		con = sqlite3.connect(db_path, check_same_thread=False)
-		print("connected")
 	except:
 		print ("I am unable to connect to the database")
 	cur = con.cursor()
@@ -26,19 +25,11 @@ def getData():
 	data=cur.fetchall()
 	return data
 
-def UPDATE(ID,AM):
+def update(ID,Amount):
 	global cur
 	global con
-	cur.execute("SELECT Amount FROM Payload WHERE ID ='"+ID+"'" )
-	a=cur.fetchall()
-	b=a[0]
-	c=b[0]
-	if c>0 and c-int(AM)>0:
-		cur.execute("UPDATE Payload SET Amount = Amount-" + AM +" WHERE ID = '"+ID+"'")
-		con.commit()
-	else:
-		print("Cant Updata")
-
+	cur.execute("UPDATE Payload SET Amount = Amount- {0} WHERE ID = '{1}'".format(ID,Amount))
+	con.commit()
 	cur.execute("SELECT * FROM Payload")
 	data=cur.fetchall()
 	return data
@@ -49,15 +40,22 @@ def index():
 	if request.method == 'POST':
 		try:
 			ID = request.form["ID"]
-			AM = request.form["AM"]
-			data = UPDATE(ID,AM)
+			Amount = request.form["AM"]
+			cur.execute("SELECT Amount FROM Payload WHERE ID ='{0}'".format(ID) )
+			a=cur.fetchall()
+			b=a[0]
+			c=b[0]
+			if c>0 and c-int(Amount)>0:
+				data = update(ID,Amount)
+			else:
+				print("Cant Updata")
 		except:
 			pass
 	return render_template('index.html', data=data)
 
-@app.route('/test',methods=['POST','GET'])
-def test():
-	return render_template('test.html')
+@app.route('/worker',methods=['GET', 'POST'])
+def worker():
+	return render_template('worker.html')
 
 
 if __name__ == '__main__':
