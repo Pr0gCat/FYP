@@ -25,28 +25,31 @@ int checksum = 0;
 void loop() // run over and over
 {
   while(Serial.available()){
-    Serial.write(flag);
     if(flag == 0 ){
       buff[count] = Serial.read();
-      checksum+=buff[count];
+      checksum+=buff[count]-'0';
       flag=1;
       count++;
     }
     else if(flag == 1){
       buff[count] = Serial.read();
-      checksum+=buff[count];
+      checksum+=buff[count]-'0';
       count++;
       flag=2;
     }
     else if(flag == 2){
-      for(int i=0 ; i <  Serial.read(); i++){
-        checksum +=buff[count];
+      int len = buff[1]-'0';
+      for(int i=0 ; i < len; i++){
+        buff[count]=Serial.read();
+        checksum +=buff[count]-'0';
         count++;
       }
       flag=3;
     }
     else if(flag == 3){
-      char cs = Serial.read();
+      buff[count] = Serial.read();
+      int cs = buff[count] - '0';
+      count++;
       if((0xff & checksum) == cs){
         unpack();
       }
@@ -58,15 +61,15 @@ void loop() // run over and over
 }
 
 void unpack(){
-  char cmd;
-  char len;
+  int cmd = buff[0]-'0';
+  int len = buff[1]-'0';
   char data[255];
   for(int i=0;i < len;i++){
     data[i]=buff[2+i];
   }
   switch (cmd) {
     case COFIRM:
-      comfirm();
+      comfirm(cmd);
       break;
     case GET_CRAWL_STATE:
       get_crawl_state(data);
@@ -89,30 +92,34 @@ void unpack(){
   }
 }
 
-void comfirm(){
-
+void comfirm(int cmd){
+  if(cmd != 1){
+    Serial.write(1);
+    Serial.write(1);
+    Serial.write(cmd);
+  }
 }
 
 void get_crawl_state(char data[]){
-    
+  comfirm(GET_CRAWL_STATE);
 }
 
 void get_crawl_trigger(char data[]){
-  
+  comfirm(GET_CRAWL_TRIGGER);
 }
 
 void get_posy(char data[]){
-  
+  comfirm(GET_POSY);
 }
 
 void get_posz(char data[]){
-  
+  comfirm(GET_POSZ);
 }
 
 void get_speed(char data[]){
-  
+  comfirm(GET_SPEED);
 }
 
 void limit_trigger(char data[]){
-  
+  comfirm(LIMIT_TRIGGERED);
 }
