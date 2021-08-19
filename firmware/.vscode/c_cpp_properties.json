@@ -19,6 +19,7 @@
                 "/home/progcat/Downloads/arduino-1.8.13/hardware/arduino/avr/cores/arduino",
                 "/home/progcat/Downloads/arduino-1.8.13/hardware/arduino/avr/variants/micro",
                 "/home/progcat/Arduino/libraries/AccelStepper/src",
+                "/home/progcat/Arduino/libraries/PIDController/src",
                 "/home/progcat/Downloads/arduino-1.8.13/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
                 "/home/progcat/Downloads/arduino-1.8.13/hardware/tools/avr/lib/gcc/avr/7.3.0/include-fixed",
                 "/home/progcat/Downloads/arduino-1.8.13/hardware/tools/avr/avr/include"
