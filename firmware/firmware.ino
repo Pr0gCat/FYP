@@ -1,10 +1,10 @@
-#include "CrawlController.h"
-CrawlController crawl;
+#include "ClawController.h"
+ClawController claw;
 
 void setup(){
-    crawl.begin();
+    claw.begin();
 }
 
 void loop(){
-    crawl.update();
+    claw.update();
 }

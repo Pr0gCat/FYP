@@ -6,19 +6,34 @@
 // Marcos
 #define clamp(X, _min, _max) max(_min, min(_max, X))
 
+typedef void (*CallbackFunc)();
+
 #pragma region Parameters
 /*
     Wheels
 */
-#define PID_UPDATE_INTERVAL 100
+#define REFRESH_TIME 50
+// NOTE: you have to tune speed controller first!
+#define SPEED_L_Kp 1
+#define SPEED_L_Ki 0
+#define SPEED_L_Kd 0
 
-#define MOTOR_L_Kp 1.88
-#define MOTOR_L_Ki 0.05
-#define MOTOR_L_Kd 2
+#define SPEED_R_Kp 1
+#define SPEED_R_Ki 0
+#define SPEED_R_Kd 0
 
-#define MOTOR_R_Kp 1.81
-#define MOTOR_R_Ki 0.03
-#define MOTOR_R_Kd 3
+#define DIST_L_Kp 1
+#define DIST_L_Ki 0
+#define DIST_L_Kd 0
+
+#define DIST_R_Kp 1
+#define DIST_R_Ki 0
+#define DIST_R_Kd 0
+
+#define TICKS_PER_MOTOR_REV 11
+#define TICKS_PER_WHEEL_REV
+
+#define WHEEL_DIAMETER
 
 /*
     Steppers & EndStops
@@ -49,7 +64,7 @@
 #define ENCODER_RR_PIN // Rear right encoder
 
 /*
-    Steppers & EndStops
+    Steppers, EndStops & Claw
 */
 #define STEPPER_Y_STEP_PIN 6
 #define STEPPER_Y_DIR_PIN 7
@@ -62,6 +77,9 @@
 
 #define ENDSTOP_Z_UPPER_PIN A2
 #define ENDSTOP_Z_LOWER_PIN A3
+
+#define CLAW_SERVO_PIN
+#define CLAW_TRIGGER_PIN
 
 #pragma endregion
 #endif

@@ -1,6 +1,6 @@
-#include "CrawlController.h"
+#include "ClawController.h"
 
-void CrawlController::begin(){
+void ClawController::begin(){
     pinMode(ENDSTOP_Y_UPPER_PIN, INPUT_PULLUP);
     pinMode(ENDSTOP_Y_LOWER_PIN, INPUT_PULLUP);
     pinMode(ENDSTOP_Z_UPPER_PIN, INPUT_PULLUP);
@@ -22,12 +22,12 @@ void CrawlController::begin(){
     calibrateZ();
 }
 
-void CrawlController::update(){
+void ClawController::update(){
     y_axis.run();
     z_axis.run();
 }
 
-void CrawlController::homeZ(){
+void ClawController::homeZ(){
     z_axis.moveTo(0);
     while(z_axis.distanceToGo() != 0 && digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.run();
@@ -35,7 +35,7 @@ void CrawlController::homeZ(){
     }
 }
 
-void CrawlController::homeY(){
+void ClawController::homeY(){
     y_axis.moveTo(0);
     while(y_axis.distanceToGo() != 0 && digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.run();
@@ -43,8 +43,8 @@ void CrawlController::homeY(){
     }
 }
 
-void CrawlController::calibrateY(){
-    //
+void ClawController::calibrateY(){
+    // go all the way down
     y_axis.setSpeed(-1000);
     while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.runSpeed();
@@ -77,7 +77,7 @@ void CrawlController::calibrateY(){
     this->y_max = y_axis.currentPosition();
 }
 
-void CrawlController::calibrateZ(){
+void ClawController::calibrateZ(){
 
     this->z_max = z_axis.currentPosition();
 }
