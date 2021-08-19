@@ -21,6 +21,7 @@ char buff[300];
 char flag = 0;
 int count = 0;
 int checksum = 0;
+int data_len = 0;
 
 void loop() // run over and over
 {
@@ -38,13 +39,14 @@ void loop() // run over and over
       flag=2;
     }
     else if(flag == 2){
-      int len = buff[1]-'0';
-      for(int i=0 ; i < len; i++){
-        buff[count]=Serial.read();
-        checksum +=buff[count]-'0';
-        count++;
+      int len = (buff[1]-'0');
+       buff[count]=Serial.read();
+       checksum +=buff[count]-'0';
+       count++;
+       data_len++;
+      if(data_len == len){
+        flag=3;
       }
-      flag=3;
     }
     else if(flag == 3){
       buff[count] = Serial.read();
