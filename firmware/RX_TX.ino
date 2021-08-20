@@ -1,21 +1,10 @@
-
-void setup()
-{
-  #define COFIRM 1
-  #define GET_CRAWL_STATE 2
-  #define GET_CRAWL_TRIGGER 3
-  #define GET_POSY 4
-  #define GET_POSZ 5
-  #define GET_SPEED 6
-  #define LIMIT_TRIGGERED 7
-  
-  // Open serial communications and wait for port to open:
-  Serial.begin(115200);
-  while(!Serial){
-    ; // wait for serial port to connect. Needed for Native USB only
-  }
-  Serial.println("Hello");
-}
+#define COFIRM 1
+#define GET_CRAWL_STATE 2
+#define GET_CRAWL_TRIGGER 3
+#define GET_POSY 4
+#define GET_POSZ 5
+#define GET_SPEED 6
+#define LIMIT_TRIGGERED 7
 
 char buff[300];
 char flag = 0;
@@ -23,7 +12,7 @@ int count = 0;
 int checksum = 0;
 int data_len = 0;
 
-void loop() // run over and over
+void cmd_update() // run over and over
 {
   while(Serial.available()){
     if(flag == 0 ){
@@ -56,7 +45,7 @@ void loop() // run over and over
         unpack();
       }
       count = 0;
-      flag = 0; 
+      flag = 0;
       checksum = 0;
     }
   }
