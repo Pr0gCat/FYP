@@ -1,10 +1,18 @@
-#include "CrawlController.h"
-CrawlController crawl;
+#include "ClawController.h"
+
+ClawController claw;
 
 void setup(){
-    crawl.begin();
+    Serial.begin(115200);
+    while(!Serial){;}
+    Serial.println("Startup");
+    delay(3000);
+    //wheels.begin();
+    claw.begin();
 }
 
 void loop(){
-    crawl.update();
+    // recive
+    // wheels.update();
+    claw.update();
 }

@@ -1,63 +1,88 @@
-#include "config.h"
-#include <PIDController.h>
+#include "WheelController.h"
 
-volatile uint32_t encoder_l_count = 0, encoder_r_count = 0;
-PIDController motor_l_controller, motor_r_controller;
-uint32_t last_seen = 0, \
-left_last_seen = 0, right_last_seen = 0, \
-left_dt = 0, right_dt = 0;
-
-void encoder_l_ticks(){
-    uint32_t now = micros();
-    // overflowed
-    if(now < left_last_seen){
-        left_dt = UINT32_MAX - left_last_seen + now;
+void WheelController::encoder_ticks_l(){
+    if(digitalRead(ENCODER_LF_PIN)){
+        encoder_pos_l++;
     }else{
-        left_dt = now - left_last_seen;
+        encoder_pos_l--;
     }
-    left_last_seen = now;
-    encoder_l_count++;
 }
 
-void encoder_r_ticks(){
-    uint32_t now = micros();
-    // overflowed
-    if(now < right_last_seen){
-        right_dt = UINT32_MAX - right_last_seen + now;
+void WheelController::encoder_ticks_r(){
+    if(digitalRead(ENCODER_RF_PIN)){
+        encoder_pos_r++;
     }else{
-        right_dt = now - right_last_seen;
+        encoder_pos_r--;
     }
-    right_last_seen = now;
-    encoder_r_count++;
 }
 
-void wheels_begin(){
+void WheelController::begin(){
     pinMode(ENCODER_LF_PIN, INPUT);
     pinMode(ENCODER_LR_PIN, INPUT);
     pinMode(ENCODER_RF_PIN, INPUT);
     pinMode(ENCODER_RR_PIN, INPUT);
 
-    pinMode(MOTOR_L_PWM_PIN, OUTPUT);
-    pinMode(MOTOR_L_DIR_PIN, OUTPUT);
-    pinMode(MOTOR_R_PWM_PIN, OUTPUT);
-    pinMode(MOTOR_R_DIR_PIN, OUTPUT);
+    pinMode(MOTOR_L_IN1_PIN, OUTPUT);
+    pinMode(MOTOR_L_IN2_PIN, OUTPUT);
+    pinMode(MOTOR_R_IN1_PIN, OUTPUT);
+    pinMode(MOTOR_R_IN2_PIN, OUTPUT);
 
-    attachInterrupt(digitalPinToInterrupt(ENCODER_LF_PIN), encoder_l_ticks, RISING);
-    attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), encoder_r_ticks, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_LF_PIN), (CallbackFunc)&encoder_ticks_l, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), (CallbackFunc)&encoder_ticks_r, RISING);
 
-    motor_l_controller.begin();
-    motor_l_controller.tune(MOTOR_L_Kp, MOTOR_L_Ki, MOTOR_L_Kd);
-    motor_l_controller.limit(0, 255);
+    speed_controller_l.begin();
+    speed_controller_l.tune(SPEED_L_Kp, SPEED_L_Ki, SPEED_L_Kd);
+    speed_controller_l.limit(-255, 255);
 
-    motor_r_controller.begin();
-    motor_r_controller.tune(MOTOR_R_Kp, MOTOR_R_Ki, MOTOR_R_Kd);
-    motor_r_controller.limit(0, 255);
+    speed_controller_r.begin();
+    speed_controller_r.tune(SPEED_R_Kp, SPEED_R_Ki, SPEED_R_Kd);
+    speed_controller_r.limit(-255, 255);
+}
+
+void WheelController::update(){
+    uint32_t now = millis();
+    uint32_t duration = now < last_seen ? (UINT32_MAX - last_seen + now) : (now - last_seen);
+    if(duration < REFRESH_INTERVAL) return;
+    int32_t tps_l = (encoder_pos_l - prev_pos_l) / duration;
+    int32_t tps_r = (encoder_pos_r - prev_pos_r) / duration;
+    // write graph
+
+    if(dist2go_l != 0){
+        // update left controller
+    }
+    if(dist2go_r != 0){
+        // update right controller
+    }
+    // calculate finite speed
+    double pwm_l = speed_controller_l.compute(tps_l);
+    double pwm_r = speed_controller_r.compute(tps_r);
+
+    // drive motors
+    setMotorPwm<MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN>(pwm_l);
+    setMotorPwm<MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN>(pwm_r);
+
+    prev_pos_l = encoder_pos_l;
+    prev_pos_r = encoder_pos_r;
+    last_seen = now;
+}
+
+template<uint8_t in1_pin, uint8_t in2_pin>
+void WheelController::setMotorPwm(double speed){
+    uint8_t pwm = (uint8_t)fabs(speed);
+    if(pwm == 0){
+        return;
+    }
+    digitalWrite(pwm < 0 ? in2_pin : in1_pin, 0);
+    analogWrite(pwm < 0 ? in1_pin : in2_pin, pwm);
+}
+
+void WheelController::move(int32_t dist_l, int32_t dsit_r){
 
 }
 
-void run(){
-    if(millis() - last_seen >= PID_UPDATE_INTERVAL){
-        uint8_t motor_l_pwm = motor_l_controller.compute(left_dt);
-        uint8_t motor_r_pwm = motor_r_controller.compute(right_dt);
-    }
+void WheelController::moveSpeed(int32_t speed_l, int32_t speed_r){
+    speed_controller_l.setpoint(speed_l);
+    speed_controller_r.setpoint(speed_r);
+    dist2go_l = 0;
+    dist2go_r = 0;
 }

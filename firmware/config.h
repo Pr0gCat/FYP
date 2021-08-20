@@ -4,31 +4,49 @@
 #include <stdint.h>
 
 // Marcos
-#define clamp(X, _min, _max) max(_min, min(_max, X))
+#define clamp(X, _min, _max) (max(_min, min(_max, X)))
+
+typedef void (*CallbackFunc)();
 
 #pragma region Parameters
 /*
     Wheels
 */
-#define PID_UPDATE_INTERVAL 100
+#define REFRESH_INTERVAL 100
 
-#define MOTOR_L_Kp 1.88
-#define MOTOR_L_Ki 0.05
-#define MOTOR_L_Kd 2
+#define SPEED_L_Kp 1
+#define SPEED_L_Ki 0
+#define SPEED_L_Kd 0
 
-#define MOTOR_R_Kp 1.81
-#define MOTOR_R_Ki 0.03
-#define MOTOR_R_Kd 3
+#define SPEED_R_Kp 1
+#define SPEED_R_Ki 0
+#define SPEED_R_Kd 0
+
+#define DIST_L_Kp 1
+#define DIST_L_Ki 0
+#define DIST_L_Kd 0
+
+#define DIST_R_Kp 1
+#define DIST_R_Ki 0
+#define DIST_R_Kd 0
 
 /*
-    Steppers & EndStops
+    Steppers, EndStops & Claw
 */
-#define STEPPER_HOMING_SPEED 2400
-#define STEPPER_HOMING_ACCEL 50
+#define SCREW_LEAD 8 //mm
+#define STEP_ANGLE 1.8
+#define STEPS_PER_REV 360 / STEP_ANGLE // 200
+#define MICROSTEP 4 // 1/MICROSTEP
+
+#define STEPPER_Y_MAX_SPEED 2500
+#define STEPPER_Z_MAX_SPEED 3500
+
+#define STEPPER_HOMING_SPEED_FACTOR 0.7
+#define STEPPER_HOMING_ACCEL 100
+
+#define STEPPER_MOVE_ACCEL 150
 
 #define ENDSTOP_DEBRONCE_TIME 50
-
-#define SCREW_GAP 8 //mm/rev
 
 #pragma endregion
 
@@ -36,20 +54,20 @@
 /*
     Wheels
 */
-#define MOTOR_L_PWM_PIN 8// Left motor IN1
-#define MOTOR_L_DIR_PIN // Left motor IN2
+#define MOTOR_L_IN1_PIN 9// Left motor IN1
+#define MOTOR_L_IN2_PIN 10// Left motor IN2
 
-#define MOTOR_R_PWM_PIN // Right motor IN1
-#define MOTOR_R_DIR_PIN // Right motor IN2
+#define MOTOR_R_IN1_PIN 11// Right motor IN1
+#define MOTOR_R_IN2_PIN 12// Right motor IN2
 
-#define ENCODER_LF_PIN // Front left encoder
-#define ENCODER_LR_PIN // Front right encoder
+#define ENCODER_LF_PIN 3// Front left encoder
+#define ENCODER_LR_PIN A4// Front right encoder
 
-#define ENCODER_RF_PIN // Front right encoder
-#define ENCODER_RR_PIN // Rear right encoder
+#define ENCODER_RF_PIN 2// Front right encoder
+#define ENCODER_RR_PIN A5// Rear right encoder
 
 /*
-    Steppers & EndStops
+    Steppers, EndStops & Claw
 */
 #define STEPPER_Y_STEP_PIN 6
 #define STEPPER_Y_DIR_PIN 7
@@ -62,6 +80,9 @@
 
 #define ENDSTOP_Z_UPPER_PIN A2
 #define ENDSTOP_Z_LOWER_PIN A3
+
+#define CLAW_TRIGGER_PIN 8
+#define CLAW_SERVO_PIN 13
 
 #pragma endregion
 #endif
