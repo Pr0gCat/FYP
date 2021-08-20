@@ -8,6 +8,8 @@
 
 typedef void (*CallbackFunc)();
 
+typedef void (*CallbackFunc)();
+
 #pragma region Parameters
 /*
     Wheels
