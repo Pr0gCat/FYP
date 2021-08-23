@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from pyzbar.pyzbar import decode
 
-
+#  Return string or None
 def decoder(image):
     string = None
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -12,17 +12,11 @@ def decoder(image):
         (x, y, w, h) = obj.rect
         pts = np.array(points, np.int32)
         pts = pts.reshape((-1, 1, 2))
-        #  cv2.polylines(image, [pts], True, (0, 255, 0), 3)
-
         barcodeData = obj.data.decode("utf-8")
-
         string = str(barcodeData)
-
-        #  cv2.putText(frame, string, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-        #  print(barcodeData)
     return string
 
-
+#  Return float or None
 def line_following(image):
     # Crop the image
     crop_img = image[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
@@ -38,23 +32,13 @@ def line_following(image):
     if len(contours) > 0:
         c = max(contours, key=cv2.contourArea)
         M = cv2.moments(c)
-
         if M['m00'] == 0:
             return None
         cx = int(M['m10'] / M['m00'])
         cy = int(M['m01'] / M['m00'])
-
-        '''
-        cv2.line(crop_img, (cx, 0), (cx, Screem_Height), (255, 0, 0), 1)
-        cv2.line(crop_img, (0, cy), (Screen_Weight, cy), (255, 0, 0), 1)
-        cv2.drawContours(crop_img, contours, -1, (0, 255, 0), 1)
-        '''
-
         deviation = -1 * (cx - Screen_Weight / 2) / (Screen_Weight / 2)
-        #  print(deviation)
         return deviation
     else:
-        #  print("I don't see the line")
         return None
 
 
@@ -67,10 +51,8 @@ cap.set(4, Screem_Height)
 
 while True:
     ret, frame = cap.read()
-    #  ret, frame_test = cv2.threshold(frame, 1, 255, cv2.THRESH_BINARY)
     qrdata = decoder(frame)
     linedata = line_following(frame)
-
     #  Testing part
     #  print("QR: " + str(qrdata))
     #  print("Line: " + str(linedata))
