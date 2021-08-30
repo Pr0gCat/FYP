@@ -1,8 +1,9 @@
 #include<PIDController.h>
+#include<config.h>
 
 volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
-int motor_enable_r = 1 ,motor_enable_l = 1;
+int motor_enable_r = 0 ,motor_enable_l = 0;
 PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
@@ -54,27 +55,29 @@ void set_origin_r()
 
 void set_distance_l(int distance_l)
 {
-  pid_distance_l.setpoint( motor_distance_l );
+  pid_distance_l.setpoint( distance_l );
 }
 
 void set_distance_r(int distance_r)
 {
-  pid_distance_r.setpoint( motor_distance_r );
+  pid_distance_r.setpoint( distance_r );
 }
 
 void set_speed_l(int speed_l)
 {
   pid_speed_l.setpoint( speed_l );
+  motor_enable_l = 1;
 }
 
 void set_speed_r(int speed_r)
 {
   pid_speed_r.setpoint( speed_r );
+  motor_enable_r = 1;
 }
 
 int motor_controller_l(int enable)
 {
-  int motor_l_pwm_PIN = pid_speed_l.compute(speed_count_l);
+  int motor_l_pwm = pid_speed_l.compute(speed_count_l);
   int motor_on_l = pid_distance_l.compute(distance_l);
   speed_count_l = 0;
   
@@ -99,16 +102,16 @@ int motor_controller_r(int enable)
   int motor_on_r = pid_distance_r.compute(distance_r);
   speed_count_r = 0;
 
-  if( motot_on_r > 0){
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PI, enable, motor_r_pwm);
+  if( motor_on_r > 0){
+    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm);
     return 1;
   } 
-  if( motot_on_r < 0){
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PI, enable, motor_r_pwm * -1);
+  if( motor_on_r < 0){
+    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm * -1);
     return 1;
   } 
   if( motor_on_r == 0) {
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PI, 0, 0);
+    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0);
     return 0;
   }
   
@@ -116,15 +119,14 @@ int motor_controller_r(int enable)
 
 void wheel_updata()
 {
-  static last_time = millis();
-  if(millis() - last_time  < UPDATA_TIMElast_time) return;
+  static long unsigned int last_time = millis();
+  if(millis() - last_time  < UPDATA_TIME) return;
   motor_controller_l(motor_enable_l);
   motor_controller_r(motor_enable_r);
   last_time = millis();  
 }
 
-void wheel_setup() {
-  Serial.begin(115200); 
+void setup() {Serial.begin(115200); 
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
   pinMode(ENCODER_LR_PIN, INPUT); 
@@ -134,7 +136,7 @@ void wheel_setup() {
   pinMode(MOTOR_L_IN1_PIN, OUTPUT); 
   pinMode(MOTOR_R_IN1_PIN, OUTPUT); 
   pinMode(MOTOR_L_IN2_PIN, OUTPUT); 
-  pinMode(MOTOR_R_IN2_PI, OUTPUT); 
+  pinMode(MOTOR_R_IN2_PIN, OUTPUT); 
   
   attachInterrupt(digitalPinToInterrupt(ENCODER_LF_PIN), encoder_l, RISING);
   attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), encoder_r, RISING);
@@ -155,4 +157,9 @@ void wheel_setup() {
   pid_distance_r.tune(__Kp_count_r , __Ki_count_r , __Kd_count_r); 
   pid_distance_r.limit(-255, 255); 
 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  wheel_updata();
 }
