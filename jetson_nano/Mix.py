@@ -3,6 +3,7 @@ import numpy as np
 from pyzbar.pyzbar import decode
 
 
+#  Return True of False
 def slope_compare(line1, line2):
     x1 = line1[1]
     y1 = line1[2]
@@ -26,7 +27,7 @@ def slope_compare(line1, line2):
         return False
 
 
-#  Return list of None
+#  Return List of None
 def cross_point(line1, line2):
     x1 = line1[1]
     y1 = line1[2]
@@ -65,7 +66,7 @@ def cross_point(line1, line2):
     return [x, y]
 
 
-#  Return true or false
+#  Return True or False or None
 def cross_detect(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 60, 150, apertureSize=3)
@@ -158,6 +159,7 @@ def line_following(image):
         return deviation
     else:
         return None
+
 
 def test(image):
     print(retutn_data)
