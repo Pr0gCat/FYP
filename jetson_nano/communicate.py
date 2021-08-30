@@ -74,8 +74,13 @@ def limit_trigger():
   comfirm(LIMIT_TRIGGERED)
 
 
-def set_speed():
-    comfirm(SET_SPEED)
+def set_speed(left,right):
+    port.write(SET_SPEED)
+    port.write(4)
+    port.write(left)
+    port.write(right)
+    cs = str(0xff & (SET_SPEED+2+left+right))
+    port.write(cs.encode("utf-8"))
 
 
 def move_y():

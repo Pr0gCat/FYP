@@ -95,6 +95,9 @@ void unpack()
   case CMD_LIMIT_TRIGGERED:
     limit_trigger(data);
     break;
+  case CMD_SET_SPEED:
+    set_speed(data);
+    break;
   }
 }
 
@@ -131,4 +134,10 @@ void get_speed(char data[])
 void limit_trigger(char data[])
 {
   comfirm(CMD_LIMIT_TRIGGERED);
+}
+
+void set_speed(char data[])
+{
+  uint16_t left =(data[0] -'0') + (data[1] -'0');
+  uint16_t right =(data[2] -'0') + (data[3] -'0');
 }
