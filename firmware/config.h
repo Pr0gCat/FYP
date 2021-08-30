@@ -32,6 +32,24 @@ typedef void (*CallbackFunc)();
 #define DIST_R_Ki 0
 #define DIST_R_Kd 0
 
+#define UPDATA_TIME 100
+
+#define __Kp_count_l 260 
+#define __Ki_count_l 2.7 
+#define __Kd_count_l 2000 
+
+#define __Kp_count_r 260 
+#define __Ki_count_r 2.7 
+#define __Kd_count_r 2000 
+
+#define __Kp_l 1.88
+#define __Ki_l 0.05
+#define __Kd_l 2
+
+#define __Kp_r 1.81
+#define __Ki_r 0.03
+#define __Kd_r 3
+
 /*
     Steppers, EndStops & Claw
 */
