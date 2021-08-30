@@ -30,15 +30,13 @@ def receive(port):
     
 
 if __name__ == '__main__':
-    port = serial.Serial('COM3', baudrate=115200)
+    port = serial.Serial('/dev/ttyACM0', baudrate=115200)
     start_new_thread(receive,(port,))
     print("Receive thread strat")
     print(port)
     # write a byte
     time.sleep(2)
-    a = str(0xff & 4)
-    port.write(b'211')
-    port.write(a.encode("utf-8"))
+    set_speed(port, 1000, 1000)
     
     while True:
         pass
@@ -74,7 +72,7 @@ def limit_trigger():
   comfirm(LIMIT_TRIGGERED)
 
 
-def set_speed(left,right):
+def set_speed(port, left,right):
     port.write(SET_SPEED)
     port.write(4)
     port.write(left)

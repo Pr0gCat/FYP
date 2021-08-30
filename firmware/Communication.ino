@@ -1,4 +1,6 @@
 #include "Communication.h"
+#include "WheelController.h"
+
 #include "config.h"
 
 char buff[300];
@@ -140,4 +142,6 @@ void set_speed(char data[])
 {
   uint16_t left =(data[0] -'0') + (data[1] -'0');
   uint16_t right =(data[2] -'0') + (data[3] -'0');
+  set_speed_l(left);
+  set_speed_r(right);
 }

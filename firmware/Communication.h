@@ -49,4 +49,6 @@ typedef struct
 #define CMD_HOME_Z 13
 #define CMD_MSG 255
 
+void cmd_update();
+
 #endif
