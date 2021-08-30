@@ -126,7 +126,7 @@ void wheel_updata()
   last_time = millis();  
 }
 
-void setup() {Serial.begin(115200); 
+void wheel_setup() {Serial.begin(115200); 
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
   pinMode(ENCODER_LR_PIN, INPUT); 
