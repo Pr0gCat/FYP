@@ -77,11 +77,11 @@ typedef void (*CallbackFunc)();
 #define MOTOR_R_IN1_PIN 11// Right motor IN1
 #define MOTOR_R_IN2_PIN 12// Right motor IN2
 
-#define ENCODER_LF_PIN 3// Front left encoder
-#define ENCODER_LR_PIN A4// Front left encoder
+#define ENCODER_RF_PIN 3// Front left encoder
+#define ENCODER_RR_PIN A4// Front left encoder
 
-#define ENCODER_RF_PIN 2// Front right encoder
-#define ENCODER_RR_PIN A5// Rear right encoder
+#define ENCODER_LF_PIN 2// Front right encoder
+#define ENCODER_LR_PIN A5// Rear right encoder
 /*
     Timeout
 */
