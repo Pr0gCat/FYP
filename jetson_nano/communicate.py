@@ -1,6 +1,7 @@
 import serial
 import time
 from _thread import *
+import struct
 
 COFIRM = 1
 GET_CRAWL_STATE = 2
@@ -73,10 +74,8 @@ def limit_trigger():
 
 
 def set_speed(port, left,right):
-    port.write(SET_SPEED)
-    port.write(4)
-    port.write(left)
-    port.write(right)
+    pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
+    port.write(pkg)
     cs = str(0xff & (SET_SPEED+2+left+right))
     port.write(cs.encode("utf-8"))
 
