@@ -30,19 +30,23 @@ typedef struct
 } SetSpeedPayload_t;
 #define PAYLOAD_SET_SPEED_SIZE sizeof(SetSpeedPayload_t)
 
-#define CMD_MOVE_Y 9
-#define CMD_MOVE_Z 10
+#define CMD_SET_DISTANCE 9
+typedef struct
+{
+    int32_t distance;
+} SetDistancePayload_t;
+
+
+#define CMD_MOVE_Y 10
+#define CMD_MOVE_Z 11
 typedef struct
 {
     uint32_t pos;
 } MoveClawPayload_t;
 #define PAYLOAD_MOVE_CLAW_SIZE sizeof(MoveClawPayload_t)
 
-#define CMD_HOME_Y 11
-#define CMD_HOME_Z 12
+#define CMD_HOME_Y 12
+#define CMD_HOME_Z 13
 #define CMD_MSG 255
-
-void UART_send_msg(char *msg, ...);
-
 
 #endif
