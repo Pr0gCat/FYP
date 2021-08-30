@@ -85,7 +85,7 @@ typedef void (*CallbackFunc)();
 /*
     Timeout
 */
-#define Time_OUT 1
+#define Time_OUT 100
 
 /*
     Steppers, EndStops & Claw

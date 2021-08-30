@@ -8,8 +8,8 @@ PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l() {
-  if (digitalRead(ENCODER_LR_PIN) == HIGH) {speed_count_l++;distance_l++;}
-  else {speed_count_l--;distance_l--;}
+  if (digitalRead(ENCODER_LR_PIN) == HIGH) {speed_count_l++;distance_l++; Serial.println("+L");}
+  else {speed_count_l--;distance_l--; Serial.println("-L");}
 }
 
 void encoder_r() {

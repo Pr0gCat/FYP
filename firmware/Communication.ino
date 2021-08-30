@@ -20,6 +20,7 @@ void cmd_update() // run over and over
   }
   while (Serial.available())
   {
+    
     if (flag == 0)
     {
       buff[count] = Serial.read();
@@ -140,8 +141,9 @@ void limit_trigger(char data[])
 
 void set_speed(char data[])
 {
-  uint16_t left =(data[0] -'0') + (data[1] -'0');
-  uint16_t right =(data[2] -'0') + (data[3] -'0');
-  set_speed_l(left);
-  set_speed_r(right);
+  uint16_t left = data[0] << 8 + data[1];
+  uint16_t right = data[2] << 8 + data[3];
+  Serial.println("debug");
+  // set_speed_l(left);
+  // set_speed_r(right);
 }

@@ -31,22 +31,26 @@ def receive(port):
     
 
 if __name__ == '__main__':
-    port = serial.Serial('/dev/ttyACM0', baudrate=115200)
+    port = serial.Serial('/dev/ttyACM1', baudrate=115200)
     start_new_thread(receive,(port,))
     print("Receive thread strat")
     print(port)
     # write a byte
     time.sleep(2)
-    set_speed(port, 1000, 1000)
+    port.write(b'211')
+    port.write('4'.encode('utf8'))
+    # def set_speed(port, left,right):
+    #   pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
+    #   # print(pkg)
+    #   port.write(pkg)
+    #   cs = str(0xff & (SET_SPEED+2+left+right))
+    #   port.write(cs.encode("utf-8"))
+    # set_speed(port, 1000, 1000)
     
     while True:
         pass
 
-def comfirm(cmd):
-  if(cmd != 1):
-    port.write(1)
-    port.write(1)
-    port.write(cmd)
+
   
 
 def get_crawl_state():
@@ -73,11 +77,7 @@ def limit_trigger():
   comfirm(LIMIT_TRIGGERED)
 
 
-def set_speed(port, left,right):
-    pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
-    port.write(pkg)
-    cs = str(0xff & (SET_SPEED+2+left+right))
-    port.write(cs.encode("utf-8"))
+
 
 
 def move_y():
