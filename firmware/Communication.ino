@@ -1,10 +1,4 @@
-#define COFIRM 1
-#define GET_CRAWL_STATE 2
-#define GET_CRAWL_TRIGGER 3
-#define GET_POSY 4
-#define GET_POSZ 5
-#define GET_SPEED 6
-#define LIMIT_TRIGGERED 7
+#include "Communication.h"
 
 char buff[300];
 char flag = 0;
@@ -59,25 +53,25 @@ void unpack(){
     data[i]=buff[2+i];
   }
   switch (cmd) {
-    case COFIRM:
+    case CMD_COFIRM:
       comfirm(cmd);
       break;
-    case GET_CRAWL_STATE:
+    case CMD_GET_CRAWL_STATE:
       get_crawl_state(data);
       break;
-    case GET_CRAWL_TRIGGER:
+    case CMD_GET_CRAWL_TRIGGER:
       get_crawl_trigger(data);
       break;
-    case GET_POSY:
+    case CMD_GET_POSY:
       get_posy(data);
       break;
-    case GET_POSZ:
+    case CMD_GET_POSZ:
       get_posz(data);
       break;
-    case GET_SPEED:
+    case CMD_GET_SPEED:
       get_speed(data);
       break;
-    case LIMIT_TRIGGERED:
+    case CMD_LIMIT_TRIGGERED:
       limit_trigger(data);
       break;
   }
@@ -92,25 +86,25 @@ void comfirm(int cmd){
 }
 
 void get_crawl_state(char data[]){
-  comfirm(GET_CRAWL_STATE);
+  comfirm(CMD_GET_CRAWL_STATE);
 }
 
 void get_crawl_trigger(char data[]){
-  comfirm(GET_CRAWL_TRIGGER);
+  comfirm(CMD_GET_CRAWL_TRIGGER);
 }
 
 void get_posy(char data[]){
-  comfirm(GET_POSY);
+  comfirm(CMD_GET_POSY);
 }
 
 void get_posz(char data[]){
-  comfirm(GET_POSZ);
+  comfirm(CMD_GET_POSZ);
 }
 
 void get_speed(char data[]){
-  comfirm(GET_SPEED);
+  comfirm(CMD_GET_SPEED);
 }
 
 void limit_trigger(char data[]){
-  comfirm(LIMIT_TRIGGERED);
+  comfirm(CMD_LIMIT_TRIGGERED);
 }

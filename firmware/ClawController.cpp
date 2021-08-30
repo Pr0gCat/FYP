@@ -48,23 +48,11 @@ void ClawController::update(){
 }
 
 void ClawController::homeZ(){
-    z_axis.setAcceleration(STEPPER_HOMING_ACCEL);
-    z_axis.setSpeed(STEPPER_Z_MAX_SPEED * STEPPER_HOMING_SPEED_FACTOR);
     z_axis.moveTo(0);
-    while(z_axis.distanceToGo() != 0 && digitalRead(ENDSTOP_Z_LOWER_PIN)){
-        z_axis.run();
-        if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
-    }
 }
 
 void ClawController::homeY(){
-    z_axis.setAcceleration(STEPPER_HOMING_ACCEL);
-    z_axis.setSpeed(STEPPER_Y_MAX_SPEED * STEPPER_HOMING_SPEED_FACTOR);
     y_axis.moveTo(0);
-    while(y_axis.distanceToGo() != 0 && digitalRead(ENDSTOP_Y_LOWER_PIN)){
-        y_axis.run();
-        if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
-    }
 }
 
 void ClawController::calibrateY(){

@@ -43,9 +43,6 @@ typedef void (*CallbackFunc)();
 #define STEPPER_Y_MAX_SPEED 2500
 #define STEPPER_Z_MAX_SPEED 3500
 
-#define STEPPER_HOMING_SPEED_FACTOR 0.7
-#define STEPPER_HOMING_ACCEL 100
-
 #define STEPPER_MOVE_ACCEL 150
 
 #define ENDSTOP_DEBRONCE_TIME 50
@@ -80,8 +77,8 @@ typedef void (*CallbackFunc)();
 #define ENDSTOP_Y_UPPER_PIN A0
 #define ENDSTOP_Y_LOWER_PIN A1
 
-#define ENDSTOP_Z_UPPER_PIN A2
-#define ENDSTOP_Z_LOWER_PIN A3
+#define ENDSTOP_Z_UPPER_PIN A3
+#define ENDSTOP_Z_LOWER_PIN A2
 
 #define CLAW_TRIGGER_PIN 8
 #define CLAW_SERVO_PIN 13
