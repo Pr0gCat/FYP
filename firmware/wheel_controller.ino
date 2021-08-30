@@ -123,7 +123,8 @@ void wheel_updata()
   last_time = millis();  
 }
 
-void setup() {Serial.begin(115200); 
+void wheel_setup() {
+  Serial.begin(115200); 
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
   pinMode(ENCODER_LR_PIN, INPUT); 
@@ -154,9 +155,4 @@ void setup() {Serial.begin(115200);
   pid_distance_r.tune(__Kp_count_r , __Ki_count_r , __Kd_count_r); 
   pid_distance_r.limit(-255, 255); 
 
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  wheel_updata();
 }
