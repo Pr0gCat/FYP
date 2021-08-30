@@ -21,11 +21,11 @@ void Set_motor_pwm(int motor_pwm, int motot, int sw, int power)
 {
   if(sw) {
     if(power > 0){
-      analogWrite(motor_pwm, power);
       digitalWrite(motot, LOW);
+      analogWrite(motor_pwm, power);
     } else {
-      analogWrite(motot, abs(power));
       digitalWrite(motor_pwm, LOW);
+      analogWrite(motot, abs(power));
     }
   } else {
     analogWrite(motor_pwm, LOW);
@@ -89,12 +89,7 @@ int motor_controller_l(int enable)
   if( motor_on_l > 0){
     Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm );
     return 1;
-  } 
-  if( motor_on_l < 0) {
-    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm * -1);
-    return 1;
-  }
-  if( motor_on_l == 0) {
+  } else{
     Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, 0, 0);
     return 0;
   }
@@ -114,12 +109,7 @@ int motor_controller_r(int enable)
   if( motor_on_r > 0){
     Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm);
     return 1;
-  } 
-  if( motor_on_r < 0){
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm * -1);
-    return 1;
-  } 
-  if( motor_on_r == 0) {
+  } else {
     Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0);
     return 0;
   }
