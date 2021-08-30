@@ -158,8 +158,3 @@ void wheel_setup() {Serial.begin(115200);
   pid_distance_r.limit(-255, 255); 
 
 }
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  wheel_updata();
-}
