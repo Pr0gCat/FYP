@@ -10,7 +10,7 @@ uint32_t time = 0;
 
 void cmd_update() // run over and over
 {
-  if ((millis() - time) > Time_OUT)
+  if ((millis() - time) > Time_OUT && flag!=0)
   {
     flag = 0;
     count = 0;
@@ -22,6 +22,7 @@ void cmd_update() // run over and over
     {
       buff[count] = Serial.read();
       checksum += buff[count] - '0';
+      time = millis();
       flag = 1;
       count++;
     }
@@ -29,6 +30,7 @@ void cmd_update() // run over and over
     {
       buff[count] = Serial.read();
       checksum += buff[count] - '0';
+      time = millis();
       count++;
       flag = 2;
     }
