@@ -1,27 +1,8 @@
 #include<PIDController.h>
 
-#define UPDATA_TIME 100
-
-#define __Kp_count_l 260 
-#define __Ki_count_l 2.7 
-#define __Kd_count_l 2000 
-
-#define __Kp_count_r 260 
-#define __Ki_count_r 2.7 
-#define __Kd_count_r 2000 
-
-//done
-#define __Kp_l 1.88
-#define __Ki_l 0.05
-#define __Kd_l 2
-
-#define __Kp_r 1.81
-#define __Ki_r 0.03
-#define __Kd_r 3
-
 volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
-int motor_enable_r = 0 ,motor_enable_l = 0;
+int motor_enable_r = 1 ,motor_enable_l = 1;
 PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
@@ -53,12 +34,12 @@ void Set_motor_pwm(int motor_pwm, int motot, int sw, int power)
 
 void stop_motor_l()
 {
-  //sw = 0;
+  motor_enable_l = 0;
 }
 
 void stop_motor_r()
 {
-  //sw = 0;
+  motor_enable_r = 0;
 }
 
 void set_origin_l()
