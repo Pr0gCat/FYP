@@ -22,7 +22,7 @@ if __name__ == '__main__':
         cv2.imshow('cam1', frame1)
         cv2.imshow('cam2', frame2)
 
-        if cv2.waitKey(1) & 0x27:
+        if cv2.waitKey(1) == 27:
             cam1.close()
             cam2.close()
             exit()
