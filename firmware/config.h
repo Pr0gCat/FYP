@@ -64,6 +64,10 @@ typedef void (*CallbackFunc)();
 
 #define ENCODER_RF_PIN 2// Front right encoder
 #define ENCODER_RR_PIN A5// Rear right encoder
+/*
+    Timeout
+*/
+#define Time_OUT 1
 
 /*
     Steppers, EndStops & Claw

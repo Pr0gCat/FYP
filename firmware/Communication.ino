@@ -1,13 +1,20 @@
 #include "Communication.h"
+#include "config.h"
 
 char buff[300];
 char flag = 0;
 int count = 0;
 int checksum = 0;
 int data_len = 0;
+uint32_t time = 0;
 
 void cmd_update() // run over and over
 {
+  if((millis()-time) > Time_OUT){
+    flag=0;
+    count=0;
+    checksum = 0;
+  }
   while(Serial.available()){
     if(flag == 0 ){
       buff[count] = Serial.read();
@@ -23,10 +30,11 @@ void cmd_update() // run over and over
     }
     else if(flag == 2){
       int len = (buff[1]-'0');
-       buff[count]=Serial.read();
-       checksum +=buff[count]-'0';
-       count++;
-       data_len++;
+      buff[count]=Serial.read();
+      checksum +=buff[count]-'0';
+      time = millis();
+      count++;
+      data_len++;
       if(data_len == len){
         flag=3;
       }
@@ -86,23 +94,23 @@ void comfirm(int cmd){
 }
 
 void get_crawl_state(char data[]){
-  comfirm(CMD_GET_CRAWL_STATE);
+
 }
 
 void get_crawl_trigger(char data[]){
-  comfirm(CMD_GET_CRAWL_TRIGGER);
+
 }
 
 void get_posy(char data[]){
-  comfirm(CMD_GET_POSY);
+
 }
 
 void get_posz(char data[]){
-  comfirm(CMD_GET_POSZ);
+
 }
 
 void get_speed(char data[]){
-  comfirm(CMD_GET_SPEED);
+
 }
 
 void limit_trigger(char data[]){
