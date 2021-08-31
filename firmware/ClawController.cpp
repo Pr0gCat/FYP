@@ -28,6 +28,10 @@ void ClawController::begin(){
 }
 
 void ClawController::update(){
+    Serial.print("Y: ");
+    Serial.println(y_axis.currentPosition());
+    Serial.print("Z: ");
+    Serial.println(z_axis.currentPosition());
     // unexpected collision
     if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){
         y_axis.setCurrentPosition(y_axis.currentPosition());
@@ -129,7 +133,7 @@ void ClawController::moveTo(uint32_t mm){
         y_axis.moveTo(pos);
     }else if (axis == ClawController::Z){
         pos = pos > z_max ? z_max : pos;
-        y_axis.moveTo(pos);
+        z_axis.moveTo(pos);
     }
     return;
 }

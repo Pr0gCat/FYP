@@ -9,11 +9,13 @@ PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l() {
-  speed_count_l++;distance_l++;
+  speed_count_l++;
+  distance_l++;
 }
 
 void encoder_r() {
-  speed_count_r++;distance_r++;
+  speed_count_r++;
+  distance_r++;
 }
 
 void Set_motor_pwm(int motor_pwm, int motot, int sw, int power, int directionm)
@@ -92,11 +94,6 @@ int motor_controller_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
   int motor_on_l = pid_distance_l.compute(distance_l);
-  Serial.print(" L PWM: ");
-  Serial.print(motor_l_pwm);
-  Serial.print(" L on: ");
-  Serial.print(motor_on_l);
-
   speed_count_l = 0;
   
   if( motor_on_l > 0){
@@ -113,10 +110,6 @@ int motor_controller_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
   int motor_on_r = pid_distance_r.compute(distance_r);
-  Serial.print(" R PWM: ");
-  Serial.print(motor_r_pwm);
-  Serial.print(" R on: ");
-  Serial.print(motor_on_r);
   speed_count_r = 0;
 
   if( motor_on_r > 0){
@@ -133,16 +126,6 @@ void wheel_update()
 {
   static long unsigned int last_time = millis();
   if(millis() - last_time  < UPDATA_TIME) return;
-  Serial.print(" distance_l: ");
-  Serial.print(distance_l);
-  Serial.print(" distance_r: ");
-  Serial.print(distance_r);
-  Serial.print(" speed count L: ");
-  Serial.print(speed_count_l);
-  Serial.print(" speed count R: ");
-  Serial.print(speed_count_r);
-  Serial.println();
-  Serial.println();
   motor_controller_l(motor_enable_l);
   motor_controller_r(motor_enable_r);
   last_time = millis();  
@@ -151,9 +134,7 @@ void wheel_update()
 void wheel_setup() {
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
-  pinMode(ENCODER_LR_PIN, INPUT); 
   pinMode(ENCODER_RF_PIN, INPUT); 
-  pinMode(ENCODER_RR_PIN, INPUT); 
   // motor
   pinMode(MOTOR_L_IN1_PIN, OUTPUT); 
   pinMode(MOTOR_R_IN1_PIN, OUTPUT); 

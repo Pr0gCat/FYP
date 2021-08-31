@@ -66,22 +66,14 @@ typedef void (*CallbackFunc)();
 #define ENDSTOP_DEBRONCE_TIME 50
 
 #pragma endregion
+#define MOTOR_L_IN1_PIN 9 // Left motor IN1
+#define MOTOR_L_IN2_PIN 10 // Left motor IN2
 
-#pragma region Pins
-/*
-    Wheels
-*/
-#define MOTOR_L_IN1_PIN 9// Left motor IN1
-#define MOTOR_L_IN2_PIN 10// Left motor IN2
+#define MOTOR_R_IN1_PIN 5 // Right motor IN1
+#define MOTOR_R_IN2_PIN 6 // Right motor IN2
 
-#define MOTOR_R_IN1_PIN 11// Right motor IN1
-#define MOTOR_R_IN2_PIN 12// Right motor IN2
-
-#define ENCODER_RF_PIN 3// Front left encoder
-#define ENCODER_RR_PIN A4// Front left encoder
-
-#define ENCODER_LF_PIN 2// Front right encoder
-#define ENCODER_LR_PIN A5// Rear right encoder
+#define ENCODER_LF_PIN 3 // Front left encoder
+#define ENCODER_RF_PIN 2 // Front right encoder
 /*
     Timeout
 */
@@ -90,11 +82,11 @@ typedef void (*CallbackFunc)();
 /*
     Steppers, EndStops & Claw
 */
-#define STEPPER_Y_STEP_PIN 6
-#define STEPPER_Y_DIR_PIN 7
+#define STEPPER_Y_STEP_PIN 12
+#define STEPPER_Y_DIR_PIN 11
 
-#define STEPPER_Z_STEP_PIN 4
-#define STEPPER_Z_DIR_PIN 5
+#define STEPPER_Z_STEP_PIN 8
+#define STEPPER_Z_DIR_PIN 7
 
 #define ENDSTOP_Y_UPPER_PIN A0
 #define ENDSTOP_Y_LOWER_PIN A1
@@ -102,7 +94,7 @@ typedef void (*CallbackFunc)();
 #define ENDSTOP_Z_UPPER_PIN A3
 #define ENDSTOP_Z_LOWER_PIN A2
 
-#define CLAW_TRIGGER_PIN 8
+#define CLAW_TRIGGER_PIN 4
 #define CLAW_SERVO_PIN 13
 
 #pragma endregion
