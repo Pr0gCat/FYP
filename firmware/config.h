@@ -42,13 +42,13 @@ typedef void (*CallbackFunc)();
 #define __Ki_count_r 2.7 
 #define __Kd_count_r 2000 
 
-#define __Kp_l 1.88
+#define __Kp_l 3//2.09
 #define __Ki_l 0.05
-#define __Kd_l 2
+#define __Kd_l 0
 
-#define __Kp_r 1.81
+#define __Kp_r 2.4
 #define __Ki_r 0.03
-#define __Kd_r 3
+#define __Kd_r 0
 
 /*
     Steppers, EndStops & Claw
@@ -72,8 +72,8 @@ typedef void (*CallbackFunc)();
 #define MOTOR_R_IN1_PIN 5 // Right motor IN1
 #define MOTOR_R_IN2_PIN 6 // Right motor IN2
 
-#define ENCODER_LF_PIN 3 // Front left encoder
-#define ENCODER_RF_PIN 2 // Front right encoder
+#define ENCODER_RF_PIN 3 // Front left encoder
+#define ENCODER_LF_PIN 2 // Front right encoder
 /*
     Timeout
 */
