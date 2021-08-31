@@ -20,11 +20,10 @@ void cmd_update() // run over and over
   }
   while (Serial.available())
   {
-    
     if (flag == 0)
     {
       buff[count] = Serial.read();
-      checksum += buff[count] - '0';
+      checksum += buff[count];
       time = millis();
       flag = 1;
       count++;
@@ -32,16 +31,16 @@ void cmd_update() // run over and over
     else if (flag == 1)
     {
       buff[count] = Serial.read();
-      checksum += buff[count] - '0';
+      checksum += buff[count];
       time = millis();
       count++;
       flag = 2;
     }
     else if (flag == 2)
     {
-      int len = (buff[1] - '0');
+      int len = buff[1];
       buff[count] = Serial.read();
-      checksum += buff[count] - '0';
+      checksum += buff[count];
       time = millis();
       count++;
       data_len++;
@@ -53,9 +52,9 @@ void cmd_update() // run over and over
     else if (flag == 3)
     {
       buff[count] = Serial.read();
-      int cs = buff[count] - '0';
-      count++;
-      if ((0xff & checksum) == cs)
+      int cs = buff[count];
+      checksum = (0xff & checksum);
+      if (checksum == cs)
       {
         unpack();
       }
@@ -68,9 +67,9 @@ void cmd_update() // run over and over
 
 void unpack()
 {
-  int cmd = buff[0] - '0';
-  int len = buff[1] - '0';
-  char data[255];
+  int cmd = buff[0];
+  int len = buff[1];
+  unsigned char data[255];
   for (int i = 0; i < len; i++)
   {
     data[i] = buff[2 + i];
@@ -114,36 +113,37 @@ void comfirm(int cmd)
   }
 }
 
-void get_crawl_state(char data[])
+void get_crawl_state(unsigned char data[])
 {
 }
 
-void get_crawl_trigger(char data[])
+void get_crawl_trigger(unsigned char data[])
 {
 }
 
-void get_posy(char data[])
+void get_posy(unsigned char data[])
 {
 }
 
-void get_posz(char data[])
+void get_posz(unsigned char data[])
 {
 }
 
-void get_speed(char data[])
+void get_speed(unsigned char data[])
 {
 }
 
-void limit_trigger(char data[])
+void limit_trigger(unsigned char data[])
 {
   comfirm(CMD_LIMIT_TRIGGERED);
 }
 
-void set_speed(char data[])
+void set_speed(unsigned char data[])
 {
-  uint16_t left = data[0] << 8 + data[1];
-  uint16_t right = data[2] << 8 + data[3];
-  Serial.println("debug");
+  int16_t left = (data[0] + (data[1] << 8));
+  int16_t right = (data[2] + (data[3] << 8));
+  Serial.println(left);
+  Serial.println(right);
   // set_speed_l(left);
   // set_speed_r(right);
 }

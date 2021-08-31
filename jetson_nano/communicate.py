@@ -28,73 +28,70 @@ def receive(port):
       port.close()    # 清除序列通訊物件
       print("再見！")
   time.sleep(0.2)
+
+def get_crawl_state():
+  pass
+
+
+def get_crawl_trigger():
+  pass
+
+
+def get_posy():
+  pass
+
+
+def get_posz():
+  pass
+
+
+def get_speed():
+  pass
+
+
+def limit_trigger():
+  pass
+
+
+def move_y():
+  pass    
+
+def move_z():
+  pass
+
+
+def home_y():
+  pass
+
+
+def home_z():
+  pass
+
+
+def set_crawl_angle():
+  pass
+
+def set_speed(port, left,right):
+      pkg = struct.pack('BBHH', SET_SPEED, 4, left, right)
+      port.write(pkg)
+      cs = 0xff & sum(pkg)
+      pkg = struct.pack('B', cs)
+      port.write(pkg)
     
 
 if __name__ == '__main__':
-    port = serial.Serial('/dev/ttyACM1', baudrate=115200)
+    port = serial.Serial('/dev/cu.usbmodem138', baudrate=115200)
     start_new_thread(receive,(port,))
     print("Receive thread strat")
-    print(port)
     # write a byte
     time.sleep(2)
-    port.write(b'211')
-    port.write('4'.encode('utf8'))
+    set_speed(port, 1000, 1000)
     # def set_speed(port, left,right):
     #   pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
     #   # print(pkg)
     #   port.write(pkg)
     #   cs = str(0xff & (SET_SPEED+2+left+right))
     #   port.write(cs.encode("utf-8"))
-    # set_speed(port, 1000, 1000)
     
     while True:
         pass
-
-
-  
-
-def get_crawl_state():
-  comfirm(GET_CRAWL_STATE)
-
-
-def get_crawl_trigger():
-  comfirm(GET_CRAWL_TRIGGER)
-
-
-def get_posy():
-  comfirm(GET_POSY)
-
-
-def get_posz():
-  comfirm(GET_POSZ)
-
-
-def get_speed():
-  comfirm(GET_SPEED)
-
-
-def limit_trigger():
-  comfirm(LIMIT_TRIGGERED)
-
-
-
-
-
-def move_y():
-    comfirm(MOVE_Y)
-
-
-def move_z():
-    comfirm(MOVE_Z)
-
-
-def home_y():
-    comfirm(HOME_Y)
-
-
-def home_z():
-    comfirm(HOME_Z)
-
-
-def set_crawl_angle():
-    comfirm(SET_CRAWL_ANGLE)
