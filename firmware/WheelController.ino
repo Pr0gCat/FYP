@@ -193,7 +193,6 @@ void wheel_update()
   {
     motor_controller_l(motor_enable_l);
     motor_controller_r(motor_enable_r);
-    Serial.println(motor_mode);
   } else {
     motor_controller_distance_l(motor_enable_l);
     motor_controller_distance_r(motor_enable_r);
