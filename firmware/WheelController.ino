@@ -3,7 +3,7 @@
 
 volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
-int motor_enable_r = 0 ,motor_enable_l = 0;
+int motor_enable_r = 1 ,motor_enable_l = 1;
 int motor_direction_l = 1,motor_direction_r = 1;
 int motor_mode = 0;
 PIDController pid_speed_l, pid_speed_r;
@@ -165,21 +165,23 @@ void set_speed_l(int32_t speed)
 
 void runSpeed(int32_t speed_l, int32_t speed_r)
 {
-  motor_mode = 0;
+  motor_mode = 1;
   set_speed_r(speed_r);
   set_speed_l(speed_l);
+  Serial.println(speed_l);
+  Serial.println(speed_r);
   
 }
 
 void runDistanceR(uint32_t distance, int32_t speed)
 {
-  motor_mode = 1;
+  motor_mode = 0;
   set_speed_r(speed);
 }
 
 void runDistanceL(uint32_t distance, int32_t speed)
 {
-  motor_mode = 1;
+  motor_mode = 0;
   set_speed_l(speed);
 }
 
@@ -191,6 +193,7 @@ void wheel_update()
   {
     motor_controller_l(motor_enable_l);
     motor_controller_r(motor_enable_r);
+    Serial.println(motor_mode);
   } else {
     motor_controller_distance_l(motor_enable_l);
     motor_controller_distance_r(motor_enable_r);

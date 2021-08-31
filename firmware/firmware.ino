@@ -11,15 +11,12 @@ void setup(){
     delay(1000);
 
     wheel_setup();
-    set_speed_l(500);
-    set_speed_r(500);
-    set_distance_l(1000);
-    set_distance_r(1000);
-    claw.begin();
+    runSpeed(500, 500);
+    // claw.begin();
 }
 
 void loop(){
     cmd_update();
     wheel_update();
-    claw.update();
+    // claw.update();
 }
