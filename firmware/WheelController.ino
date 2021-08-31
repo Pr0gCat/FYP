@@ -201,9 +201,7 @@ void wheel_update()
 void wheel_setup() {
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
-  pinMode(ENCODER_LR_PIN, INPUT); 
   pinMode(ENCODER_RF_PIN, INPUT); 
-  pinMode(ENCODER_RR_PIN, INPUT); 
   // motor
   pinMode(MOTOR_L_IN1_PIN, OUTPUT); 
   pinMode(MOTOR_R_IN1_PIN, OUTPUT); 
