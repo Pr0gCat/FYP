@@ -5,17 +5,16 @@ volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
 int motor_enable_r = 0 ,motor_enable_l = 0;
 int motor_direction_l = 1,motor_direction_r = 1;
+int motor_mode = 0;
 PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l() {
-  speed_count_l++;
-  distance_l++;
+  speed_count_l++;distance_l++;
 }
 
 void encoder_r() {
-  speed_count_r++;
-  distance_r++;
+  speed_count_r++;distance_r++;
 }
 
 void Set_motor_pwm(int motor_pwm, int motot, int sw, int power, int directionm)
@@ -93,6 +92,20 @@ void set_speed_r(int speed_r)
 int motor_controller_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
+  Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm , motor_direction_l );
+  speed_count_l = 0;
+}
+
+int motor_controller_r(int enable)
+{
+  int motor_r_pwm = pid_speed_r.compute(speed_count_r);
+  speed_count_r = 0;
+  Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm , motor_direction_r );
+}
+
+int motor_controller_distance_l(int enable)
+{
+  int motor_l_pwm = pid_speed_l.compute(speed_count_l);
   int motor_on_l = pid_distance_l.compute(distance_l);
   speed_count_l = 0;
   
@@ -106,7 +119,7 @@ int motor_controller_l(int enable)
   
 }
 
-int motor_controller_r(int enable)
+int motor_controller_distance_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
   int motor_on_r = pid_distance_r.compute(distance_r);
@@ -122,19 +135,75 @@ int motor_controller_r(int enable)
   
 }
 
+void set_speed_r(int32_t speed)
+{
+  if(speed > 0)
+  {
+    motor_direction_r = 1;
+    pid_speed_r.setpoint( speed );
+  } else {
+    motor_direction_r = -1;
+    pid_speed_r.setpoint( abs(speed) );
+  }
+  if(speed == 0) motor_enable_r = 0;
+  else motor_enable_r = 1;
+}
+
+void set_speed_l(int32_t speed)
+{
+  if(speed > 0)
+  {
+    motor_direction_l = 1;
+    pid_speed_l.setpoint( speed );
+  } else {
+    motor_direction_l = -1;
+    pid_speed_l.setpoint( abs(speed) );
+  }
+  if(speed == 0) motor_enable_l = 0;
+  else motor_enable_l = 1;
+}
+
+void runSpeed(int32_t speed_l, int32_t speed_r)
+{
+  motor_mode = 0;
+  set_speed_r(speed_r);
+  set_speed_l(speed_l);
+  
+}
+
+void runDistanceR(uint32_t distance, int32_t speed)
+{
+  motor_mode = 1;
+  set_speed_r(speed);
+}
+
+void runDistanceL(uint32_t distance, int32_t speed)
+{
+  motor_mode = 1;
+  set_speed_l(speed);
+}
+
 void wheel_update()
 {
   static long unsigned int last_time = millis();
   if(millis() - last_time  < UPDATA_TIME) return;
-  motor_controller_l(motor_enable_l);
-  motor_controller_r(motor_enable_r);
+  if(motor_mode)
+  {
+    motor_controller_l(motor_enable_l);
+    motor_controller_r(motor_enable_r);
+  } else {
+    motor_controller_distance_l(motor_enable_l);
+    motor_controller_distance_r(motor_enable_r);
+  }
   last_time = millis();  
 }
 
 void wheel_setup() {
   // encoder
   pinMode(ENCODER_LF_PIN, INPUT); 
+  pinMode(ENCODER_LR_PIN, INPUT); 
   pinMode(ENCODER_RF_PIN, INPUT); 
+  pinMode(ENCODER_RR_PIN, INPUT); 
   // motor
   pinMode(MOTOR_L_IN1_PIN, OUTPUT); 
   pinMode(MOTOR_R_IN1_PIN, OUTPUT); 
