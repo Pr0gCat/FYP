@@ -8,27 +8,28 @@ def line_following(image):
     gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     ret, thresh = cv2.threshold(blur, 60, 255, cv2.THRESH_BINARY_INV)
-    contours, hierarchy = cv2.findContours(thresh.copy(), 1, cv2.CHAIN_APPROX_NONE)
-    if len(contours) > 0:
-        c = max(contours, key=cv2.contourArea)
-        M = cv2.moments(c)
-        if M['m00'] == 0:
+    h = cv2.findContours(thresh, 1, cv2.CHAIN_APPROX_NONE)
+    if h is not None:
+        contours, hierarchy = h
+        if len(contours) > 0:
+            c = max(contours, key=cv2.contourArea)
+            M = cv2.moments(c)
+            if M['m00'] == 0:
+                return None
+            cx = int(M['m10'] / M['m00'])
+            cy = int(M['m01'] / M['m00'])
+            #cv2.line(crop_img, (cx, 0), (cx, Screem_Height), (255, 0, 0), 1)
+            #cv2.line(crop_img, (0, cy), (Screen_Weight, cy), (255, 0, 0), 1)
+            #cv2.drawContours(crop_img, contours, -1, (0, 255, 0), 1)
+            deviation = -1 * (cx - Screen_Weight / 2) / (Screen_Weight / 2)
+            return deviation
+        else:
             return None
-        cx = int(M['m10'] / M['m00'])
-        cy = int(M['m01'] / M['m00'])
-        #cv2.line(crop_img, (cx, 0), (cx, Screem_Height), (255, 0, 0), 1)
-        #cv2.line(crop_img, (0, cy), (Screen_Weight, cy), (255, 0, 0), 1)
-        #cv2.drawContours(crop_img, contours, -1, (0, 255, 0), 1)
-        deviation = -1 * (cx - Screen_Weight / 2) / (Screen_Weight / 2)
-        return deviation
-    else:
-        return None
 
 if __name__ == '__main__':
     car = Car()
     input()
     print('send')
-    car.set_speed(1000, 1000)
     cap = cv2.VideoCapture(1)
     Screen_Weight = 720
     Screem_Height = 480
