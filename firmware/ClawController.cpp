@@ -61,7 +61,7 @@ void ClawController::homeY(){
 
 void ClawController::calibrateY(){
 
-    y_axis.setSpeed(-1500);
+    y_axis.setSpeed(-3000);
     while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -77,7 +77,7 @@ void ClawController::calibrateY(){
     delay(500);
 
     // move all the way to the top
-    y_axis.setSpeed(1500);
+    y_axis.setSpeed(3000);
     while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
         y_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -94,7 +94,7 @@ void ClawController::calibrateY(){
 
 void ClawController::calibrateZ(){
 
-    z_axis.setSpeed(-1500);
+    z_axis.setSpeed(-3000);
     while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -110,7 +110,7 @@ void ClawController::calibrateZ(){
     delay(500);
 
     // move all the way to the top
-    z_axis.setSpeed(1500);
+    z_axis.setSpeed(3000);
     while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }

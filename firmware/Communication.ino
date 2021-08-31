@@ -6,7 +6,7 @@
 char buff[300];
 char flag = 0;
 int count = 0;
-int checksum = 0;
+uint32_t checksum = 0;
 int data_len = 0;
 uint32_t time = 0;
 
@@ -52,7 +52,7 @@ void cmd_update() // run over and over
     else if (flag == 3)
     {
       buff[count] = Serial.read();
-      int cs = buff[count];
+      uint8_t cs = buff[count];
       checksum = (0xff & checksum);
       if (checksum == cs)
       {
@@ -142,8 +142,5 @@ void set_speed(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
-  Serial.println(left);
-  Serial.println(right);
-  // set_speed_l(left);
-  // set_speed_r(right);
+  runSpeed(left, right);
 }

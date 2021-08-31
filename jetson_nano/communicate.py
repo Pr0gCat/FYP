@@ -65,7 +65,14 @@ def set_crawl_angle():
 class Car:
     def __init__(self, port='/dev/ttyACM0') -> None:
         self.com = serial.Serial(port, baudrate=115200)
-        self.receiver = Thread()
+        print(self.com)
+        time.sleep(1)
+        self.receiver = Thread(target=self._receiver_main)
+        self.receiver.setDaemon(True)
+        self.receiver.start()
+
+        def __del__(self):
+            self.com.close()
 
     def _receiver_main(self):
         print('[Receiver] Start receiving')
@@ -76,6 +83,7 @@ class Car:
                     print(data)
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
+            time.sleep(0.2)
 
     def set_speed(self, left, right):
         pkg = struct.pack('BBHH', SET_SPEED, 4, left, right)
