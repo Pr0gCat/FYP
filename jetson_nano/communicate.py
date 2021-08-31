@@ -1,6 +1,6 @@
+from threading import Thread
 import serial
 import time
-from _thread import *
 import struct
 
 COFIRM = 1
@@ -17,81 +17,68 @@ HOME_Y = 11
 HOME_Z = 12
 SET_CRAWL_ANGLE = 13
 
-def receive(port):
-  # read a byte
-  try:
-      while True:
-          while port.in_waiting:          # 若收到序列資料…
-              data= port.read()
-              print(data)
-  except KeyboardInterrupt:
-      port.close()    # 清除序列通訊物件
-      print("再見！")
-  time.sleep(0.2)
 
 def get_crawl_state():
-  pass
+    pass
 
 
 def get_crawl_trigger():
-  pass
+    pass
 
 
 def get_posy():
-  pass
+    pass
 
 
 def get_posz():
-  pass
+    pass
 
 
 def get_speed():
-  pass
+    pass
 
 
 def limit_trigger():
-  pass
+    pass
 
 
 def move_y():
-  pass    
+    pass
+
 
 def move_z():
-  pass
+    pass
 
 
 def home_y():
-  pass
+    pass
 
 
 def home_z():
-  pass
+    pass
 
 
 def set_crawl_angle():
-  pass
+    pass
 
-def set_speed(port, left,right):
-      pkg = struct.pack('BBHH', SET_SPEED, 4, left, right)
-      port.write(pkg)
-      cs = 0xff & sum(pkg)
-      pkg = struct.pack('B', cs)
-      port.write(pkg)
-    
 
-if __name__ == '__main__':
-    port = serial.Serial('/dev/cu.usbmodem138', baudrate=115200)
-    start_new_thread(receive,(port,))
-    print("Receive thread strat")
-    # write a byte
-    time.sleep(2)
-    set_speed(port, 1000, 1000)
-    # def set_speed(port, left,right):
-    #   pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
-    #   # print(pkg)
-    #   port.write(pkg)
-    #   cs = str(0xff & (SET_SPEED+2+left+right))
-    #   port.write(cs.encode("utf-8"))
-    
-    while True:
-        pass
+class Car:
+    def __init__(self, port='/dev/ttyACM0') -> None:
+        self.com = serial.Serial(port, baudrate=115200)
+        self.receiver = Thread()
+
+    def _receiver_main(self):
+        print('[Receiver] Start receiving')
+        while True:
+            try:
+                while self.com.in_waiting:          # 若收到序列資料…
+                    data = self.com.read()
+                    print(data)
+            except Exception as e:
+                print(f'[Receiver] Exception: {e}')
+
+    def set_speed(self, left, right):
+        pkg = struct.pack('BBHH', SET_SPEED, 4, left, right)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
