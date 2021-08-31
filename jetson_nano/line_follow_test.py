@@ -1,16 +1,14 @@
-from communicate import Car
-import time
-import cv2
+    from communicate import Car
+    import time
+    import cv2
 
-#  Return float or None
-def line_following(image):
-    crop_img = image[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
-    gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    ret, thresh = cv2.threshold(blur, 60, 255, cv2.THRESH_BINARY_INV)
-    h = cv2.findContours(thresh, 1, cv2.CHAIN_APPROX_NONE)
-    if h is not None:
-        contours, hierarchy = h
+    #  Return float or None
+    def line_following(image):
+        crop_img = image[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
+        gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        ret, thresh = cv2.threshold(blur, 60, 255, cv2.THRESH_BINARY_INV)
+        _,contours, hierarchy = cv2.findContours(thresh, 1, cv2.CHAIN_APPROX_NONE)
         if len(contours) > 0:
             c = max(contours, key=cv2.contourArea)
             M = cv2.moments(c)
@@ -26,23 +24,23 @@ def line_following(image):
         else:
             return None
 
-if __name__ == '__main__':
-    car = Car()
-    input()
-    print('send')
-    cap = cv2.VideoCapture(1)
-    Screen_Weight = 720
-    Screem_Height = 480
-    cap.set(cv2.CAP_PROP_FPS, 30)
-    cap.set(3, Screen_Weight)
-    cap.set(4, Screem_Height)
-    retutn_data = []
-    while True:
-        ret, frame = cap.read()
-        speed = 1000
-        if ret:
-            offset = line_following(frame)
-            if offset > 0:
-                car.run_speed(int(speed * abs(offset)), speed)
-            else:
-                car.run_speed(speed, int(speed * abs(offset)))
+    if __name__ == '__main__':
+        car = Car()
+        input()
+        print('send')
+        cap = cv2.VideoCapture(1)
+        Screen_Weight = 720
+        Screem_Height = 480
+        cap.set(cv2.CAP_PROP_FPS, 30)
+        cap.set(3, Screen_Weight)
+        cap.set(4, Screem_Height)
+        retutn_data = []
+        while True:
+            ret, frame = cap.read()
+            speed = 1000
+            if ret:
+                offset = line_following(frame)
+                if offset > 0:
+                    car.run_speed(int(speed * abs(offset)), speed)
+                else:
+                    car.run_speed(speed, int(speed * abs(offset)))
