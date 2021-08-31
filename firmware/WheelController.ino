@@ -4,28 +4,27 @@
 volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
 int motor_enable_r = 0 ,motor_enable_l = 0;
+int motor_direction_l = 1,motor_direction_r = 1;
 PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l() {
-  if (digitalRead(ENCODER_LR_PIN) == HIGH) {speed_count_l++;distance_l++; Serial.println("+L");}
-  else {speed_count_l--;distance_l--; Serial.println("-L");}
+  speed_count_l++;distance_l++;
 }
 
 void encoder_r() {
-  if (digitalRead(ENCODER_RR_PIN) == HIGH) {speed_count_r++;distance_r++;}
-  else {speed_count_r--;distance_r--;}
+  speed_count_r++;distance_r++;
 }
 
-void Set_motor_pwm(int motor_pwm, int motot, int sw, int power)
+void Set_motor_pwm(int motor_pwm, int motot, int sw, int power, int directionm)
 {
   if(sw) {
-    if(power > 0){
+    if(directionm > 0){
       digitalWrite(motot, LOW);
       analogWrite(motor_pwm, power);
     } else {
       digitalWrite(motor_pwm, LOW);
-      analogWrite(motot, abs(power));
+      analogWrite(motot, power);
     }
   } else {
     analogWrite(motor_pwm, LOW);
@@ -65,13 +64,27 @@ void set_distance_r(int distance_r)
 
 void set_speed_l(int speed_l)
 {
-  pid_speed_l.setpoint( speed_l );
+  if(speed_l > 0)
+  {
+    motor_direction_l = 1;
+    pid_speed_l.setpoint( speed_l );
+  } else {
+    motor_direction_l = -1;
+    pid_speed_l.setpoint( abs(speed_l) );
+  }
   motor_enable_l = 1;
 }
 
 void set_speed_r(int speed_r)
 {
-  pid_speed_r.setpoint( speed_r );
+  if(speed_r > 0)
+  {
+    motor_direction_r = 1;
+    pid_speed_r.setpoint( speed_r );
+  } else {
+    motor_direction_r = -1;
+    pid_speed_r.setpoint( abs(speed_r) );
+  }
   motor_enable_r = 1;
 }
 
@@ -79,18 +92,18 @@ int motor_controller_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
   int motor_on_l = pid_distance_l.compute(distance_l);
-  // Serial.print(" L PWM: ");
-  // Serial.print(motor_l_pwm);
-  // Serial.print(" L on: ");
-  // Serial.print(motor_on_l);
+  Serial.print(" L PWM: ");
+  Serial.print(motor_l_pwm);
+  Serial.print(" L on: ");
+  Serial.print(motor_on_l);
 
   speed_count_l = 0;
   
   if( motor_on_l > 0){
-    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm );
+    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm , motor_direction_l );
     return 1;
   } else{
-    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, 0, 0);
+    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, 0, 0,0);
     return 0;
   }
   
@@ -100,17 +113,17 @@ int motor_controller_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
   int motor_on_r = pid_distance_r.compute(distance_r);
-  // Serial.print(" R PWM: ");
-  // Serial.print(motor_r_pwm);
-  // Serial.print(" R on: ");
-  // Serial.print(motor_on_r);
+  Serial.print(" R PWM: ");
+  Serial.print(motor_r_pwm);
+  Serial.print(" R on: ");
+  Serial.print(motor_on_r);
   speed_count_r = 0;
 
   if( motor_on_r > 0){
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm);
+    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm , motor_direction_r );
     return 1;
   } else {
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0);
+    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0,0);
     return 0;
   }
   
@@ -120,16 +133,16 @@ void wheel_update()
 {
   static long unsigned int last_time = millis();
   if(millis() - last_time  < UPDATA_TIME) return;
-  // Serial.print(" distance_l: ");
-  // Serial.print(distance_l);
-  // Serial.print(" distance_r: ");
-  // Serial.print(distance_r);
-  // Serial.print(" speed count L: ");
-  // Serial.print(speed_count_l);
-  // Serial.print(" speed count R: ");
-  // Serial.print(speed_count_r);
-  // Serial.println();
-  // Serial.println();
+  Serial.print(" distance_l: ");
+  Serial.print(distance_l);
+  Serial.print(" distance_r: ");
+  Serial.print(distance_r);
+  Serial.print(" speed count L: ");
+  Serial.print(speed_count_l);
+  Serial.print(" speed count R: ");
+  Serial.print(speed_count_r);
+  Serial.println();
+  Serial.println();
   motor_controller_l(motor_enable_l);
   motor_controller_r(motor_enable_r);
   last_time = millis();  
