@@ -85,7 +85,7 @@ class Car:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
 
-    def set_speed(self, left, right):
+    def run_speed(self, left, right):
         pkg = struct.pack('BBHH', SET_SPEED, 4, left, right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
