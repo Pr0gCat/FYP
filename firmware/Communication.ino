@@ -12,8 +12,7 @@ uint32_t time = 0;
 
 void cmd_update() // run over and over
 {
-  Serial.println(flag);
-  if ((millis() - time) > Time_OUT && flag!=0)
+  if ((millis() - time) > Time_OUT && flag != 0)
   {
     flag = 0;
     count = 0;
