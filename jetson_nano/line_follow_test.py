@@ -38,7 +38,7 @@ if __name__ == '__main__':
     retutn_data = []
     while True:
         ret, frame = cap.read()
-        speed = 400
+        speed = 300
         factor = 500
         if ret:
             offset = line_following(frame)
