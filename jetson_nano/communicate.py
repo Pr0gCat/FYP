@@ -50,7 +50,7 @@ class Car:
             time.sleep(0.2)
 
     def run_speed(self, left, right):
-        pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
+        pkg = struct.pack('BBhh', int(self.CommandId.SetMotorSpeed), 4, left, right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
