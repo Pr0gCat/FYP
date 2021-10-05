@@ -18,7 +18,7 @@ void cmd_update() // run over and over
     count = 0;
     checksum = 0;
   }
-  // Serial.println(flag);
+  digitalWrite(13, 0);
   while (Serial.available())
   {
     if (flag < 2) // Command & length
@@ -37,6 +37,7 @@ void cmd_update() // run over and over
       time = millis();
       count++;
       data_len++;
+      Serial.print(data_len);
       if (data_len == len)
       {
         flag = 3;
@@ -49,11 +50,13 @@ void cmd_update() // run over and over
       checksum = (0xff & checksum);
       if (checksum == cs)
       {
+        digitalWrite(13, 1);
         unpack();
       }
       count = 0;
       flag = 0;
       checksum = 0;
+      data_len = 0;
     }
   }
 }

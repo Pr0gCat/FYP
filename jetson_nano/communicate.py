@@ -54,4 +54,4 @@ class Car:
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
-        time.sleep(0.1)
+        # time.sleep(0.1)

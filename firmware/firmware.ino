@@ -14,12 +14,6 @@ void setup(){
 }
 
 void loop(){
-    if(Serial){
-        digitalWrite(13, 1);
-    }else{
-        digitalWrite(13, 0);
-    }
-    // Serial.println("i");
     cmd_update();
     wheel_update();
     // claw.update();
