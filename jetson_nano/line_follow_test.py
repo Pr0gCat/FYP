@@ -26,10 +26,10 @@ def line_following(image):
         return None
 
 if __name__ == '__main__':
-    car = Car()
+    car = Car('/dev/ttyACM0')
     input()
     print('send')
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     Screen_Weight = 720
     Screem_Height = 480
     cap.set(cv2.CAP_PROP_FPS, 30)
@@ -42,10 +42,10 @@ if __name__ == '__main__':
         factor = 500
         if ret:
             offset = line_following(frame)
-            print(offset)
+            # print(offset)
             if offset is None:
-                print('no line')
-                car.run_speed(0, 0)
+                # print('no line')
                 continue
             compan = int(offset * factor)
+            print(offset, speed - compan, speed + compan)
             car.run_speed(speed - compan, speed + compan)

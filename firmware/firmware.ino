@@ -14,7 +14,6 @@ void setup(){
 }
 
 void loop(){
-    // Serial.println("i");
     cmd_update();
     wheel_update();
     // claw.update();
