@@ -37,7 +37,6 @@ void cmd_update() // run over and over
       time = millis();
       count++;
       data_len++;
-      Serial.print(data_len);
       if (data_len == len)
       {
         flag = 3;
