@@ -189,7 +189,17 @@ void set_motor_speed(unsigned char data[])
   runSpeed(left, right);
 }
 
-void send_msg(unsigned char data[])
+void send_msg(char msg[],int len)
 {
   Serial.write(CMD_MSG);
+  Serial.write(len);
+  Serial.write(msg);
+  int checksum =0;
+  checksum+=CMD_MSG;
+  checksum+=len;
+  for(int i=0;i<len;i++){
+    checksum+=msg[i];
+  }
+  checksum = (0xff & checksum);
+  Serial.write(checksum);
 }
