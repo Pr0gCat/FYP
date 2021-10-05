@@ -29,7 +29,7 @@ if __name__ == '__main__':
     car = Car()
     input()
     print('send')
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     Screen_Weight = 720
     Screem_Height = 480
     cap.set(cv2.CAP_PROP_FPS, 30)
