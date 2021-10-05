@@ -42,6 +42,7 @@ if __name__ == '__main__':
         factor = 500
         if ret:
             offset = line_following(frame)
+            print(offset)
             if offset is None:
                 print('no line')
                 car.run_speed(0, 0)
