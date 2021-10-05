@@ -43,6 +43,8 @@ if __name__ == '__main__':
         if ret:
             offset = line_following(frame)
             if offset is None:
+                print('no line')
+                car.run_speed(0, 0)
                 continue
             compan = int(offset * factor)
             car.run_speed(speed - compan, speed + compan)
