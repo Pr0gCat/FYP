@@ -54,3 +54,95 @@ class Car:
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+
+    def car_sync(self):
+        pkg = struct.pack('BB', self.CommandId.Sync, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def car_init(self):
+        pkg = struct.pack('BB', self.CommandId.Init, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def get_car_claw(self):
+        pkg = struct.pack('BB', self.CommandId.GetClawState, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def set_car_claw(self,left,right):
+        pkg = struct.pack('BBbb', self.CommandId.SetClawState,2,left,right)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_SET_LINEFOLLOW_MODE(self):
+        pkg = struct.pack('BB', self.CommandId.SetLinefollowMode, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_SET_PICKUP_MODE(self):
+        pkg = struct.pack('BB', self.CommandId.SetPickupMode, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_SET_DOCKING_MODE(self):
+        pkg = struct.pack('BB', self.CommandId.SetDockingMode, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+    
+    def CMD_GET_POSY(self):
+        pkg = struct.pack('BB', self.CommandId.GetPosY, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_GET_POSZ(self):
+        pkg = struct.pack('BB', self.CommandId.GetPosZ, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_MOVE_POSY(self,posy):
+        pkg = struct.pack('BBI', self.CommandId.MovePosY, 4,posy)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_MOVE_POSZ(self,posz):
+        pkg = struct.pack('BBI', self.CommandId.MovePosZ, 4,posz)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_HOME_Y(self):
+        pkg = struct.pack('BB', self.CommandId.HomeY, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_HOME_Z(self):
+        pkg = struct.pack('BB', self.CommandId.HomeZ, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_RUN_DISTANCE(self,left,right):
+        pkg = struct.pack('BBII', self.CommandId.RunDistance, 8,left,right)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+    def CMD_GET_MOTOR_SPEED(self):
+        pkg = struct.pack('BB', self.CommandId.GetMotorSpeed, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+
+

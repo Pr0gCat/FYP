@@ -17,7 +17,9 @@ void cmd_update() // run over and over
     flag = 0;
     count = 0;
     checksum = 0;
+    data_len = 0;
   }
+  digitalWrite(13, 0);
   while (Serial.available())
   {
     if (flag < 2) // Command & length
@@ -27,6 +29,13 @@ void cmd_update() // run over and over
       time = millis();
       flag++;
       count++;
+      if(flag==2){
+        int len = buff[1];
+        if(len==0){
+          flag++;
+        }
+      }
+      
     }
     else if (flag == 2) // receive payload
     {
@@ -48,11 +57,13 @@ void cmd_update() // run over and over
       checksum = (0xff & checksum);
       if (checksum == cs)
       {
+        digitalWrite(13, 1);
         unpack();
       }
       count = 0;
       flag = 0;
       checksum = 0;
+      data_len = 0;
     }
   }
 }
@@ -71,6 +82,39 @@ void unpack()
   case CMD_COFIRM:
     comfirm(cmd);
     break;
+  case CMD_SYNC:
+    sync();
+    break;
+  case CMD_INIT:
+    car_init();
+    break;
+  case CMD_GET_CLAW_STATE:
+    get_crawl_state();
+    break;
+  case CMD_SET_CLAW_STATE:
+    set_crawl_state(data);
+    break;
+  case CMD_SET_LINEFOLLOW_MODE:
+    set_limefollow_mode();
+    break;
+  case CMD_SET_PICKUP_MODE:
+    set_pickup_mode();
+    break;
+  case CMD_SET_DOCKING_MODE:
+    set_docking_mode();
+    break;
+  case CMD_GET_POSY:
+    get_posy();
+    break;
+  case CMD_GET_POSZ:
+    get_posz();
+    break;
+  case CMD_MOVE_POSY:
+    move_posy(data);
+    break;
+  case CMD_MOVE_POSZ:
+    move_posz(data);
+    break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
     break;
@@ -81,25 +125,56 @@ void comfirm(int cmd)
 {
   if (cmd != 1)
   {
-    Serial.write(1);
+    Serial.write(CMD_COFIRM);
     Serial.write(1);
     Serial.write(cmd);
   }
 }
 
-void get_crawl_state(unsigned char data[])
+void sync()
 {
 }
 
-void get_crawl_trigger(unsigned char data[])
+void car_init()
 {
 }
 
-void get_posy(unsigned char data[])
+void get_crawl_state()
 {
 }
 
-void get_posz(unsigned char data[])
+void set_crawl_state(unsigned char data[])
+{
+  int16_t left = (data[0] + (data[1] << 8));
+  int16_t right = (data[2] + (data[3] << 8));
+
+}
+
+void set_limefollow_mode()
+{
+}
+
+void set_pickup_mode()
+{
+}
+
+void set_docking_mode()
+{
+}
+
+void get_posy()
+{
+}
+
+void get_posz()
+{
+}
+
+void move_posy(unsigned char data[])
+{
+}
+
+void move_posz(unsigned char data[])
 {
 }
 
@@ -112,4 +187,9 @@ void set_motor_speed(unsigned char data[])
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
   runSpeed(left, right);
+}
+
+void send_msg(unsigned char data[])
+{
+  Serial.write(CMD_MSG);
 }
