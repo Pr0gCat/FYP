@@ -26,7 +26,7 @@ def line_following(image):
         return None
 
 if __name__ == '__main__':
-    car = Car()
+    car = Car('/dev/ttyACM0')
     input()
     print('send')
     cap = cv2.VideoCapture(0)
