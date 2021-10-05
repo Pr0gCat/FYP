@@ -29,7 +29,7 @@ if __name__ == '__main__':
     car = Car('/dev/ttyACM0')
     input()
     print('send')
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     Screen_Weight = 720
     Screem_Height = 480
     cap.set(cv2.CAP_PROP_FPS, 30)
@@ -42,6 +42,7 @@ if __name__ == '__main__':
         factor = 500
         if ret:
             offset = line_following(frame)
+            print(offset)
             if offset is None:
                 # print('no line')
                 continue
