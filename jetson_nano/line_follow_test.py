@@ -47,4 +47,5 @@ if __name__ == '__main__':
                 print('no line')
                 continue
             compan = int(offset * factor)
-            car.run_speed(speed - compan, speed + compan)
+            print(compan)
+            # car.run_speed(speed - compan, speed + compan)
