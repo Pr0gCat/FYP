@@ -92,6 +92,8 @@ void set_speed_r(int speed_r)
 int motor_controller_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
+  Serial.write("L");
+  Serial.print(motor_l_pwm);
   Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm , motor_direction_l );
   speed_count_l = 0;
 }
@@ -99,6 +101,8 @@ int motor_controller_l(int enable)
 int motor_controller_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
+  Serial.write("R");
+  Serial.print(motor_r_pwm);
   speed_count_r = 0;
   Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm , motor_direction_r );
 }
@@ -189,7 +193,7 @@ void wheel_update()
   if(!Serial){
     stop_motor_l();stop_motor_r();
   }
-  if(millis() - last_time  < UPDATA_TIME) return;
+  if(millis() - last_time  < REFRESH_INTERVAL) return;
   if(motor_mode)
   {
     motor_controller_l(motor_enable_l);
@@ -215,19 +219,19 @@ void wheel_setup() {
   attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), encoder_r, RISING);
   
   pid_speed_l.begin(); 
-  pid_speed_l.tune(__Kp_l , __Ki_l , __Kd_l); 
+  pid_speed_l.tune(SPEED_L_Kp , SPEED_L_Ki , SPEED_L_Kd); 
   pid_speed_l.limit(-255, 255); 
   
   pid_speed_r.begin(); 
-  pid_speed_r.tune(__Kp_r , __Ki_r , __Kd_r); 
+  pid_speed_r.tune(SPEED_R_Kp , SPEED_R_Ki , SPEED_R_Kd); 
   pid_speed_r.limit(-255, 255); 
   
   pid_distance_l.begin(); 
-  pid_distance_l.tune(__Kp_count_l , __Ki_count_l , __Kd_count_l); 
+  pid_distance_l.tune(DIST_L_Kp , DIST_L_Ki , DIST_L_Kd); 
   pid_distance_l.limit(-255, 255); 
   
   pid_distance_r.begin(); 
-  pid_distance_r.tune(__Kp_count_r , __Ki_count_r , __Kd_count_r); 
+  pid_distance_r.tune(DIST_R_Kp , DIST_R_Ki , DIST_R_Kd); 
   pid_distance_r.limit(-255, 255); 
 
 }

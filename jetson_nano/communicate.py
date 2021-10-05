@@ -54,7 +54,6 @@ class Car:
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
-<<<<<<< HEAD
 
     def car_sync(self):
         pkg = struct.pack('BB', self.CommandId.Sync, 0)
@@ -147,6 +146,3 @@ class Car:
         self.com.write(struct.pack('B', cs))
 
 
-=======
-        # time.sleep(0.1)
->>>>>>> 8e11a560106cd0fbf3664293b5c864d8e1fafc76
