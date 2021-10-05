@@ -18,6 +18,7 @@ void cmd_update() // run over and over
     count = 0;
     checksum = 0;
   }
+  Serial.println(flag);
   while (Serial.available())
   {
     if (flag < 2) // Command & length
