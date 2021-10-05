@@ -20,23 +20,15 @@ void cmd_update() // run over and over
   }
   while (Serial.available())
   {
-    if (flag == 0)
+    if (flag < 2) // Command & length
     {
       buff[count] = Serial.read();
       checksum += buff[count];
       time = millis();
-      flag = 1;
+      flag++;
       count++;
     }
-    else if (flag == 1)
-    {
-      buff[count] = Serial.read();
-      checksum += buff[count];
-      time = millis();
-      count++;
-      flag = 2;
-    }
-    else if (flag == 2)
+    else if (flag == 2) // receive payload
     {
       int len = buff[1];
       buff[count] = Serial.read();
@@ -49,7 +41,7 @@ void cmd_update() // run over and over
         flag = 3;
       }
     }
-    else if (flag == 3)
+    else if (flag == 3) // checksum
     {
       buff[count] = Serial.read();
       uint8_t cs = buff[count];
@@ -79,26 +71,8 @@ void unpack()
   case CMD_COFIRM:
     comfirm(cmd);
     break;
-  case CMD_GET_CRAWL_STATE:
-    get_crawl_state(data);
-    break;
-  case CMD_GET_CRAWL_TRIGGER:
-    get_crawl_trigger(data);
-    break;
-  case CMD_GET_POSY:
-    get_posy(data);
-    break;
-  case CMD_GET_POSZ:
-    get_posz(data);
-    break;
-  case CMD_GET_SPEED:
-    get_speed(data);
-    break;
-  case CMD_LIMIT_TRIGGERED:
-    limit_trigger(data);
-    break;
-  case CMD_SET_SPEED:
-    set_speed(data);
+  case CMD_SET_MOTOR_SPEED:
+    set_motor_speed(data);
     break;
   }
 }
@@ -129,16 +103,11 @@ void get_posz(unsigned char data[])
 {
 }
 
-void get_speed(unsigned char data[])
+void get_motor_speed(unsigned char data[])
 {
 }
 
-void limit_trigger(unsigned char data[])
-{
-  comfirm(CMD_LIMIT_TRIGGERED);
-}
-
-void set_speed(unsigned char data[])
+void set_motor_speed(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));

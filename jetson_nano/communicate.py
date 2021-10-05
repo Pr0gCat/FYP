@@ -2,67 +2,31 @@ from threading import Thread
 import serial
 import time
 import struct
-
-COFIRM = 1
-GET_CRAWL_STATE = 2
-GET_CRAWL_TRIGGER = 3
-GET_POSY = 4
-GET_POSZ = 5
-GET_SPEED = 6
-LIMIT_TRIGGERED = 7
-SET_SPEED = 8
-MOVE_Y = 9
-MOVE_Z = 10
-HOME_Y = 11
-HOME_Z = 12
-SET_CRAWL_ANGLE = 13
-
-
-def get_crawl_state():
-    pass
-
-
-def get_crawl_trigger():
-    pass
-
-
-def get_posy():
-    pass
-
-
-def get_posz():
-    pass
-
-
-def get_speed():
-    pass
-
-
-def limit_trigger():
-    pass
-
-
-def move_y():
-    pass
-
-
-def move_z():
-    pass
-
-
-def home_y():
-    pass
-
-
-def home_z():
-    pass
-
-
-def set_crawl_angle():
-    pass
-
+from enum import Enum, unique
 
 class Car:
+
+    @unique
+    class CommandId(Enum):
+        Confirm = 1
+        Sync = 2
+        Init = 3
+        GetClawState = 4
+        SetClawState = 5
+        SetLinefollowMode = 6
+        SetPickupMode = 7
+        SetDockingMode = 8
+        GetPosY = 9
+        GetPosZ = 10
+        MovePosY = 11
+        MovePosZ = 12
+        HomeY = 13
+        HomeZ = 14
+        RunDistance = 15
+        GetMotorSpeed = 16
+        SetMotorSpeed = 17
+        Msg = 255
+
     def __init__(self, port='/dev/ttyACM0') -> None:
         self.com = serial.Serial(port, baudrate=115200)
         print(self.com)
@@ -86,7 +50,7 @@ class Car:
             time.sleep(0.2)
 
     def run_speed(self, left, right):
-        pkg = struct.pack('BBhh', SET_SPEED, 4, left, right)
+        pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))

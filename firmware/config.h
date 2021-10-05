@@ -12,6 +12,11 @@ typedef void (*CallbackFunc)();
 
 #pragma region Parameters
 /*
+    Receive Timeout
+*/
+#define Time_OUT 100
+
+/*
     Wheels
 */
 #define REFRESH_INTERVAL 100
@@ -72,12 +77,8 @@ typedef void (*CallbackFunc)();
 #define MOTOR_R_IN1_PIN 5 // Right motor IN1
 #define MOTOR_R_IN2_PIN 6 // Right motor IN2
 
-#define ENCODER_RF_PIN 3 // Front left encoder
-#define ENCODER_LF_PIN 2 // Front right encoder
-/*
-    Timeout
-*/
-#define Time_OUT 100
+#define ENCODER_RF_PIN 1 // Front left encoder
+#define ENCODER_LF_PIN 0 // Front right encoder
 
 /*
     Steppers, EndStops & Claw
@@ -94,8 +95,8 @@ typedef void (*CallbackFunc)();
 #define ENDSTOP_Z_UPPER_PIN A3
 #define ENDSTOP_Z_LOWER_PIN A2
 
-#define CLAW_TRIGGER_PIN 4
-#define CLAW_SERVO_PIN 13
+#define CLAW_SDA_PIN 2
+#define CLAW_SCL_PIN 3
 
 #pragma endregion
 #endif
