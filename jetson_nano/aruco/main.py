@@ -75,7 +75,7 @@ def main():
         camera_matrix = np.load(f)
         camera_distortion = np.load(f)
 
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     while True:
         sccuess, img = cap.read()
