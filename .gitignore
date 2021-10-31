@@ -1,3 +1,4 @@
 .vscode/*.json
 firmware/.vscode/*.json
 build/
+__pycache__/

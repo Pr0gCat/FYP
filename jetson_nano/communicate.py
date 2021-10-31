@@ -27,7 +27,7 @@ class Car:
         SetMotorSpeed = 17
         Msg = 255
 
-    def __init__(self, port='/dev/ttyACM0') -> None:
+    def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00') -> None:
         self.com = serial.Serial(port, baudrate=115200)
         print(self.com)
         time.sleep(1)
