@@ -28,7 +28,7 @@ def rotationMatrixToEulerAngles(R):
     
     return np.array([x, y, z])
 
-def findAriucoMarkers(img, camera_matrix, camera_distortion, markerSize=6, totalMarkers=250):
+def findAriucoMarkers(img, markerSize=6, totalMarkers=250):
     data=[]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     key = getattr(aruco,f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
@@ -51,35 +51,35 @@ def findAriucoMarkers(img, camera_matrix, camera_distortion, markerSize=6, total
         print(data)
         aruco.drawDetectedMarkers(img,corners)
 
-        rvec_list_all, tvec_list_all, _objPoints = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
+        #rvec_list_all, tvec_list_all, _objPoints = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
 
-        rvec = rvec_list_all[0][0]
-        tvec = tvec_list_all[0][0]
-        aruco.drawAxis(img, camera_matrix, camera_distortion, rvec, tvec, 100)
+        #rvec = rvec_list_all[0][0]
+        #tvec = tvec_list_all[0][0]
+        #aruco.drawAxis(img, camera_matrix, camera_distortion, rvec, tvec, 100)
 
-        rvec_flipped = rvec * -1
-        tvex_flipped = tvec * -1
-        rotation_matrix, jacobian = cv2.Rodrigues(rvec_flipped)
-        realworld_tvec = np.dot(rotation_matrix, tvex_flipped)
+        #rvec_flipped = rvec * -1
+        #tvex_flipped = tvec * -1
+        #rotation_matrix, jacobian = cv2.Rodrigues(rvec_flipped)
+        #realworld_tvec = np.dot(rotation_matrix, tvex_flipped)
 
-        pitch, roll, yaw = rotationMatrixToEulerAngles(rotation_matrix)
+        #pitch, roll, yaw = rotationMatrixToEulerAngles(rotation_matrix)
 
-        tvec_str = "x=%4.0f y=%4.0f direction=%4.0f"%(realworld_tvec[0], realworld_tvec[1], math.degrees(yaw))
-        cv2.putText(img, tvec_str, (20,460), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
+        #tvec_str = "x=%4.0f y=%4.0f direction=%4.0f"%(realworld_tvec[0], realworld_tvec[1], math.degrees(yaw))
+        #cv2.putText(img, tvec_str, (20,460), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
     
     return data
 
 
 def main():
-    with open('camera_cal.npy', 'rb') as f:
-        camera_matrix = np.load(f)
-        camera_distortion = np.load(f)
+    #with open('camera_cal.npy', 'rb') as f:
+    #    camera_matrix = np.load(f)
+    #    camera_distortion = np.load(f)
 
     cap = cv2.VideoCapture(0)
 
     while True:
         sccuess, img = cap.read()
-        arucoFound = findAriucoMarkers(img,camera_matrix,camera_distortion)
+        arucoFound = findAriucoMarkers(img)
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"): break
