@@ -8,9 +8,19 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
 
 prev_frame_time = time.time()
 
+cal_image_count = 0
+frame_count = 0
+
 while True:
 
     ret, frame = cap.read()
+
+    frame_count +=1
+    
+    if frame_count == 30:
+        cv2.imwrite("cal_image"+str(cal_image_count)+".jpg",frame)
+        cal_image_count +=1
+        frame_count = 0
 
     new_frame_time = time.time()
     fps = 1/(new_frame_time - prev_frame_time)
