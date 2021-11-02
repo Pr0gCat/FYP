@@ -3,6 +3,10 @@ import cv2.aruco as aruco
 import numpy as np
 import math
 
+key = getattr(aruco,'DICT_6X6_250')
+arucoDict = aruco.Dictionary_get(key)
+arucoParam = aruco.DetectorParameters_create()
+
 def isRotationMatrix(R):
     Rt = np.transpose(R)
     shouldBeIdentity = np.dot(Rt, R)
@@ -31,9 +35,6 @@ def rotationMatrixToEulerAngles(R):
 def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMarkers=250):
     data=[]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    key = getattr(aruco,f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
-    arucoDict = aruco.Dictionary_get(key)
-    arucoParam = aruco.DetectorParameters_create()
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
         count = 0
