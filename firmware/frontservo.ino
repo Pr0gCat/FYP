@@ -1,26 +1,3 @@
-#include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
-
-
-#define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
-
-#define CLAMP_L_SERVO 0
-#define CLAMP_R_SERVO 1
-#define CAM_SERVO 2
-
-// angle to distance formula: distance*6/5
-// distance to pwm: distance*3+125
-#define MAX_DISTANCE 65
-#define MAX_ANGLE 325 //angle = 80
-
-// angle calculation formula: angle*5/2+125
-#define ANGLE_LINE_FOLLOWING 200
-#define ANGLE_PICKUP 350
-#define ANGLE_LINE_DOCKING 575
-
-enum CamMode{line_following, pickup, docking};
-
 class frontServo
 {
   public:
