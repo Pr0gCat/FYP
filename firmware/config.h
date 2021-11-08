@@ -53,12 +53,12 @@ typedef void (*CallbackFunc)();
 #define STEPS_PER_REV 360 / STEP_ANGLE // 200
 #define MICROSTEP 4 // 1/MICROSTEP
 
-#define STEPPER_Y_MAX_SPEED 2500
-#define STEPPER_Z_MAX_SPEED 3500
+#define STEPPER_Y_MAX_SPEED 3500
+#define STEPPER_Z_MAX_SPEED 2500
 
 #define STEPPER_MOVE_ACCEL 150
 
-#define ENDSTOP_DEBRONCE_TIME 50
+#define ENDSTOP_DEBRONCE_TIME 80
 
 #pragma endregion
 #define MOTOR_L_IN1_PIN 9 // Left motor IN1
@@ -82,8 +82,8 @@ typedef void (*CallbackFunc)();
 #define ENDSTOP_Y_UPPER_PIN A0
 #define ENDSTOP_Y_LOWER_PIN A1
 
-#define ENDSTOP_Z_UPPER_PIN A3
-#define ENDSTOP_Z_LOWER_PIN A2
+#define ENDSTOP_Z_UPPER_PIN A2
+#define ENDSTOP_Z_LOWER_PIN A3
 
 #define CLAW_SDA_PIN 2
 #define CLAW_SCL_PIN 3

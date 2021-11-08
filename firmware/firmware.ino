@@ -8,13 +8,14 @@ void setup(){
     Serial.begin(115200);
     while(!Serial){;}
     Serial.println("start");
-
     wheel_setup();
-    // claw.begin();
+    claw.begin();
+
 }
 
 void loop(){
     cmd_update();
+    claw.update();
     wheel_update();
-    // claw.update();
+    
 }

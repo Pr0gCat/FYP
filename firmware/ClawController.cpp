@@ -12,7 +12,7 @@ void ClawController::begin(){
     pinMode(STEPPER_Z_STEP_PIN, OUTPUT);
     pinMode(STEPPER_Z_DIR_PIN, OUTPUT);
 
-    y_axis.setPinsInverted(true, false, true);
+    y_axis.setPinsInverted(false, false, true);
     y_axis.setAcceleration(STEPPER_MOVE_ACCEL);
     y_axis.setMaxSpeed(STEPPER_Y_MAX_SPEED);
 
@@ -20,18 +20,55 @@ void ClawController::begin(){
     z_axis.setAcceleration(STEPPER_MOVE_ACCEL);
     z_axis.setMaxSpeed(STEPPER_Z_MAX_SPEED);
 
+    // self-test
+    // Serial.println("Trigger ENDSTOP_Y_UPPER_PIN..");
+    while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
+        Serial.print("Y UP:");
+        Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
+        delay(200);
+    }
+    
+    // Serial.println("Trigger ENDSTOP_Y_LOWER_PIN..");
+    while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
+        Serial.print("Y LO:");
+        Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
+        delay(200);
+    }
+    
+    // Serial.println("Trigger ENDSTOP_Z_UPPER_PIN..");
+    while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
+        Serial.print("Z UP:");
+        Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
+        delay(200);
+    }
+    
+    // Serial.println("Trigger ENDSTOP_Z_LOWER_PIN..");
+    while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
+        Serial.print("Z LO:");
+        Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
+        delay(200);
+    }
+    // signaling led
+    for(int i = 0; i < 3; i++){
+        digitalWrite(13, 1);
+        delay(500);
+        digitalWrite(13, 0);
+        delay(500);
+    }
+    Serial.println("self-test done");
+    
     calibrateZ();
     calibrateY();
     Serial.println("Calibration done");
     homeZ();
-    homeY();
+    // homeY();
 }
 
 void ClawController::update(){
-    Serial.print("Y: ");
-    Serial.println(y_axis.currentPosition());
-    Serial.print("Z: ");
-    Serial.println(z_axis.currentPosition());
+    // Serial.print("Y: ");
+    // Serial.println(y_axis.currentPosition());
+    // Serial.print("Z: ");
+    // Serial.println(z_axis.currentPosition());
     // unexpected collision
     if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){
         y_axis.setCurrentPosition(y_axis.currentPosition());
@@ -110,12 +147,11 @@ void ClawController::calibrateZ(){
     delay(500);
 
     // move all the way to the top
-    z_axis.setSpeed(3000);
+    z_axis.setSpeed(2500);
     while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
-    delay(500);
     // release Y upper limit
     z_axis.setSpeed(-400);
     while(!digitalRead(ENDSTOP_Z_UPPER_PIN)){

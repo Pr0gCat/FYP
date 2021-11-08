@@ -194,6 +194,7 @@ void wheel_update()
     stop_motor_l();stop_motor_r();
   }
   if(millis() - last_time  < REFRESH_INTERVAL) return;
+  if(!motor_enable_l && !motor_enable_r) return;
   if(motor_mode)
   {
     motor_controller_l(motor_enable_l);

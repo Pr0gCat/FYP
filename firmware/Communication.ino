@@ -18,8 +18,8 @@ void cmd_update() // run over and over
     count = 0;
     checksum = 0;
     data_len = 0;
+    digitalWrite(13, 0);
   }
-  digitalWrite(13, 0);
   while (Serial.available())
   {
     if (flag < 2) // Command & length
