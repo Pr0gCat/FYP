@@ -90,3 +90,20 @@ typedef void (*CallbackFunc)();
 
 #pragma endregion
 #endif
+
+/*
+    frontservo set
+*/
+#define CLAMP_L_SERVO 0
+#define CLAMP_R_SERVO 1
+#define CAM_SERVO 2
+
+// angle to distance formula: distance*6/5
+// distance to pwm: distance*3+125
+#define MAX_DISTANCE 65
+#define MAX_ANGLE 325 //angle = 80
+
+// angle calculation formula: angle*5/2+125
+#define ANGLE_LINE_FOLLOWING 200
+#define ANGLE_PICKUP 350
+#define ANGLE_LINE_DOCKING 575
