@@ -101,9 +101,11 @@ typedef void (*CallbackFunc)();
 // angle to distance formula: distance*6/5
 // distance to pwm: distance*3+125
 #define MAX_DISTANCE 65
+#define MIN_DISTANCE 40
 #define MAX_ANGLE 325 //angle = 80
+#define MIN_ANGLE 245 //angle = 48
 
 // angle calculation formula: angle*5/2+125
-#define ANGLE_LINE_FOLLOWING 200
-#define ANGLE_PICKUP 350
-#define ANGLE_LINE_DOCKING 575
+#define ANGLE_LINE_FOLLOWING 363
+#define ANGLE_PICK_UP 450
+#define ANGLE_DROP_OFF 275
