@@ -17,5 +17,5 @@ typedef enum {
     Z,
 } AXIS;
 
-void lifter_move(AXIS axis, unsigned long mm);
+void lifter_move(AXIS axis, short mm);
 #endif

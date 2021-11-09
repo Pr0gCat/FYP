@@ -168,9 +168,9 @@ void calibrateZ(){
     z_max = z_axis.currentPosition();
 }
 
-void lifter_move(AXIS axis, unsigned long mm)
+void lifter_move(AXIS axis, short mm)
 {
-    uint32_t pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
+    long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     if(axis == Y){
         pos = pos > y_max ? y_max : pos;
         y_axis.move(pos);
