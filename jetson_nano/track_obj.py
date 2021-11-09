@@ -25,10 +25,12 @@ def main():
             id, cx, cy, dx, dy = arucoFound[0]
             print(dx, dy)
             # print('tag found')
-            if dy > 10:
-                car.move_posz(5)
-            elif dy < -10:
+            if dy < -30:
+                print('go down')
                 car.move_posz(-5)
+            elif dy > 30:
+                print('go up')
+                car.move_posz(5)
             t0 = time.time()
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
