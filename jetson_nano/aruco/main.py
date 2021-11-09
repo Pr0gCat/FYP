@@ -52,7 +52,7 @@ def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMa
         print(data)
         aruco.drawDetectedMarkers(img,corners)
 
-        rvec_list_all, tvec_list_all, _objPoints = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
+        rvec_list_all, tvec_list_all = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
 
         rvec = rvec_list_all[0][0]
         tvec = tvec_list_all[0][0]
@@ -76,10 +76,12 @@ def main():
         camera_matrix = np.load(f)
         camera_distortion = np.load(f)
 
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(-1)
 
     while True:
-        sccuess, img = cap.read()
+        success, img = cap.read()
+        if not success:
+            continue
         arucoFound = findAriucoMarkers(img,camera_matrix,camera_distortion)
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
