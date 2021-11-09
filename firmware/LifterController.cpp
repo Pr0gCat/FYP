@@ -1,6 +1,13 @@
-#include "ClawController.h"
+#include "LifterController.h"
 
-void ClawController::begin(){
+AccelStepper y_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Y_STEP_PIN, STEPPER_Y_DIR_PIN);
+AccelStepper z_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Z_STEP_PIN, STEPPER_Z_DIR_PIN);
+uint32_t y_max = 0;
+uint32_t z_max = 0;
+void calibrateZ();
+void calibrateY();
+
+void lifter_setup(){
 
     pinMode(ENDSTOP_Y_UPPER_PIN, INPUT_PULLUP);
     pinMode(ENDSTOP_Y_LOWER_PIN, INPUT_PULLUP);
@@ -23,30 +30,30 @@ void ClawController::begin(){
     // self-test
     // Serial.println("Trigger ENDSTOP_Y_UPPER_PIN..");
     while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
-        Serial.print("Y UP:");
-        Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
-        delay(200);
+        // Serial.print("Y UP:");
+        // Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
+        delay(100);
     }
     
     // Serial.println("Trigger ENDSTOP_Y_LOWER_PIN..");
     while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
-        Serial.print("Y LO:");
-        Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
-        delay(200);
+        // Serial.print("Y LO:");
+        // Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
+        delay(100);
     }
     
     // Serial.println("Trigger ENDSTOP_Z_UPPER_PIN..");
     while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
-        Serial.print("Z UP:");
-        Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
-        delay(200);
+        // Serial.print("Z UP:");
+        // Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
+        delay(100);
     }
     
     // Serial.println("Trigger ENDSTOP_Z_LOWER_PIN..");
     while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
-        Serial.print("Z LO:");
-        Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
-        delay(200);
+        // Serial.print("Z LO:");
+        // Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
+        delay(100);
     }
     // signaling led
     for(int i = 0; i < 3; i++){
@@ -55,16 +62,16 @@ void ClawController::begin(){
         digitalWrite(13, 0);
         delay(500);
     }
-    Serial.println("self-test done");
+    // Serial.println("self-test done");
     
     calibrateZ();
     calibrateY();
-    Serial.println("Calibration done");
-    homeZ();
-    // homeY();
+    // Serial.println("Calibration done");
+    lifter_homeZ();
+    lifter_homeY();
 }
 
-void ClawController::update(){
+void lifter_update(){
     // Serial.print("Y: ");
     // Serial.println(y_axis.currentPosition());
     // Serial.print("Z: ");
@@ -88,15 +95,15 @@ void ClawController::update(){
     z_axis.run();
 }
 
-void ClawController::homeZ(){
+void lifter_homeZ(){
     z_axis.moveTo(0);
 }
 
-void ClawController::homeY(){
+void lifter_homeY(){
     y_axis.moveTo(0);
 }
 
-void ClawController::calibrateY(){
+void calibrateY(){
 
     y_axis.setSpeed(-3000);
     while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
@@ -126,10 +133,10 @@ void ClawController::calibrateY(){
         y_axis.runSpeed();
         if(digitalRead(ENDSTOP_Y_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
-    this->y_max = y_axis.currentPosition();
+    y_max = y_axis.currentPosition();
 }
 
-void ClawController::calibrateZ(){
+void calibrateZ(){
 
     z_axis.setSpeed(-3000);
     while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
@@ -152,22 +159,32 @@ void ClawController::calibrateZ(){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
-    // release Y upper limit
+    
+    // release Z upper limit
+    // NOTE: some how the z_axis is still triggering the upper limit,
+    // so we need to move it back a bit
     z_axis.setSpeed(-400);
     while(!digitalRead(ENDSTOP_Z_UPPER_PIN)){
         z_axis.runSpeed();
         if(digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
-    this->z_max = z_axis.currentPosition();
+    delay(500);
+    z_axis.setSpeed(-400);
+    while(!digitalRead(ENDSTOP_Z_UPPER_PIN)){
+        z_axis.runSpeed();
+        if(digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
+    }
+    
+    z_max = z_axis.currentPosition();
 }
 
-template<ClawController::AXIS axis>
-void ClawController::moveTo(uint32_t mm){
+template<AXIS axis>
+void lifter_moveTo(uint32_t mm){
     uint32_t pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
-    if(axis == ClawController::Y){
+    if(axis == Y){
         pos = pos > y_max ? y_max : pos;
         y_axis.moveTo(pos);
-    }else if (axis == ClawController::Z){
+    }else if (axis == Z){
         pos = pos > z_max ? z_max : pos;
         z_axis.moveTo(pos);
     }

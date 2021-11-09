@@ -1,21 +1,16 @@
-#include "ClawController.h"
+#include "LifterController.h"
 #include "Communication.h"
 #include "WheelController.h"
 
-ClawController claw;
-
 void setup(){
     Serial.begin(115200);
-    while(!Serial){;}
-    Serial.println("start");
     wheel_setup();
-    claw.begin();
+    lifter_setup();
 
 }
 
 void loop(){
     cmd_update();
-    claw.update();
     wheel_update();
-    
+    lifter_update();    
 }

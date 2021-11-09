@@ -92,7 +92,7 @@ typedef void (*CallbackFunc)();
 #endif
 
 /*
-    frontservo set
+    End Effector
 */
 #define CLAMP_L_SERVO 0
 #define CLAMP_R_SERVO 1

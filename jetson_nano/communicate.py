@@ -55,18 +55,6 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
 
-    def car_sync(self):
-        pkg = struct.pack('BB', self.CommandId.Sync, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-
-    def car_init(self):
-        pkg = struct.pack('BB', self.CommandId.Init, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-
     def get_car_claw(self):
         pkg = struct.pack('BB', self.CommandId.GetClawState, 0)
         cs = 0xff & sum(pkg)

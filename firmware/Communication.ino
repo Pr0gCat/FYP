@@ -1,5 +1,6 @@
 #include "Communication.h"
 #include "WheelController.h"
+#include "LifterController.h"
 
 #include "config.h"
 
@@ -20,6 +21,7 @@ void cmd_update() // run over and over
     data_len = 0;
     digitalWrite(13, 0);
   }
+  // Serial.println("cmd_update");
   while (Serial.available())
   {
     if (flag < 2) // Command & length
@@ -82,9 +84,6 @@ void unpack()
   case CMD_COFIRM:
     comfirm(cmd);
     break;
-  case CMD_SYNC:
-    sync();
-    break;
   case CMD_INIT:
     car_init();
     break;
@@ -100,8 +99,8 @@ void unpack()
   case CMD_SET_PICKUP_MODE:
     set_pickup_mode();
     break;
-  case CMD_SET_DOCKING_MODE:
-    set_docking_mode();
+  case CMD_SET_DROPOFF_MODE:
+    set_dropoff_mode();
     break;
   case CMD_GET_POSY:
     get_posy();
@@ -114,6 +113,13 @@ void unpack()
     break;
   case CMD_MOVE_POSZ:
     move_posz(data);
+    break;
+  case CMD_HOME_Y:
+    lifter_homeY();
+    break;
+  case CMD_HOME_Z:
+  Serial.println("home z");
+    lifter_homeZ();
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
@@ -129,10 +135,6 @@ void comfirm(int cmd)
     Serial.write(1);
     Serial.write(cmd);
   }
-}
-
-void sync()
-{
 }
 
 void car_init()
@@ -158,7 +160,7 @@ void set_pickup_mode()
 {
 }
 
-void set_docking_mode()
+void set_dropoff_mode()
 {
 }
 
@@ -172,6 +174,7 @@ void get_posz()
 
 void move_posy(unsigned char data[])
 {
+
 }
 
 void move_posz(unsigned char data[])
