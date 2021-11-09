@@ -25,18 +25,14 @@ void frontServo::set_camera_mode(CamMode mode)
 void frontServo::set_clamp(int servo, int distance)
 {
   if(distance > MAX_DISTANCE) 
+  {
     pwm.setPWM(servo, 0, MAX_ANGLE);
-  else 
-    pwm.setPWM(servo, 0, distance * 3 + 125 );
-}
-
-frontServo t;
-
-void setup() {
-  // put your setup code here, to run once:
-  t.servoStartup();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
+    return ;
+  }
+   if(distance < MIN_DISTANCE) 
+  {
+    pwm.setPWM(servo, 0, MIN_ANGLE);
+    return ;
+  }
+  pwm.setPWM(servo, 0, distance * 3 + 125 );
 }
