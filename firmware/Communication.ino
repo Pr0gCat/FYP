@@ -119,7 +119,7 @@ void unpack()
     lifter_homeY();
     break;
   case CMD_HOME_Z:
-    lifter_move(Z, 100);
+    lifter_homeZ();
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);

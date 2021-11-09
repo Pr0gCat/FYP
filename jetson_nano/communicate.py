@@ -109,7 +109,7 @@ class Car:
         self.com.write(struct.pack('B', cs))
 
     def move_posz(self,posz):
-        pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
+        pkg = struct.pack('BBh', self.CommandId.MovePosZ,   , posz)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))

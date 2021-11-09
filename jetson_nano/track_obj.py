@@ -21,11 +21,11 @@ def main():
         if not success:
             continue
         arucoFound = findArucoMarkers(img,camera_matrix,camera_distortion)
-        if len(arucoFound) > 0:
+        if len(arucoFound) > 0 and time.time() - t0 > 1000:
             id, cx, cy, dx, dy = arucoFound[0]
             print(dx, dy)
             # print('tag found')
-            car.move_posz(100);
+            car.move_posz(-100);
             t0 = time.time()
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
