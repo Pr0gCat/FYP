@@ -15,10 +15,10 @@ void frontServo::set_camera_mode(CamMode mode)
       pwm.setPWM(CAM_SERVO, 0, ANGLE_LINE_FOLLOWING );//angle is a constant
     break;
     case pick_up:
-      pwm.setPWM(CAM_SERVO, 0, ANGLE_PICKUP);
+      pwm.setPWM(CAM_SERVO, 0, ANGLE_PICK_UP);
     break;
     case drop_off:
-      pwm.setPWM(CAM_SERVO, 0, ANGLE_LINE_DOCKING);
+      pwm.setPWM(CAM_SERVO, 0, ANGLE_DROP_OFF);
     break;
   }
 }
