@@ -46,7 +46,7 @@ def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMa
             marker.append(ids[count][0])
             marker.append(cX)
             marker.append(cY)
-            marker.append(round((((((cX-320)**2)+((cY-240)**2))**(0.5))),2))
+            marker.append(round((((((cX-320)**2)+((cY-200)**2))**(0.5))),2))
             data.append(marker)
             print(corners[count][0][0][0], corners[count][0][2][0], corners[count][0][0][1], corners[count][0][2][1])
             count=count+1
