@@ -10,6 +10,10 @@ def main():
     car.init_car()
     car.set_pickup_mode()                                                     
     print('Car initialized')
+
+    input()
+    car.move_posz(-100)
+    exit()
     with open('camera_cal.npy', 'rb') as f:
         camera_matrix = np.load(f)
         camera_distortion = np.load(f)
