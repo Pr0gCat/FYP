@@ -109,5 +109,3 @@ typedef void (*CallbackFunc)();
 #define ANGLE_LINE_FOLLOWING 363
 #define ANGLE_PICK_UP 450
 #define ANGLE_DROP_OFF 275
-
-enum CamMode{line_following, pick_up, drop_off};
