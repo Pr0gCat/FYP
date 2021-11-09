@@ -7,8 +7,8 @@ import time
 def main():
     car = Car()
     input()
-    car.set_pickup_mode()
-    car.init_car()                                                     
+    car.init_car()
+    car.set_pickup_mode()                                                     
     print('Car initialized')
     with open('camera_cal.npy', 'rb') as f:
         camera_matrix = np.load(f)
