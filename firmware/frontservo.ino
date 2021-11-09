@@ -14,10 +14,10 @@ void frontServo::set_camera_mode(CamMode mode)
     case line_following:
       pwm.setPWM(CAM_SERVO, 0, ANGLE_LINE_FOLLOWING );//angle is a constant
     break;
-    case pickup:
+    case pick_up:
       pwm.setPWM(CAM_SERVO, 0, ANGLE_PICKUP);
     break;
-    case docking:
+    case drop_off:
       pwm.setPWM(CAM_SERVO, 0, ANGLE_LINE_DOCKING);
     break;
   }
