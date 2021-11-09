@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
+enum CamMode{line_following, pick_up, drop_off};
+
 class frontServo
 {
   public:
