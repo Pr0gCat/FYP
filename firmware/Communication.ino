@@ -177,7 +177,9 @@ void move_posy(unsigned char data[])
 void move_posz(unsigned char data[])
 {
   int16_t pos = (data[0] + (data[1] << 8));
-  lifter_move(Z, pos);
+  // lifter_move(Z, pos);
+  Serial.print("movez:");
+  Serial.println(pos);
 }
 
 void get_motor_speed(unsigned char data[])

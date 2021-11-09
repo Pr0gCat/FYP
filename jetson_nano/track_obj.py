@@ -25,6 +25,7 @@ def main():
             id, cx, cy, dx, dy = arucoFound[0]
             print(dx, dy)
             # print('tag found')
+            car.move_posz(100);
             t0 = time.time()
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
