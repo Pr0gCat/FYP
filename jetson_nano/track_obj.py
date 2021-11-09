@@ -27,10 +27,10 @@ def main():
             print(dx, dy)
             # print('tag found')
             if dy < -30:
-                print('go down')
+                print('go up')
                 car.move_posz(5)
             elif dy > 30:
-                print('go up')
+                print('go down')
                 car.move_posz(-5)
             t0 = time.time()
         cv2.imshow("Image", img)
