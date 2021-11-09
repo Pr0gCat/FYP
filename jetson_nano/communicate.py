@@ -58,9 +58,9 @@ class Car:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
 
-    def wait_ack(self, id):
+    def wait_ack(self, id, blocking):
         communicat_id = id
-        while True:
+        while blocking:
             if event.is_set():
                 break
         
