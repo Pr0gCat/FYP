@@ -173,10 +173,10 @@ void lifter_move(AXIS axis, unsigned long mm)
     uint32_t pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     if(axis == Y){
         pos = pos > y_max ? y_max : pos;
-        y_axis.moveTo(pos);
+        y_axis.move(pos);
     }else if (axis == Z){
         pos = pos > z_max ? z_max : pos;
-        z_axis.moveTo(pos);
+        z_axis.move(pos);
     }
     return;
 }
