@@ -1,8 +1,11 @@
-from threading import Thread
+from threading import Thread, Event
 import serial
 import time
 import struct
 from enum import IntEnum, unique
+
+event = Event()
+communicat_id = 0
 
 class Car:
 
@@ -30,24 +33,37 @@ class Car:
         self.com = serial.Serial(port, baudrate=115200)
         print(self.com)
         time.sleep(1)
-        self.receiver = Thread(target=self._receiver_main)
+        self.receiver = Thread(target=self._receiver_main, args=(communicat_id, ))
         self.receiver.setDaemon(True)
         self.receiver.start()
 
         def __del__(self):
             self.com.close()
 
-    def _receiver_main(self):
+    def _receiver_main(self, id):
         print('[Receiver] Start receiving')
+        count = 0
         while True:
             try:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
+                    if data == id  and count == 2:
+                        event.set
+                    if data == 1:
+                        count = count + 1
+                    else :
+                        count = 0
                     print(data)
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
 
+    def wait_ack(self, id):
+        communicat_id = id
+        while True:
+            if event.is_set():
+                break
+        
     def init_car(self):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
         cs = 0xff & sum(pkg)
