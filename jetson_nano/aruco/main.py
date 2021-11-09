@@ -32,14 +32,13 @@ def rotationMatrixToEulerAngles(R):
     
     return np.array([x, y, z])
 
-def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMarkers=250):
+def findArucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMarkers=250):
     data=[]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
         count = 0
         for x in ids:
-            print(corners[count])
             marker=[]
             cX = int((corners[count][0][0][0] + corners[count][0][2][0]) / 2.0)
             cY = int((corners[count][0][0][1] + corners[count][0][2][1]) / 2.0)
@@ -52,7 +51,6 @@ def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMa
             data.append(marker)
             print(corners[count][0][0][0], corners[count][0][2][0], corners[count][0][0][1], corners[count][0][2][1])
             count=count+1
-        print(data)
         aruco.drawDetectedMarkers(img,corners)
 
         rvec_list_all, tvec_list_all = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
@@ -85,7 +83,7 @@ def main():
         success, img = cap.read()
         if not success:
             continue
-        arucoFound = findAriucoMarkers(img,camera_matrix,camera_distortion)
+        arucoFound = findArucoMarkers(img,camera_matrix,camera_distortion)
 
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
