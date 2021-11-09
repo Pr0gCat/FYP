@@ -1,13 +1,14 @@
 #include"EndEffectorController.h"
 
-void EndEffectorController::servoStartup(void)
+Adafruit_PWMServoDriver pwm;
+void endeffector_setup()
 {
   pwm = Adafruit_PWMServoDriver();
   pwm.begin();
   pwm.setPWMFreq(60);
 }
 
-void EndEffectorController::set_camera_mode(CamMode mode)
+void set_camera_mode(CamMode mode)
 {
   switch(mode)
   {
@@ -22,7 +23,7 @@ void EndEffectorController::set_camera_mode(CamMode mode)
     break;
   }
 }
-void EndEffectorController::set_clamp(int servo, int distance)
+void set_clamp(int servo, int distance)
 {
   if(distance > MAX_DISTANCE) 
   {

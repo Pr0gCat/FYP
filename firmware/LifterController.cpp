@@ -27,48 +27,44 @@ void lifter_setup(){
     z_axis.setAcceleration(STEPPER_MOVE_ACCEL);
     z_axis.setMaxSpeed(STEPPER_Z_MAX_SPEED);
 
-    // self-test
-    // Serial.println("Trigger ENDSTOP_Y_UPPER_PIN..");
-    while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
-        // Serial.print("Y UP:");
-        // Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
-        delay(100);
-    }
+    // // self-test
+    // // Serial.println("Trigger ENDSTOP_Y_UPPER_PIN..");
+    // while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
+    //     // Serial.print("Y UP:");
+    //     // Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
+    //     delay(100);
+    // }
     
-    // Serial.println("Trigger ENDSTOP_Y_LOWER_PIN..");
-    while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
-        // Serial.print("Y LO:");
-        // Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
-        delay(100);
-    }
+    // // Serial.println("Trigger ENDSTOP_Y_LOWER_PIN..");
+    // while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
+    //     // Serial.print("Y LO:");
+    //     // Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
+    //     delay(100);
+    // }
     
-    // Serial.println("Trigger ENDSTOP_Z_UPPER_PIN..");
-    while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
-        // Serial.print("Z UP:");
-        // Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
-        delay(100);
-    }
+    // // Serial.println("Trigger ENDSTOP_Z_UPPER_PIN..");
+    // while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
+    //     // Serial.print("Z UP:");
+    //     // Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
+    //     delay(100);
+    // }
     
-    // Serial.println("Trigger ENDSTOP_Z_LOWER_PIN..");
-    while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
-        // Serial.print("Z LO:");
-        // Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
-        delay(100);
-    }
-    // signaling led
-    for(int i = 0; i < 3; i++){
-        digitalWrite(13, 1);
-        delay(500);
-        digitalWrite(13, 0);
-        delay(500);
-    }
-    // Serial.println("self-test done");
+    // // Serial.println("Trigger ENDSTOP_Z_LOWER_PIN..");
+    // while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
+    //     // Serial.print("Z LO:");
+    //     // Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
+    //     delay(100);
+    // }
+    // // signaling led
+    // for(int i = 0; i < 3; i++){
+    //     digitalWrite(13, 1);
+    //     delay(500);
+    //     digitalWrite(13, 0);
+    //     delay(500);
+    // }
+    // // Serial.println("self-test done");
     
-    calibrateZ();
-    calibrateY();
     // Serial.println("Calibration done");
-    lifter_homeZ();
-    lifter_homeY();
 }
 
 void lifter_update(){
@@ -77,14 +73,14 @@ void lifter_update(){
     // Serial.print("Z: ");
     // Serial.println(z_axis.currentPosition());
     // unexpected collision
-    if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){
+    if(!digitalRead(ENDSTOP_Y_UPPER_PIN) && y_axis.targetPosition() > 0){
         y_axis.setCurrentPosition(y_axis.currentPosition());
         y_max = y_axis.currentPosition();
     }
     if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.setCurrentPosition(0);
     }
-    if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){
+    if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > 0){
         z_axis.setCurrentPosition(z_axis.currentPosition());
         z_max = z_axis.currentPosition();
     }
@@ -168,18 +164,12 @@ void calibrateZ(){
         z_axis.runSpeed();
         if(digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
-    delay(500);
-    z_axis.setSpeed(-400);
-    while(!digitalRead(ENDSTOP_Z_UPPER_PIN)){
-        z_axis.runSpeed();
-        if(digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
-    }
     
     z_max = z_axis.currentPosition();
 }
 
-template<AXIS axis>
-void lifter_moveTo(uint32_t mm){
+void lifter_move(AXIS axis, unsigned long mm)
+{
     uint32_t pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     if(axis == Y){
         pos = pos > y_max ? y_max : pos;

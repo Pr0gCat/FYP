@@ -54,7 +54,7 @@ typedef void (*CallbackFunc)();
 #define MICROSTEP 4 // 1/MICROSTEP
 
 #define STEPPER_Y_MAX_SPEED 3500
-#define STEPPER_Z_MAX_SPEED 2500
+#define STEPPER_Z_MAX_SPEED 3500
 
 #define STEPPER_MOVE_ACCEL 150
 

@@ -9,22 +9,21 @@ class Car:
     @unique
     class CommandId(IntEnum):
         Confirm = 1
-        Sync = 2
-        Init = 3
-        GetClawState = 4
-        SetClawState = 5
-        SetLinefollowMode = 6
-        SetPickupMode = 7
-        SetDockingMode = 8
-        GetPosY = 9
-        GetPosZ = 10
-        MovePosY = 11
-        MovePosZ = 12
-        HomeY = 13
-        HomeZ = 14
-        RunDistance = 15
-        GetMotorSpeed = 16
-        SetMotorSpeed = 17
+        Init = 2
+        GetClawState = 3
+        SetClawState = 4
+        SetLinefollowMode = 5
+        SetPickupMode = 6
+        SetDropOffMode = 7
+        GetPosY = 8
+        GetPosZ = 9
+        MovePosY = 10
+        MovePosZ = 11
+        HomeY = 12
+        HomeZ = 13
+        RunDistance = 14
+        GetMotorSpeed = 15
+        SetMotorSpeed = 16
         Msg = 255
 
     def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00') -> None:
@@ -48,6 +47,12 @@ class Car:
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
+
+    def init_car(self):
+        pkg = struct.pack('BB', self.CommandId.Init, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
 
     def run_speed(self, left, right):
         pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)

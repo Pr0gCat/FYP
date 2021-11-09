@@ -9,11 +9,13 @@ void lifter_update();
 void lifter_homeZ();
 void lifter_homeY();
 
+void calibrateZ();
+void calibrateY();
+
 typedef enum {
     Y = 0,
     Z,
 } AXIS;
 
-template<AXIS axis>
-void lifter_moveTo(uint32_t mm);
+void lifter_move(AXIS axis, unsigned long mm);
 #endif

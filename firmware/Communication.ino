@@ -1,6 +1,7 @@
 #include "Communication.h"
 #include "WheelController.h"
 #include "LifterController.h"
+#include "EndEffectorController.h"
 
 #include "config.h"
 
@@ -19,8 +20,8 @@ void cmd_update() // run over and over
     count = 0;
     checksum = 0;
     data_len = 0;
-    digitalWrite(13, 0);
   }
+  digitalWrite(13, 0);
   // Serial.println("cmd_update");
   while (Serial.available())
   {
@@ -82,7 +83,7 @@ void unpack()
   switch (cmd)
   {
   case CMD_COFIRM:
-    comfirm(cmd);
+    // this should not happen!
     break;
   case CMD_INIT:
     car_init();
@@ -94,13 +95,14 @@ void unpack()
     set_crawl_state(data);
     break;
   case CMD_SET_LINEFOLLOW_MODE:
-    set_limefollow_mode();
+    set_camera_mode(LineFollow);
     break;
   case CMD_SET_PICKUP_MODE:
-    set_pickup_mode();
+    Serial.println("set pickup mode");
+    set_camera_mode(PickUp);
     break;
   case CMD_SET_DROPOFF_MODE:
-    set_dropoff_mode();
+    set_camera_mode(DropOff);
     break;
   case CMD_GET_POSY:
     get_posy();
@@ -118,16 +120,18 @@ void unpack()
     lifter_homeY();
     break;
   case CMD_HOME_Z:
-  Serial.println("home z");
-    lifter_homeZ();
+    lifter_move(Z, 100);
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
     break;
+  default:
+    return;
   }
+  confirm(cmd);
 }
 
-void comfirm(int cmd)
+void confirm(int cmd)
 {
   if (cmd != 1)
   {
@@ -139,6 +143,10 @@ void comfirm(int cmd)
 
 void car_init()
 {
+  calibrateZ();
+  calibrateY();
+  lifter_homeZ();
+  lifter_homeY();
 }
 
 void get_crawl_state()
@@ -152,18 +160,6 @@ void set_crawl_state(unsigned char data[])
 
 }
 
-void set_limefollow_mode()
-{
-}
-
-void set_pickup_mode()
-{
-}
-
-void set_dropoff_mode()
-{
-}
-
 void get_posy()
 {
 }
@@ -174,11 +170,14 @@ void get_posz()
 
 void move_posy(unsigned char data[])
 {
-
+  int16_t pos = (data[0] + (data[1] << 8));
+  lifter_move(Y, pos);
 }
 
 void move_posz(unsigned char data[])
 {
+  int16_t pos = (data[0] + (data[1] << 8));
+  lifter_move(Z, pos);
 }
 
 void get_motor_speed(unsigned char data[])

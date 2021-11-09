@@ -10,12 +10,8 @@ enum CamMode {
   DropOff = 3,
 };
 
-class EndEffectorController
-{
-  public:
-    Adafruit_PWMServoDriver pwm;
-    void servoStartup(void);
-    void set_camera_mode(CamMode mode);
-    void set_clamp(int servo, int distance);
-};
+void endeffector_setup();
+void set_camera_mode(CamMode mode);
+void set_clamp(int servo, int distance);
+
 #endif

@@ -1,7 +1,7 @@
 import numpy as np
 import cv2, time
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(-1)
 
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
@@ -18,7 +18,7 @@ while True:
     frame_count +=1
     
     if frame_count == 30:
-        cv2.imwrite("cal_image"+str(cal_image_count)+".jpg",frame)
+        cv2.imwrite("sc/cal_image"+str(cal_image_count)+".jpg",frame)
         cal_image_count +=1
         frame_count = 0
 

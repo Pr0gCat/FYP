@@ -4,7 +4,7 @@ import glob
 
 cb_width = 9
 cb_hight = 6
-cb_square_size = 26.3
+cb_square_size = 25.2
 
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
@@ -14,7 +14,7 @@ cb_3D_points[:,:2] = np.mgrid[0:cb_width,0:cb_hight].T.reshape(-1,2) * cb_square
 list_cb_3d_points = []
 list_cb_2d_img_points = []
 
-list_images = glob.glob('*.jpg')
+list_images = glob.glob('sc/*.jpg')
 
 for frame_name in list_images:
     img = cv2.imread(frame_name)
