@@ -39,6 +39,7 @@ def findAriucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMa
     if ids is not None:
         count = 0
         for x in ids:
+            print(corners[count])
             marker=[]
             cX = int((corners[count][0][0][0] + corners[count][0][2][0]) / 2.0)
             cY = int((corners[count][0][0][1] + corners[count][0][2][1]) / 2.0)
