@@ -26,7 +26,6 @@ def main():
             print(dx, dy)
             # print('tag found')
             car.move_posz(-100);
-            time.sleep(50)
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"): break
