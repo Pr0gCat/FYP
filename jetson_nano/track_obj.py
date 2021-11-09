@@ -21,7 +21,7 @@ def main():
         if not success:
             continue
         arucoFound = findArucoMarkers(img,camera_matrix,camera_distortion)
-        if len(arucoFound) > 0 and time.time() - t0 > 100:
+        if len(arucoFound) > 0:
             id, cx, cy, dx, dy = arucoFound[0]
             print(dx, dy)
             # print('tag found')
