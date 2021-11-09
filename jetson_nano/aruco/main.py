@@ -49,7 +49,7 @@ def findArucoMarkers(img,camera_matrix,camera_distortion, markerSize=6, totalMar
             marker.append(cX - 320)
             marker.append(cY - 240)
             data.append(marker)
-            print(corners[count][0][0][0], corners[count][0][2][0], corners[count][0][0][1], corners[count][0][2][1])
+            # print(corners[count][0][0][0], corners[count][0][2][0], corners[count][0][0][1], corners[count][0][2][1])
             count=count+1
         aruco.drawDetectedMarkers(img,corners)
 

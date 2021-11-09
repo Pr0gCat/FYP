@@ -98,7 +98,6 @@ void unpack()
     set_camera_mode(LineFollow);
     break;
   case CMD_SET_PICKUP_MODE:
-    Serial.println("set pickup mode");
     set_camera_mode(PickUp);
     break;
   case CMD_SET_DROPOFF_MODE:
@@ -143,6 +142,7 @@ void confirm(int cmd)
 
 void car_init()
 {
+  set_camera_mode(LineFollow);
   calibrateZ();
   calibrateY();
   lifter_homeZ();
