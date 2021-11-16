@@ -68,8 +68,8 @@ if __name__ == '__main__':
                     # print('no line')
                     continue
                 compan = int(offset * factor)
-                speed_l = max(MAX_SPPED, speed - compan)
-                speed_r = max(MAX_SPPED, speed + compan)
+                speed_l = min(MAX_SPPED, speed - compan)
+                speed_r = min(MAX_SPPED, speed + compan)
                 print(offset, speed_l, speed_r)
                 if flag:
                     car.run_speed(speed_l, speed_r)
