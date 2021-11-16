@@ -92,8 +92,8 @@ void set_speed_r(int speed_r)
 int motor_controller_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
-  Serial.write("L");
-  Serial.print(motor_l_pwm);
+  // Serial.write("L");
+  // Serial.print(motor_l_pwm);
   Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm , motor_direction_l );
   speed_count_l = 0;
 }
@@ -101,8 +101,8 @@ int motor_controller_l(int enable)
 int motor_controller_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
-  Serial.write("R");
-  Serial.print(motor_r_pwm);
+  // Serial.write("R");
+  // Serial.print(motor_r_pwm);
   speed_count_r = 0;
   Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm , motor_direction_r );
 }
