@@ -1,11 +1,6 @@
 from communicate import Car
 import cv2.aruco as aruco
 import cv2
-import numpy as np
-from pyzbar.pyzbar import decode
-import os
-import torch
-import math
 
 #  Return float or None
 def line_following(image):
