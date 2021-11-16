@@ -48,7 +48,7 @@ class Car:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
                     if data == id  and count == 2:
-                        event.set
+                        event.set()
                     if data == 1:
                         count = count + 1
                     else :
