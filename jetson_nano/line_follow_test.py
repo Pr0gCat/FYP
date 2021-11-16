@@ -57,7 +57,7 @@ if __name__ == '__main__':
     while True:
         ret, frame = cap.read()
         MAX_SPPED = 500
-        speed = 200
+        speed = 250
         factor = 250
         if ret:
             if(flag):
