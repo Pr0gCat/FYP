@@ -5,8 +5,7 @@ import time
 
 #  Return float or None
 def line_following(img):
-    crop_img = img[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
-    gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     ret, thresh = cv2.threshold(blur, 60, 255, cv2.THRESH_BINARY_INV)
     _, contours, hierarchy = cv2.findContours(
@@ -59,6 +58,7 @@ if __name__ == '__main__':
         MAX_SPPED = 400
         speed = 200
         factor = 300
+        frame = frame[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
         if ret:
             if(flag):
                 flag = not findGround(frame, 1)
