@@ -100,8 +100,8 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
 
-    def set_docking_mode(self):
-        pkg = struct.pack('BB', self.CommandId.SetDockingMode, 0)
+    def set_dropoff_mode(self):
+        pkg = struct.pack('BB', self.CommandId.SetDropOffMode, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
