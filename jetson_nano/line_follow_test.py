@@ -56,7 +56,7 @@ if __name__ == '__main__':
     flag = True
     while True:
         ret, frame = cap.read()
-        speed = 250
+        speed = 350
         factor = 200
         if ret:
             if(flag):
@@ -67,9 +67,11 @@ if __name__ == '__main__':
                     # print('no line')
                     continue
                 compan = int(offset * factor)
-                print(offset, speed - compan, speed + compan)
+                speed_l = min(speed, speed - compan)
+                speed_r = min(speed, speed + compan)
+                print(offset, speed_l, speed_r)
                 if flag:
-                    car.run_speed(speed - compan, speed + compan)
+                    car.run_speed(speed_l, speed_r)
                 else:
                     car.run_speed(0, 0)
         # time.sleep(0.1)
