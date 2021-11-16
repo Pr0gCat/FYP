@@ -39,10 +39,11 @@ def findGround(img, cargo, markerSize=6, totalMarkers=1):
 
 if __name__ == '__main__':
     car = Car()
-    input()
-    car.init_car()
+    # input()
+    # car.init_car()
     print("Car initialized")
     input()
+    car.set_docking_mode()
     print('send')
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
