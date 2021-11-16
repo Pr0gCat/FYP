@@ -75,5 +75,6 @@ if __name__ == '__main__':
                 if flag:
                     car.run_speed(speed_l, speed_r)
                 else:
+                    print(flag)
                     car.run_speed(0, 0)
         # time.sleep(0.1)
