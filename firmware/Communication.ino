@@ -104,10 +104,10 @@ void unpack()
     set_camera_mode(DropOff);
     break;
   case CMD_GOTO_POSY:
-    goto_posy();
+    goto_posy(data);
     break;
   case CMD_GOTO_POSZ:
-    goto_posz();
+    goto_posz(data);
     break;
   case CMD_MOVE_POSY:
     move_posy(data);
@@ -123,6 +123,9 @@ void unpack()
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
+    break;
+  case CMD_RUN_DISTANCE:
+    
     break;
   default:
     return;

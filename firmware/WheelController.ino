@@ -189,14 +189,6 @@ void runDistanceL(uint32_t distance, int32_t speed)
 void wheel_update()
 {
   static long unsigned int last_time = millis();
-  if(millis() - last_time > 1000)
-  {
-    if(!Serial){
-      stop_motor_l();
-      stop_motor_r();
-      return;
-    }
-  }
   if(millis() - last_time  < REFRESH_INTERVAL) return;
   if(motor_mode)
   {
