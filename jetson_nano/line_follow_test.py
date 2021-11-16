@@ -1,6 +1,7 @@
 from communicate import Car
 import cv2.aruco as aruco
 import cv2
+import time
 
 #  Return float or None
 def line_following(image):
@@ -71,3 +72,4 @@ if __name__ == '__main__':
                     car.run_speed(speed - compan, speed + compan)
                 else:
                     car.run_speed(0, 0)
+        time.sleep(0.1)
