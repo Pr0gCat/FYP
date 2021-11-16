@@ -1,6 +1,11 @@
 from communicate import Car
-import time
+import cv2.aruco as aruco
 import cv2
+import numpy as np
+from pyzbar.pyzbar import decode
+import os
+import torch
+import math
 
 #  Return float or None
 def line_following(image):
@@ -25,6 +30,18 @@ def line_following(image):
     else:
         return None
 
+def findGround(img, cargo, markerSize=6, totalMarkers=1):
+    key = getattr(aruco,'DICT_6X6_250')
+    arucoDict = aruco.Dictionary_get(key)
+    arucoParam = aruco.DetectorParameters_create()
+    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
+    if ids is not None:
+        for x in ids:
+            if x == cargo:
+                return True
+    return False
+
 if __name__ == '__main__':
     car = Car()
     input()
@@ -36,16 +53,22 @@ if __name__ == '__main__':
     cap.set(3, Screen_Weight)
     cap.set(4, Screem_Height)
     retutn_data = []
+    flag = True
     while True:
         ret, frame = cap.read()
         speed = 300
         factor = 500
         if ret:
-            offset = line_following(frame)
-            # print(offset)
-            if offset is None:
-                # print('no line')
-                continue
-            compan = int(offset * factor)
-            print(offset, speed - compan, speed + compan)
-            car.run_speed(speed - compan, speed + compan)
+            if(flag):
+                flag = not findGround(frame, 1)
+                offset = line_following(frame)
+                # print(offset)
+                if offset is None:
+                    # print('no line')
+                    continue
+                compan = int(offset * factor)
+                print(offset, speed - compan, speed + compan)
+                if flag:
+                    car.run_speed(speed - compan, speed + compan)
+                else:
+                    car.run_speed(0, 0)
