@@ -56,11 +56,13 @@ void set_origin_r()
 void set_distance_l(int distance_l)
 {
   pid_distance_l.setpoint( distance_l );
+  motor_mode = 0;
 }
 
 void set_distance_r(int distance_r)
 {
   pid_distance_r.setpoint( distance_r );
+  motor_mode = 0;
 }
 
 void set_speed_l(int speed_l)
@@ -127,6 +129,7 @@ int motor_controller_distance_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
   int motor_on_r = pid_distance_r.compute(distance_r);
+  Serial.print(motor_on_r);
   speed_count_r = 0;
 
   if( motor_on_r > 0){
