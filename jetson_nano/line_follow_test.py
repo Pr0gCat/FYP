@@ -43,7 +43,7 @@ if __name__ == '__main__':
     # car.init_car()
     print("Car initialized")
     input()
-    car.set_docking_mode()
+    car.set_dropoff_mode()
     print('send')
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
