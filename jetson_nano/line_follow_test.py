@@ -56,8 +56,8 @@ if __name__ == '__main__':
     flag = True
     while True:
         ret, frame = cap.read()
-        speed = 300
-        factor = 300
+        speed = 400
+        factor = 200
         if ret:
             if(flag):
                 flag = not findGround(frame, 1)
@@ -72,4 +72,4 @@ if __name__ == '__main__':
                     car.run_speed(speed - compan, speed + compan)
                 else:
                     car.run_speed(0, 0)
-        # time.sleep(0.1)
+        time.sleep(1)
