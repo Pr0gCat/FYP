@@ -53,7 +53,7 @@ class Car:
                         count = count + 1
                     else :
                         count = 0
-                    print(data)
+                    # print(data)
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
