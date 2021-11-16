@@ -5,6 +5,7 @@ import time
 
 #  Return float or None
 def line_following(img):
+    img = img[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     ret, thresh = cv2.threshold(blur, 60, 255, cv2.THRESH_BINARY_INV)
@@ -29,6 +30,7 @@ def findGround(img, cargo, markerSize=6, totalMarkers=1):
     key = getattr(aruco,'DICT_6X6_250')
     arucoDict = aruco.Dictionary_get(key)
     arucoParam = aruco.DetectorParameters_create()
+    img = img[int(Screem_Height / 3):Screem_Height, 0:Screen_Weight]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
@@ -58,7 +60,6 @@ if __name__ == '__main__':
         MAX_SPPED = 400
         speed = 200
         factor = 300
-        frame = frame[int(Screem_Height / 2):Screem_Height, 0:Screen_Weight]
         if ret:
             if(flag):
                 flag = not findGround(frame, 1)
