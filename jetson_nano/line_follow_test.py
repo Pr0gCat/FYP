@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # car.init_car()
     print("Car initialized")
     input()
-    car.set_dropoff_mode()
+    car.set_linefollow_mode()
     print('send')
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
