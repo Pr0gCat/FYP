@@ -125,7 +125,7 @@ void unpack()
     set_motor_speed(data);
     break;
   case CMD_RUN_DISTANCE:
-    
+    run_distance(data);
     break;
   default:
     return;
@@ -192,6 +192,14 @@ void set_motor_speed(unsigned char data[])
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
   runSpeed(left, right);
+}
+
+void run_distance(unsigned char data[])
+{
+  int16_t left = (data[0] + (data[1] << 8));
+  int16_t right = (data[2] + (data[3] << 8));
+  set_distance_l(left);
+  set_distance_r(right);
 }
 
 void send_msg(char msg[],int len)

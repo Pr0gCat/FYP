@@ -145,7 +145,7 @@ class Car:
         self.com.write(struct.pack('B', cs))
 
     def run_distance(self,left,right):
-        pkg = struct.pack('BBII', self.CommandId.RunDistance, 8,left,right)
+        pkg = struct.pack('BBii', self.CommandId.RunDistance, 8,left,right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
