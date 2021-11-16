@@ -9,3 +9,5 @@ if __name__ == '__main__':
     car.set_linefollow_mode()
     print('send')
     car.run_distance(100, -100)
+    while True:
+        pass
