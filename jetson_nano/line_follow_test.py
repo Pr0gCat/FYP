@@ -56,8 +56,8 @@ if __name__ == '__main__':
     flag = True
     while True:
         ret, frame = cap.read()
-        speed = 400
-        factor = 400
+        speed = 300
+        factor = 250
         if ret:
             if(flag):
                 flag = not findGround(frame, 1)
