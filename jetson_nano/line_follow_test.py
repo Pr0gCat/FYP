@@ -56,6 +56,7 @@ if __name__ == '__main__':
     flag = True
     while True:
         ret, frame = cap.read()
+        MAX_SPPED = 500
         speed = 300
         factor = 250
         if ret:
@@ -67,8 +68,8 @@ if __name__ == '__main__':
                     # print('no line')
                     continue
                 compan = int(offset * factor)
-                speed_l = min(speed, speed - compan)
-                speed_r = min(speed, speed + compan)
+                speed_l = max(MAX_SPPED, speed - compan)
+                speed_r = max(MAX_SPPED, speed + compan)
                 print(offset, speed_l, speed_r)
                 if flag:
                     car.run_speed(speed_l, speed_r)
