@@ -58,7 +58,7 @@ if __name__ == '__main__':
         ret, frame = cap.read()
         MAX_SPPED = 500
         speed = 250
-        factor = 250
+        factor = 400
         if ret:
             if(flag):
                 flag = not findGround(frame, 1)
