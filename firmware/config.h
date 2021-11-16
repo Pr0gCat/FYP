@@ -106,6 +106,7 @@ typedef void (*CallbackFunc)();
 #define MIN_ANGLE 245 //angle = 48
 
 // angle calculation formula: angle*5/2+125
-#define ANGLE_LINE_FOLLOWING 363
+#define angle2pwm(angle) (angle*5/2+125)
+#define ANGLE_LINE_FOLLOWING angle2pwm(70)
 #define ANGLE_PICK_UP 450
-#define ANGLE_DROP_OFF 275
+#define ANGLE_DROP_OFF angle2pwm(60)
