@@ -168,7 +168,7 @@ void calibrateZ(){
     z_max = z_axis.currentPosition();
 }
 
-void lifter_move(AXIS axis, long mm)
+void lifter_move_relative(AXIS axis, long mm)
 {
     long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     // Serial.println(pos);
@@ -180,3 +180,17 @@ void lifter_move(AXIS axis, long mm)
         z_axis.move(pos);
     }
 }
+
+void lifter_move(AXIS axis, long mm)
+{
+    long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
+    // Serial.println(pos);
+    if(axis == Y){
+        pos = pos > y_max ? y_max : pos;
+        y_axis.moveTo(pos);
+    }else if (axis == Z){
+        pos = pos > z_max ? z_max : pos;
+        z_axis.moveTo(pos);
+    }
+}
+

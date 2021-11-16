@@ -18,8 +18,8 @@ class Car:
         SetLinefollowMode = 5
         SetPickupMode = 6
         SetDropOffMode = 7
-        GetPosY = 8
-        GetPosZ = 9
+        GotoPosY = 8
+        GotoPosZ = 9
         MovePosY = 10
         MovePosZ = 11
         HomeY = 12
@@ -105,20 +105,22 @@ class Car:
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
-    
-    def get_posy(self):
-        pkg = struct.pack('BB', self.CommandId.GetPosY, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
 
-    def get_posz(self):
-        pkg = struct.pack('BB', self.CommandId.GetPosZ, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
+    #TODO: 待測試
 
-    def move_posy(self,posy):
+    # def goto_posy(self, posy):
+    #     pkg = struct.pack('BBI', self.CommandId.GetPosY, 0)
+    #     cs = 0xff & sum(pkg)
+    #     self.com.write(pkg)
+    #     self.com.write(struct.pack('B', cs))
+
+    # def goto_posz(self, posz):
+    #     pkg = struct.pack('BBI', self.CommandId.GetPosZ, 0)
+    #     cs = 0xff & sum(pkg)
+    #     self.com.write(pkg)
+    #     self.com.write(struct.pack('B', cs))
+
+    def move_posy(self, posy):
         pkg = struct.pack('BBI', self.CommandId.MovePosY, 4,posy)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)

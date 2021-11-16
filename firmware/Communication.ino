@@ -103,11 +103,11 @@ void unpack()
   case CMD_SET_DROPOFF_MODE:
     set_camera_mode(DropOff);
     break;
-  case CMD_GET_POSY:
-    get_posy();
+  case CMD_GOTO_POSY:
+    goto_posy();
     break;
-  case CMD_GET_POSZ:
-    get_posz();
+  case CMD_GOTO_POSZ:
+    goto_posz();
     break;
   case CMD_MOVE_POSY:
     move_posy(data);
@@ -160,12 +160,16 @@ void set_crawl_state(unsigned char data[])
 
 }
 
-void get_posy()
+void goto_posy(unsigned char data[])
 {
+  int16_t pos = (data[0] + (data[1] << 8));
+  lifter_move(Y, pos);
 }
 
-void get_posz()
+void goto_posz(unsigned char data[])
 {
+  int16_t pos = (data[0] + (data[1] << 8));
+  lifter_move(Z, pos);
 }
 
 void move_posy(unsigned char data[])
@@ -178,10 +182,6 @@ void move_posz(unsigned char data[])
 {
   int16_t pos = (data[0] + (data[1] << 8));
   lifter_move(Z, pos);
-}
-
-void get_motor_speed(unsigned char data[])
-{
 }
 
 void set_motor_speed(unsigned char data[])

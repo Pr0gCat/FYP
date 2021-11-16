@@ -18,4 +18,5 @@ typedef enum {
 } AXIS;
 
 void lifter_move(AXIS axis, long mm);
+void lifter_move_relative(AXIS axis, long mm);
 #endif
