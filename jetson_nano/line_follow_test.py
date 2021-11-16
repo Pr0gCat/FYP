@@ -72,4 +72,4 @@ if __name__ == '__main__':
                     car.run_speed(speed - compan, speed + compan)
                 else:
                     car.run_speed(0, 0)
-        time.sleep(0.5)
+        time.sleep(0.3)
