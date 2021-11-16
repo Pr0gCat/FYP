@@ -5,36 +5,21 @@ volatile long int speed_count_l = 0, speed_count_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
 int motor_enable_r = 1, motor_enable_l = 1;
 int motor_direction_l = 1, motor_direction_r = 1;
+int target_distance_r = 0,target_distance_l = 0;
 int motor_mode = 0;
 PIDController pid_speed_l, pid_speed_r;
 PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l()
 {
-  if (digitalRead(ENCODER_LB_PIN) == HIGH)
-  {
     speed_count_l++;
     distance_l++;
-  }
-  else
-  {
-    speed_count_l--;
-    distance_l--;
-  }
 }
 
 void encoder_r()
 {
-  if (digitalRead(ENCODER_RB_PIN) == HIGH)
-  {
     speed_count_r++;
     distance_r++;
-  }
-  else
-  {
-    speed_count_r--;
-    distance_r--;
-  }
 }
 
 void Set_motor_pwm(int motor_pwm, int motot, int sw, int power, int directionm)
@@ -81,13 +66,27 @@ void set_origin_r()
 
 void set_distance_l(int distance_l)
 {
-  pid_distance_l.setpoint(distance_l);
+  if (distance_l > 0)
+  {
+    motor_direction_l = 1;
+    target_distance_l = distance_l;
+  }else{
+    motor_direction_l = -1;
+    target_distance_l = abs(distance_l);
+  }
   motor_mode = 0;
 }
 
 void set_distance_r(int distance_r)
 {
-  pid_distance_r.setpoint(distance_r);
+  if (distance_r > 0)
+  {
+    motor_direction_r = 1;
+    target_distance_r = distance_r;
+  }else{
+    motor_direction_r = -1;
+    target_distance_r = abs(distance_r);
+  }
   motor_mode = 0;
 }
 
@@ -142,11 +141,10 @@ int motor_controller_r(int enable)
 int motor_controller_distance_l(int enable)
 {
   int motor_l_pwm = pid_speed_l.compute(speed_count_l);
-  int motor_on_l = pid_distance_l.compute(distance_l);
+  //int motor_on_l = pid_distance_l.compute(distance_l);
   speed_count_l = 0;
-
-  if (motor_on_l > 0)
-  {
+  if (target_distance_l > distance_l)
+  {//Serial.println(distance_l);Serial.println(target_distance_l);
     Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm, motor_direction_l);
     return 1;
   }
@@ -160,10 +158,10 @@ int motor_controller_distance_l(int enable)
 int motor_controller_distance_r(int enable)
 {
   int motor_r_pwm = pid_speed_r.compute(speed_count_r);
-  int motor_on_r = pid_distance_r.compute(distance_r);
+  //int motor_on_r = pid_distance_r.compute(distance_r);
   speed_count_r = 0;
 
-  if (motor_on_r > 0)
+  if (target_distance_r > distance_r)
   {
     Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm, motor_direction_r);
     return 1;
