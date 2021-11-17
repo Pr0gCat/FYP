@@ -166,11 +166,7 @@ class Car:
         self.com.write(struct.pack('B', cs))
 
     def run_distance(self,left,right):
-<<<<<<< HEAD
-        pkg = struct.pack('BBII', self.CommandId.RunDistance, 8,left,right)
-=======
         pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)
->>>>>>> e38bab33a054f657c74f6f5264ae454c277125d9
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))

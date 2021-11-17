@@ -10,9 +10,6 @@ void set_distance_l(int distance_l);
 void stop_motor_l();
 void stop_motor_r();
 void runSpeed(int32_t speed_l, int32_t speed_r);
-void runDistanceL(uint32_t distance, int32_t speed);
-void runDistanceR(uint32_t distance, int32_t speed);
-
 
 
 #endif

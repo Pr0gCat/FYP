@@ -216,18 +216,6 @@ void runSpeed(int32_t speed_l, int32_t speed_r)
   set_speed_l(speed_l);
 }
 
-void runDistanceR(uint32_t distance, int32_t speed)
-{
-  motor_mode = 0;
-  set_speed_r(speed);
-}
-
-void runDistanceL(uint32_t distance, int32_t speed)
-{
-  motor_mode = 0;
-  set_speed_l(speed);
-}
-
 void wheel_update()
 {
   static long unsigned int last_time = millis();

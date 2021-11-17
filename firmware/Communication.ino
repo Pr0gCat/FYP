@@ -82,9 +82,6 @@ void unpack()
   }
   switch (cmd)
   {
-  case CMD_COFIRM:
-    // this should not happen!
-    break;
   case CMD_INIT:
     car_init();
     break;
