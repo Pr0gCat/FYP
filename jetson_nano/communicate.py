@@ -29,7 +29,7 @@ class Car:
         SetMotorSpeed = 16
         Msg = 255
 
-    def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00') -> None:
+    def __init__(self, port='/dev/cu.usbmodem14221'):
         self.com = serial.Serial(port, baudrate=115200)
         print(self.com)
         time.sleep(1)
@@ -43,6 +43,10 @@ class Car:
     def _receiver_main(self, id):
         print('[Receiver] Start receiving')
         count = 0
+        len1 = 0
+        flag = 0
+        data_len = 0
+        msg=""
         while True:
             try:
                 while self.com.in_waiting:          # 若收到序列資料…
@@ -53,7 +57,24 @@ class Car:
                         count = count + 1
                     else :
                         count = 0
-                    print(data)
+                    if ord(data) == 255 and flag == 0:
+                        flag =1
+                    elif flag == 1:
+                        len1 = ord(data)
+                        flag = 2
+                    elif flag == 2:
+                        msg += str(data.decode("utf-8"))
+                        data_len = data_len+1
+                        if data_len == len1:
+                            flag = 3
+                    elif flag == 3:
+                        cs = data
+                        print(msg)
+                        len1 = 0
+                        flag = 0
+                        data_len = 0
+                        msg=""
+                        
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
@@ -100,8 +121,8 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
 
-    def set_dropoff_mode(self):
-        pkg = struct.pack('BB', self.CommandId.SetDropOffMode, 0)
+    def set_docking_mode(self):
+        pkg = struct.pack('BB', self.CommandId.SetDockingMode, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
@@ -145,7 +166,11 @@ class Car:
         self.com.write(struct.pack('B', cs))
 
     def run_distance(self,left,right):
+<<<<<<< HEAD
+        pkg = struct.pack('BBII', self.CommandId.RunDistance, 8,left,right)
+=======
         pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)
+>>>>>>> e38bab33a054f657c74f6f5264ae454c277125d9
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
@@ -155,5 +180,4 @@ class Car:
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
-
-
+        
