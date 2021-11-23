@@ -75,7 +75,9 @@ def main():
         success, img = cap.read()
         if not success:
             continue
-        findGround = findArucoMarkers(img)
+        found, id, _ = findGround(img)
+        if found:
+            print(id)
 
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
