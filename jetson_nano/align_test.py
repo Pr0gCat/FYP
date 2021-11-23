@@ -46,6 +46,7 @@ if __name__ == '__main__':
     flag = True
     while True:
         ret, frame = cap.read()
+        print("new frame")
         MAX_SPPED = 400
         speed = 200
         factor = 300
@@ -64,7 +65,7 @@ if __name__ == '__main__':
                 print(f'id: {id}')
             if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id[0] == 0:
+            elif id[0] == 3:
                 print(flag)
                 car.run_speed(0, 0)
                 time.sleep(2)
