@@ -45,6 +45,7 @@ if __name__ == '__main__':
     retutn_data = []
     flag = False
     flag2 = False
+    t0 = time.time()
     while True:
         ret, frame = cap.read()
         print("new frame")
