@@ -65,7 +65,7 @@ def findGround(img, markerSize=6):
             rotation = math.degrees(yaw)
             
         return True , ID , rotation
-    return False
+    return False, None, None
 
 def main():
 
