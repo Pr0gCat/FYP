@@ -92,15 +92,15 @@ if __name__ == '__main__':
             car.wait_ack()
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0 and time.time() - t0 > 1:
+                print(arucoFound)
                 id, cx, cy, dx, dy = arucoFound[0]
                 print(dx, dy)
                 # print('tag found')
-                if dy < -30:
-                    print('go up')
-                    car.move_posz(5)
-                elif dy > 30:
+                if dy > 30:
                     print('go down')
                     car.move_posz(-5)
+                else:
+                    car.move_posz(5)
                 t0 = time.time()
 
         # time.sleep(0.1)
