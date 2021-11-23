@@ -51,12 +51,15 @@ class Car:
             try:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
+                    print(f'CAR: {data}')
                     if data == id  and count == 2:
+                        print('setted')
                         event.set()
                     if data == 1:
                         count = count + 1
                     else :
                         count = 0
+                        
                     if ord(data) == 255 and flag == 0:
                         flag =1
                     elif flag == 1:

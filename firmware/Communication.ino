@@ -85,9 +85,6 @@ void unpack()
   case CMD_INIT:
     car_init();
     break;
-  case CMD_GET_CLAW_STATE:
-    get_crawl_state();
-    break;
   case CMD_SET_CLAW_STATE:
     set_crawl_state(data);
     break;
@@ -149,10 +146,6 @@ void car_init()
   lifter_homeY();
 }
 
-void get_crawl_state()
-{
-}
-
 void set_crawl_state(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
@@ -195,7 +188,6 @@ void run_distance(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
-  send_msg("hello", 5);
 
   set_speed_l(200);
   set_speed_r(200);
