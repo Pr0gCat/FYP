@@ -8,7 +8,7 @@ if __name__ == '__main__':
     input()
     car.set_linefollow_mode()
     print('send')
-    car.run_distance(-470, 470)
+    car.run_distance(470, -470)
     car.wait_ack()
     print('done')
     while True:
