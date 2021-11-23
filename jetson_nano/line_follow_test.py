@@ -26,18 +26,6 @@ def line_following(img):
     else:
         return None
 
-def findGround(img, cargo, markerSize=6, totalMarkers=1):
-    key = getattr(aruco,'DICT_6X6_250')
-    arucoDict = aruco.Dictionary_get(key)
-    arucoParam = aruco.DetectorParameters_create()
-    img = img[int(Screem_Height / 3):Screem_Height, 0:Screen_Weight]
-    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
-    if ids is not None:
-        for x in ids:
-            if x == cargo:
-                return True
-    return False
 
 if __name__ == '__main__':
     car = Car()
