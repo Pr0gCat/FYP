@@ -14,12 +14,14 @@ bool in_distance_mode = false;
 
 PIDController speed_controller_l, speed_controller_r;
 
-void encoder_tick_l(){
+void encoder_tick_l()
+{
     encoder_l++;
     distance_l++;
 }
 
-void encoder_tick_r(){
+void encoder_tick_r()
+{
     encoder_r++;
     distance_r++;
 }
@@ -52,15 +54,18 @@ void wheel_update()
     static long unsigned int last_time = millis();
     if (millis() - last_time < REFRESH_INTERVAL)
         return;
-    
-    if (in_distance_mode && target_dist_l < distance_l && target_dist_r < distance_r)
-    {
-        confirm(CMD_RUN_DISTANCE);
-    }
 
     update_speed();
-    if(in_distance_mode){
+    if (in_distance_mode)
+    {
         update_distance();
+        if (target_dist_l < distance_l && target_dist_r < distance_r)
+        {
+            confirm(CMD_RUN_DISTANCE);
+            in_distance_mode = false;
+            en_l = false;
+            en_r = false;
+        }
     }
 
     //apply speed
@@ -79,22 +84,24 @@ void run_speed(int speed_l, int speed_r)
     en_r = (speed_r != 0);
     dir_r = speed_r > 0 ? 1 : -1;
     speed_controller_r.setpoint(abs(speed_r));
-    
+
     in_distance_mode = false;
 }
 
 void run_distance(int dist_l, int dist_r, int speed)
 {
+    en_l = true;
+    en_r = true;
     // reset distance counter
-    distance_l = dist_l > 0 ? 0 : distance_l;
-    distance_r = dist_r > 0 ? 0 : distance_r;
-    
+    distance_l = 0;
+    distance_r = 0;
+
     dir_l = dist_l > 0 ? 1 : -1;
     target_dist_l = abs(dist_l);
 
     dir_r = dist_r > 0 ? 1 : -1;
     target_dist_r = abs(dist_r);
-    
+
     in_distance_mode = true;
     speed_controller_l.setpoint(abs(speed));
     speed_controller_r.setpoint(abs(speed));
@@ -109,58 +116,72 @@ void stop_motor_r()
     en_r = false;
 }
 
-void update_distance(){
+void update_distance()
+{
     // update left motor
-    if(target_dist_l < distance_l){
+    if (target_dist_l < distance_l)
+    {
         distance_l = 0;
         en_l = false;
     }
-    
+
     // update right motor
-    if(target_dist_r < distance_r){
+    if (target_dist_r < distance_r)
+    {
         distance_r = 0;
         en_r = false;
     }
 }
 
-void update_speed(){
+void update_speed()
+{
     pwm_l = speed_controller_l.compute(encoder_l);
     pwm_r = speed_controller_r.compute(encoder_r);
     encoder_l = 0;
     encoder_r = 0;
 }
 
-void send_pwm_l(){
-    if(!en_l){
+void send_pwm_l()
+{
+    if (!en_l)
+    {
         //stop
         digitalWrite(MOTOR_L_IN1_PIN, LOW);
         digitalWrite(MOTOR_L_IN2_PIN, LOW);
         return;
     }
-    if(dir_l < 1){
-        // forward
+    if (dir_l == 1)
+    {
+        // backward
         digitalWrite(MOTOR_L_IN2_PIN, LOW);
         analogWrite(MOTOR_L_IN1_PIN, pwm_l);
-    }else{
-        // backward
+    }
+    else
+    {
+        // forward
         digitalWrite(MOTOR_L_IN1_PIN, LOW);
         analogWrite(MOTOR_L_IN2_PIN, pwm_l);
     }
 }
 
-void send_pwm_r(){
-    if(!en_r){
+void send_pwm_r()
+{
+    if (!en_r)
+    {
         //stop
         digitalWrite(MOTOR_R_IN1_PIN, LOW);
         digitalWrite(MOTOR_R_IN2_PIN, LOW);
         return;
     }
-    if(dir_l < 1){
-        // forward
+    if (dir_r == 1)
+    {
+        // backward
         digitalWrite(MOTOR_R_IN2_PIN, LOW);
         analogWrite(MOTOR_R_IN1_PIN, pwm_r);
-    }else{
-        // backward
+    }
+    else
+    {
+        // forward
         digitalWrite(MOTOR_R_IN1_PIN, LOW);
         analogWrite(MOTOR_R_IN2_PIN, pwm_r);
     }

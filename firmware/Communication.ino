@@ -90,12 +90,15 @@ void unpack()
     break;
   case CMD_SET_LINEFOLLOW_MODE:
     set_camera_mode(LineFollow);
+    confirm(cmd);
     break;
   case CMD_SET_PICKUP_MODE:
     set_camera_mode(PickUp);
+    confirm(cmd);
     break;
   case CMD_SET_DROPOFF_MODE:
     set_camera_mode(DropOff);
+    confirm(cmd);
     break;
   case CMD_GOTO_POSY:
     goto_posy(data);
