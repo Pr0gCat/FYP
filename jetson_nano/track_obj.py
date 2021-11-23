@@ -1,5 +1,5 @@
 from communicate import Car
-from aruco.main import findArucoMarkers
+from aruco.find_aruco import findArucoMarkers
 import cv2
 import numpy as np
 import time
