@@ -8,7 +8,10 @@ if __name__ == '__main__':
     input()
     print('move')
     car.move_posz(100)
-    # car.wait_ack()
+    car.wait_ack()
+    time.sleep(3)
+    car.move_posz(-100)
+    car.wait_ack()
     print('done')
     while True:
         pass
