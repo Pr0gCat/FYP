@@ -72,8 +72,9 @@ if __name__ == '__main__':
                 time.sleep(5)
                 car.run_distance(-470, 470)
                 time.sleep(5)
-                print('done', time.time())
             elif id == 1:
+                car.run_speed(0,0)
+                print('done')
                 break
 
         # time.sleep(0.1)
