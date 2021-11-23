@@ -1,5 +1,6 @@
 from communicate import Car
-import cv2.aruco as aruco
+from aruco.find_aruco import findGround
+# import cv2.aruco as aruco
 import cv2
 import time
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         factor = 300
         if ret:
             if(flag):
-                flag = not findGround(frame, 1)
+                flag = not findGround(frame)
                 offset = line_following(frame)
                 # print(offset)
                 if offset is None:
