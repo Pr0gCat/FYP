@@ -7,7 +7,7 @@ from aruco.find_aruco import findGround
 def main():
     car = Car()
     # car.init_car()
-    car.set_pickup_mode()  
+    car.set_linefollow_mode()  
     car.wait_ack()                                                   
     print('Car initialized')
 
