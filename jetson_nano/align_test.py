@@ -69,6 +69,7 @@ if __name__ == '__main__':
                 car.run_distance(700, 700)
                 print('doing', time.time())
                 car.wait_ack()
+                time.sleep(5)
                 print('done', time.time())
                 break
 
