@@ -60,6 +60,9 @@ def findGround(img, markerSize=6, totalMarkers=1):
             rotation_matrix, jacobian = cv2.Rodrigues(rvec_flipped)
 
             pitch, roll, yaw = rotationMatrixToEulerAngles(rotation_matrix)
+
+            ID = x
+            rotation = math.degrees(yaw)
             
-        return True , ID , math.degrees(yaw)
+        return True , ID , rotation
     return False
