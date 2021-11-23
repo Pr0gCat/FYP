@@ -62,7 +62,7 @@ if __name__ == '__main__':
             print(offset, speed_l, speed_r)
             if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id == 0:
+            elif id == 4:
                 print(flag)
                 car.run_speed(0, 0)
                 time.sleep(2)
@@ -72,16 +72,8 @@ if __name__ == '__main__':
                 time.sleep(3)
                 car.run_distance(-470, 470)
                 time.sleep(3)
-                print('move z')
-                car.move_posz(500)
-                car.wait_ack()
-                time.sleep(3)
-                print('move y')
-                car.move_posy(600)
-                car.wait_ack()
-                time.sleep(3)
-                car.run_distance(1100, 1100)
-                time.sleep(5)
-                break
+            # elif id == 4:
+            #     car.run_speed(0,0)
+            #     break
 
         # time.sleep(0.1)
