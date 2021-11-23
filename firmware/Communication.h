@@ -22,5 +22,6 @@
 #define CMD_MSG 255
 
 void cmd_update();
+void confirm(int cmd);
 
 #endif

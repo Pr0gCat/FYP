@@ -124,7 +124,6 @@ void unpack()
   default:
     return;
   }
-  confirm(cmd);
 }
 
 void confirm(int cmd)
@@ -181,7 +180,7 @@ void set_motor_speed(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
-  runSpeed(left, right);
+  run_speed(left, right);
 }
 
 void run_distance(unsigned char data[])
@@ -189,11 +188,7 @@ void run_distance(unsigned char data[])
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
 
-  set_speed_l(200);
-  set_speed_r(200);
-  set_distance_l(left);
-  set_distance_r(right);
-  
+  run_distance(left, right, 200);
 }
 
 void send_msg(char msg[],int len)

@@ -1,263 +1,167 @@
-#include <PIDController.h>
+#include "WheelController.h"
+
 #include "config.h"
+#include "Communication.h"
+#include <PIDController.h>
 
-volatile long int speed_count_l = 0, speed_count_r = 0;
+volatile long int encoder_l = 0, encoder_r = 0;
 volatile long int distance_l = 0, distance_r = 0;
-int motor_enable_r = 1, motor_enable_l = 1;
-int motor_direction_l = 1, motor_direction_r = 1;
-int target_distance_r = 0,target_distance_l = 0;
-int motor_mode = 0;
-PIDController pid_speed_l, pid_speed_r;
+int target_dist_l = 0, target_dist_r = 0;
+unsigned char pwm_l = 0, pwm_r = 0;
+int dir_l = 1, dir_r = 1;
+bool en_l = true, en_r = true;
+bool in_distance_mode = false;
 
-void encoder_l()
-{
-    speed_count_l++;
+PIDController speed_controller_l, speed_controller_r;
+
+void encoder_tick_l(){
+    encoder_l++;
     distance_l++;
 }
 
-void encoder_r()
-{
-    speed_count_r++;
+void encoder_tick_r(){
+    encoder_r++;
     distance_r++;
-}
-
-void Set_motor_pwm(int motor_pwm, int motot, int sw, int power, int directionm)
-{
-  if (sw)
-  {
-    if (directionm > 0)
-    {
-      digitalWrite(motot, LOW);
-      analogWrite(motor_pwm, power);
-    }
-    else
-    {
-      digitalWrite(motor_pwm, LOW);
-      analogWrite(motot, power);
-    }
-  }
-  else
-  {
-    analogWrite(motor_pwm, LOW);
-    digitalWrite(motot, LOW);
-  }
-}
-
-void stop_motor_l()
-{
-  motor_enable_l = 0;
-}
-
-void stop_motor_r()
-{
-  motor_enable_r = 0;
-}
-
-void set_origin_l()
-{
-  distance_l = 0;
-}
-
-void set_origin_r()
-{
-  distance_r = 0;
-}
-
-void set_distance_l(int distance_l)
-{
-  set_origin_l();
-  if (distance_l > 0)
-  {
-    motor_direction_l = 1;
-    target_distance_l = distance_l;
-  }else{
-    motor_direction_l = -1;
-    target_distance_l = abs(distance_l);
-  }
-  motor_mode = 0;
-}
-
-void set_distance_r(int distance_r)
-{
-  set_origin_r();
-  if (distance_r > 0)
-  {
-    motor_direction_r = 1;
-    target_distance_r = distance_r;
-  }else{
-    motor_direction_r = -1;
-    target_distance_r = abs(distance_r);
-  }
-  motor_mode = 0;
-}
-
-void set_speed_l(int speed_l)
-{
-  if (speed_l > 0)
-  {
-    motor_direction_l = 1;
-    pid_speed_l.setpoint(speed_l);
-  }
-  else
-  {
-    motor_direction_l = -1;
-    pid_speed_l.setpoint(abs(speed_l));
-  }
-  motor_enable_l = 1;
-}
-
-void set_speed_r(int speed_r)
-{
-  if (speed_r > 0)
-  {
-    motor_direction_r = 1;
-    pid_speed_r.setpoint(speed_r);
-  }
-  else
-  {
-    motor_direction_r = -1;
-    pid_speed_r.setpoint(abs(speed_r));
-  }
-  motor_enable_r = 1;
-}
-
-int motor_controller_l(int enable)
-{
-  int motor_l_pwm = pid_speed_l.compute(speed_count_l);
-  // Serial.write("L");
-  // Serial.print(motor_l_pwm);
-  Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm, motor_direction_l);
-  speed_count_l = 0;
-}
-
-int motor_controller_r(int enable)
-{
-  int motor_r_pwm = pid_speed_r.compute(speed_count_r);
-  // Serial.write("R");
-  // Serial.print(motor_r_pwm);
-  speed_count_r = 0;
-  Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm, motor_direction_r);
-}
-
-int motor_controller_distance_l(int enable)
-{
-  int motor_l_pwm = pid_speed_l.compute(speed_count_l);
-  //int motor_on_l = pid_distance_l.compute(distance_l);
-  speed_count_l = 0;
-  if (target_distance_l > distance_l)
-  {//Serial.println(distance_l);Serial.println(target_distance_l);
-    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, enable, motor_l_pwm, motor_direction_l);
-    return 1;
-  }
-  else
-  {
-    set_origin_l();
-    stop_motor_l();
-    Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, 0, 0, 0);
-    return 0;
-  }
-}
-
-int motor_controller_distance_r(int enable)
-{
-  int motor_r_pwm = pid_speed_r.compute(speed_count_r);
-  //int motor_on_r = pid_distance_r.compute(distance_r);
-  speed_count_r = 0;
-
-  if (target_distance_r > distance_r)
-  {
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, enable, motor_r_pwm, motor_direction_r);
-    return 1;
-  }
-  else
-  {
-    set_origin_r();
-    stop_motor_r();
-    Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0, 0);
-    return 0;
-  }
-}
-
-void set_speed_r(int32_t speed)
-{
-  if (speed > 0)
-  {
-    motor_direction_r = 1;
-    pid_speed_r.setpoint(speed);
-  }
-  else
-  {
-    motor_direction_r = -1;
-    pid_speed_r.setpoint(abs(speed));
-  }
-  if (speed == 0)
-    motor_enable_r = 0;
-  else
-    motor_enable_r = 1;
-}
-
-void set_speed_l(int32_t speed)
-{
-  if (speed > 0)
-  {
-    motor_direction_l = 1;
-    pid_speed_l.setpoint(speed);
-  }
-  else
-  {
-    motor_direction_l = -1;
-    pid_speed_l.setpoint(abs(speed));
-  }
-  if (speed == 0)
-    motor_enable_l = 0;
-  else
-    motor_enable_l = 1;
-}
-
-void runSpeed(int32_t speed_l, int32_t speed_r)
-{
-  motor_mode = 1;
-  set_speed_r(speed_r);
-  set_speed_l(speed_l);
-}
-
-void wheel_update()
-{
-  static long unsigned int last_time = millis();
-  if (millis() - last_time < REFRESH_INTERVAL)
-    return;
-  if (motor_mode)
-  {
-    motor_controller_l(motor_enable_l);
-    motor_controller_r(motor_enable_r);
-  }
-  else
-  {
-    motor_controller_distance_l(motor_enable_l);
-    motor_controller_distance_r(motor_enable_r);
-  }
-  last_time = millis();
 }
 
 void wheel_setup()
 {
-  // encoder
-  pinMode(ENCODER_LF_PIN, INPUT);
-  pinMode(ENCODER_RF_PIN, INPUT);
-  // motor
-  pinMode(MOTOR_L_IN1_PIN, OUTPUT);
-  pinMode(MOTOR_R_IN1_PIN, OUTPUT);
-  pinMode(MOTOR_L_IN2_PIN, OUTPUT);
-  pinMode(MOTOR_R_IN2_PIN, OUTPUT);
+    // encoder
+    pinMode(ENCODER_LF_PIN, INPUT);
+    pinMode(ENCODER_RF_PIN, INPUT);
+    // motor
+    pinMode(MOTOR_L_IN1_PIN, OUTPUT);
+    pinMode(MOTOR_R_IN1_PIN, OUTPUT);
+    pinMode(MOTOR_L_IN2_PIN, OUTPUT);
+    pinMode(MOTOR_R_IN2_PIN, OUTPUT);
 
-  attachInterrupt(digitalPinToInterrupt(ENCODER_LF_PIN), encoder_l, RISING);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), encoder_r, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_LF_PIN), encoder_tick_l, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_RF_PIN), encoder_tick_r, RISING);
 
-  pid_speed_l.begin();
-  pid_speed_l.tune(SPEED_L_Kp, SPEED_L_Ki, SPEED_L_Kd);
-  pid_speed_l.limit(-255, 255);
+    speed_controller_l.begin();
+    speed_controller_l.tune(SPEED_L_Kp, SPEED_L_Ki, SPEED_L_Kd);
+    speed_controller_l.limit(-255, 255);
 
-  pid_speed_r.begin();
-  pid_speed_r.tune(SPEED_R_Kp, SPEED_R_Ki, SPEED_R_Kd);
-  pid_speed_r.limit(-255, 255);
+    speed_controller_r.begin();
+    speed_controller_r.tune(SPEED_R_Kp, SPEED_R_Ki, SPEED_R_Kd);
+    speed_controller_r.limit(-255, 255);
+}
+
+void wheel_update()
+{
+    static long unsigned int last_time = millis();
+    if (millis() - last_time < REFRESH_INTERVAL)
+        return;
+    
+    if (in_distance_mode && target_dist_l < distance_l && target_dist_r < distance_r)
+    {
+        confirm(CMD_RUN_DISTANCE);
+    }
+
+    update_speed();
+    if(in_distance_mode){
+        update_distance();
+    }
+
+    //apply speed
+    send_pwm_l();
+    send_pwm_r();
+
+    last_time = millis();
+}
+
+void run_speed(int speed_l, int speed_r)
+{
+    en_l = (speed_l != 0);
+    dir_l = speed_l > 0 ? 1 : -1;
+    speed_controller_l.setpoint(abs(speed_l));
+
+    en_r = (speed_r != 0);
+    dir_r = speed_r > 0 ? 1 : -1;
+    speed_controller_r.setpoint(abs(speed_r));
+    
+    in_distance_mode = false;
+}
+
+void run_distance(int dist_l, int dist_r, int speed)
+{
+    // reset distance counter
+    distance_l = dist_l > 0 ? 0 : distance_l;
+    distance_r = dist_r > 0 ? 0 : distance_r;
+    
+    dir_l = dist_l > 0 ? 1 : -1;
+    target_dist_l = abs(dist_l);
+
+    dir_r = dist_r > 0 ? 1 : -1;
+    target_dist_r = abs(dist_r);
+    
+    in_distance_mode = true;
+    speed_controller_l.setpoint(abs(speed));
+    speed_controller_r.setpoint(abs(speed));
+}
+
+void stop_motor_l()
+{
+    en_l = false;
+}
+void stop_motor_r()
+{
+    en_r = false;
+}
+
+void update_distance(){
+    // update left motor
+    if(target_dist_l < distance_l){
+        distance_l = 0;
+        en_l = false;
+    }
+    
+    // update right motor
+    if(target_dist_r < distance_r){
+        distance_r = 0;
+        en_r = false;
+    }
+}
+
+void update_speed(){
+    pwm_l = speed_controller_l.compute(encoder_l);
+    pwm_r = speed_controller_r.compute(encoder_r);
+    encoder_l = 0;
+    encoder_r = 0;
+}
+
+void send_pwm_l(){
+    if(!en_l){
+        //stop
+        digitalWrite(MOTOR_L_IN1_PIN, LOW);
+        digitalWrite(MOTOR_L_IN2_PIN, LOW);
+        return;
+    }
+    if(dir_l > 1){
+        // forward
+        digitalWrite(MOTOR_L_IN2_PIN, LOW);
+        analogWrite(MOTOR_L_IN1_PIN, pwm_l);
+    }else{
+        // backward
+        digitalWrite(MOTOR_L_IN1_PIN, LOW);
+        analogWrite(MOTOR_L_IN2_PIN, pwm_l);
+    }
+}
+
+void send_pwm_r(){
+    if(!en_r){
+        //stop
+        digitalWrite(MOTOR_R_IN1_PIN, LOW);
+        digitalWrite(MOTOR_R_IN2_PIN, LOW);
+        return;
+    }
+    if(dir_l > 1){
+        // forward
+        digitalWrite(MOTOR_R_IN2_PIN, LOW);
+        analogWrite(MOTOR_R_IN1_PIN, pwm_r);
+    }else{
+        // backward
+        digitalWrite(MOTOR_R_IN1_PIN, LOW);
+        analogWrite(MOTOR_R_IN2_PIN, pwm_r);
+    }
 }
