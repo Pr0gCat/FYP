@@ -30,9 +30,9 @@ def line_following(img):
 if __name__ == '__main__':
     car = Car()
     # input()
-    # car.init_car()
-    # car.wait_ack()
-    # print("Car initialized")
+    car.init_car()
+    car.wait_ack()
+    print("Car initialized")
     car.set_linefollow_mode()
     car.wait_ack()
     input('ready')
