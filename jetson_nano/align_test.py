@@ -45,6 +45,7 @@ if __name__ == '__main__':
     retutn_data = []
     flag = False
     flag2 = True
+    flag3 = False
     t0 = time.time()
     while True:
         ret, frame = cap.read()
@@ -90,6 +91,8 @@ if __name__ == '__main__':
             time.sleep(10)
             car.set_pickup_mode()
             car.wait_ack()
+            flag3 = True
+        if flag3:
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0 and time.time() - t0 > 1:
                 print(arucoFound)
