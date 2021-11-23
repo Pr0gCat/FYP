@@ -45,7 +45,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     retutn_data = []
     flag = False
-    flag2 = True
+    flag2 = False
     flag3 = False
     t0 = time.time()
     while True:
