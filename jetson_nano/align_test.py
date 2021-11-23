@@ -85,12 +85,11 @@ if __name__ == '__main__':
                 print('move z')
                 car.move_posy(200)
                 car.wait_ack()
-                time.sleep(5)
+                time.sleep(10)
                 flag2 = True
         else:
             car.set_pickup_mode()
             car.wait_ack()
-            car.move_posz(5)
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0 and time.time() - t0 > 1:
                 id, cx, cy, dx, dy = arucoFound[0]
