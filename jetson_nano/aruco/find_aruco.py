@@ -7,9 +7,10 @@ with open('camera_cal.npy', 'rb') as f:
     camera_matrix = np.load(f)
     camera_distortion = np.load(f)
 
-key = getattr(aruco,'DICT_6X6_250')
+key = getattr(aruco, 'DICT_6X6_250')
 arucoDict = aruco.Dictionary_get(key)
 arucoParam = aruco.DetectorParameters_create()
+
 
 def isRotationMatrix(R):
     Rt = np.transpose(R)
@@ -17,6 +18,7 @@ def isRotationMatrix(R):
     I = np.identity(3, dtype=R.dtype)
     n = np.linalg.norm(I-shouldBeIdentity)
     return n < 1e-6
+
 
 def rotationMatrixToEulerAngles(R):
     assert(isRotationMatrix(R))
@@ -30,29 +32,34 @@ def rotationMatrixToEulerAngles(R):
         y = math.atan2(-R[2, 0], sy)
         z = math.atan2(R[1, 0], R[0, 0])
     else:
-        x = math.atan2(-R[1,2], R[1, 1])
+        x = math.atan2(-R[1, 2], R[1, 1])
         y = math.atan2(-R[2, 0], sy)
         z = 0
-    
+
     return np.array([x, y, z])
 
+
 def findArucoMarkers(img, cargo, markerSize=6):
-    data=[]
+    data = []
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
+    corners, ids, rejected = aruco.detectMarkers(
+        imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
         for x in ids:
             if x == cargo:
                 return True
     return False
 
+
 def findGround(img, markerSize=6):
     img = img[int(480 / 3):480, :]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
+    corners, ids, rejected = aruco.detectMarkers(
+        imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
         for x in ids:
-            rvec_list_all, tvec_list_all = aruco.estimatePoseSingleMarkers(corners, markerSize, camera_matrix, camera_distortion)
+            rvec_list_all, tvec_list_all = aruco.estimatePoseSingleMarkers(
+                corners, markerSize, camera_matrix, camera_distortion)
 
             rvec = rvec_list_all[0][0]
 
@@ -63,9 +70,10 @@ def findGround(img, markerSize=6):
 
             ID = x
             rotation = math.degrees(yaw)
-            
-        return True , ID , rotation
+
+        return True, ID, rotation
     return False, None, None
+
 
 def main():
 
@@ -81,10 +89,12 @@ def main():
 
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
-        if key == ord("q"): break
+        if key == ord("q"):
+            break
 
     cap.release()
     cv2.destroyAllWindows()
+
 
 if __name__ == "__main__":
     main()
