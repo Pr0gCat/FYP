@@ -136,13 +136,13 @@ class Car:
     #     self.com.write(struct.pack('B', cs))
 
     def move_posy(self, posy):
-        pkg = struct.pack('BBI', self.CommandId.MovePosY, 4,posy)
+        pkg = struct.pack('BBh', self.CommandId.MovePosY, 2,posy)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
 
     def move_posz(self,posz):
-        pkg = struct.pack('BBI', self.CommandId.MovePosZ, 4, posz)
+        pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
