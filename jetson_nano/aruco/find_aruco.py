@@ -36,7 +36,7 @@ def rotationMatrixToEulerAngles(R):
     
     return np.array([x, y, z])
 
-def findArucoMarkers(img, cargo):
+def findArucoMarkers(img, cargo, markerSize=6):
     data=[]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
@@ -46,7 +46,7 @@ def findArucoMarkers(img, cargo):
                 return True
     return False
 
-def findGround(img):
+def findGround(img, markerSize=6):
     img = img[int(Screem_Height / 3):Screem_Height, 0:Screen_Weight]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
