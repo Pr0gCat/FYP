@@ -95,7 +95,7 @@ if __name__ == '__main__':
             flag3 = True
         if flag3:
             arucoFound = findArucoMarkers(frame)
-            if len(arucoFound) > 0 and time.time() - t0 > 5:
+            if len(arucoFound) > 0 and time.time() - t0 > 1:
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
                 distance = cy - 240
@@ -108,6 +108,7 @@ if __name__ == '__main__':
                     print('go up')
                     car.move_posz(5)
                 t0 = time.time()
+                time.sleep(5)
             else:
                 car.move_posz(5)
 
