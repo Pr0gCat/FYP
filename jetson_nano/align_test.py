@@ -107,7 +107,7 @@ if __name__ == '__main__':
                 elif distance < -20:
                     print('go up')
                     car.move_posz(5)
-
+                time.sleep(2)
                 t0 = time.time()
             else:
                 car.move_posz(10)
