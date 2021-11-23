@@ -66,11 +66,14 @@ if __name__ == '__main__':
                 print(flag)
                 car.run_speed(0, 0)
                 time.sleep(2)
-                car.run_distance(700, 700)
+                car.run_distance(800, 800)
                 print('doing', time.time())
                 car.wait_ack()
                 time.sleep(5)
+                car.run_distance(-470, 470)
+                time.sleep(5)
                 print('done', time.time())
+            elif id == 1:
                 break
 
         # time.sleep(0.1)
