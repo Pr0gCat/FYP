@@ -47,7 +47,7 @@ def findArucoMarkers(img, cargo, markerSize=6):
     return False
 
 def findGround(img, markerSize=6):
-    # img = img[int(480 / 3):480, :]
+    img = img[int(480 / 3):480, :]
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(imgGray, arucoDict, parameters=arucoParam)
     if ids is not None:
