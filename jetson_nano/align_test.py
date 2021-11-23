@@ -84,7 +84,7 @@ if __name__ == '__main__':
                 car.run_speed(0,0)
                 
                 flag2 = True
-        else:
+        elif not flag3:
             print('move y')
             car.move_posy(200)
             car.wait_ack()
