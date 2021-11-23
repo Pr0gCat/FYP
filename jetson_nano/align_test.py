@@ -44,7 +44,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     retutn_data = []
     flag = False
-    flag2 = False
+    flag2 = True
     t0 = time.time()
     while True:
         ret, frame = cap.read()
