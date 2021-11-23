@@ -21,29 +21,21 @@ typedef void (*CallbackFunc)();
 */
 #define REFRESH_INTERVAL 100
 
-#define SPEED_L_Kp 3
-#define SPEED_L_Ki 0.05
-#define SPEED_L_Kd 0
+// #define SPEED_R_Kp 2.4
+// #define SPEED_R_Ki 0.03
+// #define SPEED_R_Kd 0
 
-#define SPEED_R_Kp 2.4
+// #define SPEED_L_Kp 3
+// #define SPEED_L_Ki 0.05
+// #define SPEED_L_Kd 0
+
+#define SPEED_R_Kp 2.4*2
 #define SPEED_R_Ki 0.03
 #define SPEED_R_Kd 0
 
-#define DIST_L_Kp 260
-#define DIST_L_Ki 2.7
-#define DIST_L_Kd 2000
-
-#define DIST_R_Kp 260
-#define DIST_R_Ki 2.7
-#define DIST_R_Kd 2000
-
-// #define DIST_L_Kp 3
-// #define DIST_L_Ki 0.05
-// #define DIST_L_Kd 0
-
-// #define DIST_R_Kp 2.4
-// #define DIST_R_Ki 0.03
-// #define DIST_R_Kd 0
+#define SPEED_L_Kp 3*2
+#define SPEED_L_Ki 0.05
+#define SPEED_L_Kd 0
 
 /*
     Steppers, EndStops & Claw

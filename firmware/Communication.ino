@@ -195,12 +195,13 @@ void run_distance(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
-  Serial.print(left);
-  Serial.print(right);
+  send_msg("hello", 5);
+
   set_speed_l(200);
   set_speed_r(200);
   set_distance_l(left);
   set_distance_r(right);
+  
 }
 
 void send_msg(char msg[],int len)

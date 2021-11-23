@@ -8,6 +8,6 @@ if __name__ == '__main__':
     input()
     car.set_linefollow_mode()
     print('send')
-    car.run_distance(100, -100)
+    car.run_distance(-470, 470)
     while True:
         pass

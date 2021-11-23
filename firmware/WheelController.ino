@@ -8,7 +8,6 @@ int motor_direction_l = 1, motor_direction_r = 1;
 int target_distance_r = 0,target_distance_l = 0;
 int motor_mode = 0;
 PIDController pid_speed_l, pid_speed_r;
-PIDController pid_distance_l, pid_distance_r;
 
 void encoder_l()
 {
@@ -66,6 +65,7 @@ void set_origin_r()
 
 void set_distance_l(int distance_l)
 {
+  set_origin_l();
   if (distance_l > 0)
   {
     motor_direction_l = 1;
@@ -79,6 +79,7 @@ void set_distance_l(int distance_l)
 
 void set_distance_r(int distance_r)
 {
+  set_origin_r();
   if (distance_r > 0)
   {
     motor_direction_r = 1;
@@ -150,6 +151,8 @@ int motor_controller_distance_l(int enable)
   }
   else
   {
+    set_origin_l();
+    stop_motor_l();
     Set_motor_pwm(MOTOR_L_IN1_PIN, MOTOR_L_IN2_PIN, 0, 0, 0);
     return 0;
   }
@@ -168,6 +171,8 @@ int motor_controller_distance_r(int enable)
   }
   else
   {
+    set_origin_r();
+    stop_motor_r();
     Set_motor_pwm(MOTOR_R_IN1_PIN, MOTOR_R_IN2_PIN, 0, 0, 0);
     return 0;
   }
@@ -255,12 +260,4 @@ void wheel_setup()
   pid_speed_r.begin();
   pid_speed_r.tune(SPEED_R_Kp, SPEED_R_Ki, SPEED_R_Kd);
   pid_speed_r.limit(-255, 255);
-
-  pid_distance_l.begin();
-  pid_distance_l.tune(DIST_L_Kp, DIST_L_Ki, DIST_L_Kd);
-  pid_distance_l.limit(-255, 255);
-
-  pid_distance_r.begin();
-  pid_distance_r.tune(DIST_R_Kp, DIST_R_Ki, DIST_R_Kd);
-  pid_distance_r.limit(-255, 255);
 }

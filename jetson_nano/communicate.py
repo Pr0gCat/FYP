@@ -29,7 +29,7 @@ class Car:
         SetMotorSpeed = 16
         Msg = 255
 
-    def __init__(self, port='/dev/cu.usbmodem14221'):
+    def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00'):
         self.com = serial.Serial(port, baudrate=115200)
         print(self.com)
         time.sleep(1)
