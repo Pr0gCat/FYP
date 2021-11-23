@@ -52,31 +52,31 @@ class Car:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
                     print(f'CAR: {data}')
-                    # if data == id  and count == 2:
-                    #     print('setted')
-                    #     event.set()
-                    # if data == 1:
-                    #     count = count + 1
-                    # else :
-                    #     count = 0
+                    if data == id  and count == 2:
+                        print('setted')
+                        event.set()
+                    if data == 1:
+                        count = count + 1
+                    else :
+                        count = 0
                         
-                    # if ord(data) == 255 and flag == 0:
-                    #     flag =1
-                    # elif flag == 1:
-                    #     len1 = ord(data)
-                    #     flag = 2
-                    # elif flag == 2:
-                    #     msg += str(data.decode("utf-8"))
-                    #     data_len = data_len+1
-                    #     if data_len == len1:
-                    #         flag = 3
-                    # elif flag == 3:
-                    #     cs = data
-                    #     print(msg)
-                    #     len1 = 0
-                    #     flag = 0
-                    #     data_len = 0
-                    #     msg=""
+                    if ord(data) == 255 and flag == 0:
+                        flag =1
+                    elif flag == 1:
+                        len1 = ord(data)
+                        flag = 2
+                    elif flag == 2:
+                        msg += str(data.decode("utf-8"))
+                        data_len = data_len+1
+                        if data_len == len1:
+                            flag = 3
+                    elif flag == 3:
+                        cs = data
+                        print(msg)
+                        len1 = 0
+                        flag = 0
+                        data_len = 0
+                        msg=""
                         
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
