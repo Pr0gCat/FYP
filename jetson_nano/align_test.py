@@ -30,8 +30,8 @@ def line_following(img):
 if __name__ == '__main__':
     car = Car()
     # input()
-    car.init_car()
-    car.wait_ack()
+    # car.init_car()
+    # car.wait_ack()
     print("Car initialized")
     car.set_linefollow_mode()
     car.wait_ack()
@@ -60,6 +60,8 @@ if __name__ == '__main__':
             speed_l = min(MAX_SPPED, speed - compan)
             speed_r = min(MAX_SPPED, speed + compan)
             print(offset, speed_l, speed_r)
+            if found: 
+                print(f'id: {id}')
             if not found:
                 car.run_speed(speed_l, speed_r)
             elif id == 0:
