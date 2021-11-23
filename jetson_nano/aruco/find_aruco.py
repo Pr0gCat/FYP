@@ -66,3 +66,23 @@ def findGround(img, markerSize=6):
             
         return True , ID , rotation
     return False
+
+def main():
+
+    cap = cv2.VideoCapture(-1)
+
+    while True:
+        success, img = cap.read()
+        if not success:
+            continue
+        findGround = findArucoMarkers(img)
+
+        cv2.imshow("Image", img)
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord("q"): break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
