@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 print(f'id: {id}')
             if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id[0] == 3 and not flag:
+            elif id[0] == 0 and not flag:
                 print(flag)
                 car.run_speed(0, 0)
                 time.sleep(2)
