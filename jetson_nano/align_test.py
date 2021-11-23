@@ -1,3 +1,4 @@
+from enum import Flag
 from communicate import Car
 from aruco.find_aruco import findGround
 import cv2
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     cap.set(3, Screen_Weight)
     cap.set(4, Screem_Height)
     retutn_data = []
-    flag = True
+    flag = False
     while True:
         ret, frame = cap.read()
         print("new frame")
@@ -65,7 +66,7 @@ if __name__ == '__main__':
                 print(f'id: {id}')
             if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id[0] == 3:
+            elif id[0] == 3 and not flag:
                 print(flag)
                 car.run_speed(0, 0)
                 time.sleep(2)
@@ -75,6 +76,7 @@ if __name__ == '__main__':
                 time.sleep(3)
                 car.run_distance(-470, 470)
                 time.sleep(3)
+                flag = True
             elif id[0] == 1:
                 car.run_speed(0,0)
                 print('prog end')
