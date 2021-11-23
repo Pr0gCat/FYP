@@ -170,14 +170,12 @@ void goto_posz(unsigned char data[])
 void move_posy(unsigned char data[])
 {
   int16_t pos = (data[0] + (data[1] << 8));
-  send_msg("move posy", 10);
   lifter_move_relative(Y, pos);
 }
 
 void move_posz(unsigned char data[])
 {
   int16_t pos = (data[0] + (data[1] << 8));
-  send_msg("move posz", 10);
   lifter_move_relative(Z, pos);
 }
 
