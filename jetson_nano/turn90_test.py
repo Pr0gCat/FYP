@@ -9,7 +9,7 @@ if __name__ == '__main__':
     car.set_linefollow_mode()
     print('send')
     car.run_distance(-470, 470)
-    car.wait_ack(Car.CommandId.RunDistance, True)
+    car.wait_ack()
     print('done')
     while True:
         pass
