@@ -72,6 +72,13 @@ if __name__ == '__main__':
                 time.sleep(5)
                 car.run_distance(-470, 470)
                 time.sleep(5)
+                print('move z')
+                car.move_posz(500)
+                car.wait_ack()
+                print('move y')
+                car.move_posy(600)
+                car.wait_ack()
+                
                 car.run_distance(1100, 1100)
                 time.sleep(5)
                 break
