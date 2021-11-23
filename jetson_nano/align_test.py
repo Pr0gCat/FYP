@@ -1,3 +1,4 @@
+from dis import dis
 from communicate import Car
 from aruco.find_aruco import findGround, findArucoMarkers
 import cv2
@@ -98,13 +99,17 @@ if __name__ == '__main__':
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
                 distance = cy - 240
-                print(cy)
+                print(distance)
                 # print('tag found')
-                if cy > 30:
+                if distance > 20:
                     print('go down')
                     car.move_posz(-5)
+                elif distance < -20:
+                    print('go up')
+                    car.move_posz(5)
+
                 t0 = time.time()
             else:
-                car.move_posz(5)
+                car.move_posz(10)
 
         # time.sleep(0.1)
