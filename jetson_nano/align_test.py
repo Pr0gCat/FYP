@@ -48,7 +48,6 @@ if __name__ == '__main__':
     t0 = time.time()
     while True:
         ret, frame = cap.read()
-        print("new frame")
         MAX_SPPED = 400
         speed = 200
         factor = 300
@@ -82,12 +81,13 @@ if __name__ == '__main__':
                 flag = True
             elif id[0] == 1:
                 car.run_speed(0,0)
-                print('move z')
-                car.move_posy(200)
-                car.wait_ack()
-                time.sleep(10)
+                
                 flag2 = True
         else:
+            print('move y')
+            car.move_posy(200)
+            car.wait_ack()
+            time.sleep(10)
             car.set_pickup_mode()
             car.wait_ack()
             arucoFound = findArucoMarkers(frame)
@@ -99,8 +99,8 @@ if __name__ == '__main__':
                 if dy > 30:
                     print('go down')
                     car.move_posz(-5)
-                else:
-                    car.move_posz(5)
                 t0 = time.time()
+            else:
+                car.move_posz(5)
 
         # time.sleep(0.1)
