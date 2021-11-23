@@ -110,7 +110,6 @@ if __name__ == '__main__':
                     print('go up')
                     car.move_posz(5)
                 t0 = time.time()
-                time.sleep(5)
             else:
                 car.move_posz(5)
 
