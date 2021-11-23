@@ -67,5 +67,6 @@ if __name__ == '__main__':
                 car.run_speed(0, 0)
                 car.run_distance(700, 700)
                 car.wait_ack()
+                break
 
         # time.sleep(0.1)
