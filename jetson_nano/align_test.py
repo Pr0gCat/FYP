@@ -66,7 +66,9 @@ if __name__ == '__main__':
                 print(flag)
                 car.run_speed(0, 0)
                 car.run_distance(700, 700)
+                print('doing', time.time())
                 car.wait_ack()
+                print('done', time.time())
                 break
 
         # time.sleep(0.1)
