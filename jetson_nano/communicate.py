@@ -15,10 +15,10 @@ class Car:
         SetLinefollowMode = 5
         SetPickupMode = 6
         SetDropOffMode = 7
-        GotoPosY = 8
-        GotoPosZ = 9
-        MovePosY = 10
-        MovePosZ = 11
+        MovePosY = 8
+        MovePosZ = 9
+        GotoPosY = 10
+        GotoPosZ = 11
         HomeY = 12
         HomeZ = 13
         RunDistance = 14
