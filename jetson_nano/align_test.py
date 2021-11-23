@@ -101,15 +101,15 @@ if __name__ == '__main__':
                 distance = cy - 240
                 print(distance)
                 # print('tag found')
-                if distance > 20:
+                if distance > 10:
                     print('go down')
                     car.move_posz(-5)
-                elif distance < -20:
+                elif distance < -10:
                     print('go up')
                     car.move_posz(5)
-                time.sleep(2)
+                time.sleep(3)
                 t0 = time.time()
             else:
-                car.move_posz(10)
+                car.move_posz(5)
 
         # time.sleep(0.1)
