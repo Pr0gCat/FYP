@@ -51,15 +51,15 @@ void lifter_update(){
         z_axis.setCurrentPosition(0);
     }
 
-    if(z_axis.distanceToGo() == 0 && running_z){
-        confirm(CMD_MOVE_POSZ);
-        running_z = false;
-    }
+    // if(z_axis.distanceToGo() == 0 && running_z){
+    //     confirm(CMD_MOVE_POSZ);
+    //     running_z = false;
+    // }
 
-    if(y_axis.distanceToGo() == 0 && running_y){
-        confirm(CMD_MOVE_POSY);
-        running_y = false;
-    }
+    // if(y_axis.distanceToGo() == 0 && running_y){
+    //     confirm(CMD_MOVE_POSY);
+    //     running_y = false;
+    // }
 
     y_axis.run();
     z_axis.run();
