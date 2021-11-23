@@ -5,10 +5,10 @@ import time
 from aruco.find_aruco import findGround
 
 def main():
-    # car = Car()
+    car = Car()
     # car.init_car()
-    # car.set_linefollow_mode()  
-    # car.wait_ack()                                                   
+    car.set_linefollow_mode()  
+    car.wait_ack()                                                   
     print('Car initialized')
 
     cap = cv2.VideoCapture(-1)
@@ -19,16 +19,15 @@ def main():
             continue
         found, id, rot = findGround(img)
         if not found:
-            # car.run_speed(100,-100)
+            car.run_speed(100,-100)
             continue
         print(rot)
-        # if rot < -10 :
-        #     # car.run_speed(100,-100)
-        # elif rot > 10:
-        #     # car.run_speed(-100,100)
-        # else:
-        #     car.run_speed(0,0)
-
+        if rot < -10 :
+            car.run_speed(100,-100)
+        elif rot > 10:
+            car.run_speed(-100,100)
+        else:
+            car.run_speed(0,0)
 
     cap.release()
 
