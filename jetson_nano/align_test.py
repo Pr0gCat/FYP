@@ -79,6 +79,12 @@ if __name__ == '__main__':
                 flag = True
             elif id[0] == 1:
                 car.run_speed(0,0)
+                print('move z')
+                car.move_posz(100)
+                time.sleep(5)
+                print('move y')
+                car.move_posy(500)
+                time.sleep(5)
                 print('prog end')
                 break
 
