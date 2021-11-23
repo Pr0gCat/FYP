@@ -1,6 +1,5 @@
-from enum import Flag
 from communicate import Car
-from aruco.find_aruco import findGround
+from aruco.find_aruco import findGround, findArucoMarkers
 import cv2
 import time
 
@@ -45,13 +44,16 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     retutn_data = []
     flag = False
+    flag2 = False
     while True:
         ret, frame = cap.read()
         print("new frame")
         MAX_SPPED = 400
         speed = 200
         factor = 300
-        if ret:
+        if not ret:
+            continue
+        if not flag2:
             found, id, rot = findGround(frame)
             offset = line_following(frame)
             # print(offset)
@@ -64,7 +66,7 @@ if __name__ == '__main__':
             print(offset, speed_l, speed_r)
             if found: 
                 print(f'id: {id}')
-            if not found:
+            if not found and not flag2:
                 car.run_speed(speed_l, speed_r)
             elif id[0] == 0 and not flag:
                 print(flag)
@@ -83,8 +85,22 @@ if __name__ == '__main__':
                 car.move_posy(200)
                 car.wait_ack()
                 time.sleep(5)
-                
-                print('prog end')
-                break
+                flag2 = True
+        else:
+            car.set_pickup_mode()
+            car.wait_ack()
+            car.move_posz(5)
+            arucoFound = findArucoMarkers(frame)
+            if len(arucoFound) > 0 and time.time() - t0 > 1:
+                id, cx, cy, dx, dy = arucoFound[0]
+                print(dx, dy)
+                # print('tag found')
+                if dy < -30:
+                    print('go up')
+                    car.move_posz(5)
+                elif dy > 30:
+                    print('go down')
+                    car.move_posz(-5)
+                t0 = time.time()
 
         # time.sleep(0.1)
