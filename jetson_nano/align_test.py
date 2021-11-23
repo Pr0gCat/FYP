@@ -97,6 +97,7 @@ if __name__ == '__main__':
             if len(arucoFound) > 0 and time.time() - t0 > 1:
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
+                distance = cy - 240
                 print(cy)
                 # print('tag found')
                 if cy > 30:
