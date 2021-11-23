@@ -110,10 +110,10 @@ void unpack()
     move_posz(data);
     break;
   case CMD_HOME_Y:
-    lifter_homeY();
+    lifter_homeY(true);
     break;
   case CMD_HOME_Z:
-    lifter_homeZ();
+    lifter_homeZ(true);
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
@@ -141,8 +141,8 @@ void car_init()
   set_camera_mode(LineFollow);
   calibrateZ();
   calibrateY();
-  lifter_homeZ();
-  lifter_homeY();
+  lifter_homeZ(false);
+  lifter_homeY(true);
 }
 
 void set_crawl_state(unsigned char data[])

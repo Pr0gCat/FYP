@@ -6,8 +6,8 @@
 
 void lifter_setup();
 void lifter_update();
-void lifter_homeZ();
-void lifter_homeY();
+void lifter_homeZ(bool resp);
+void lifter_homeY(bool resp);
 
 void calibrateZ();
 void calibrateY();

@@ -1,9 +1,11 @@
 #include "LifterController.h"
+#include "Communication.h"
 
 AccelStepper y_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Y_STEP_PIN, STEPPER_Y_DIR_PIN);
 AccelStepper z_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Z_STEP_PIN, STEPPER_Z_DIR_PIN);
 uint32_t y_max = 0;
 uint32_t z_max = 0;
+bool running_z = false, running_y = false;
 void calibrateZ();
 void calibrateY();
 
@@ -26,45 +28,6 @@ void lifter_setup(){
     z_axis.setPinsInverted(true, false, true);
     z_axis.setAcceleration(STEPPER_MOVE_ACCEL);
     z_axis.setMaxSpeed(STEPPER_Z_MAX_SPEED);
-
-    // // self-test
-    // // Serial.println("Trigger ENDSTOP_Y_UPPER_PIN..");
-    // while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
-    //     // Serial.print("Y UP:");
-    //     // Serial.println(digitalRead(ENDSTOP_Y_UPPER_PIN));
-    //     delay(100);
-    // }
-    
-    // // Serial.println("Trigger ENDSTOP_Y_LOWER_PIN..");
-    // while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
-    //     // Serial.print("Y LO:");
-    //     // Serial.println(digitalRead(ENDSTOP_Y_LOWER_PIN));
-    //     delay(100);
-    // }
-    
-    // // Serial.println("Trigger ENDSTOP_Z_UPPER_PIN..");
-    // while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
-    //     // Serial.print("Z UP:");
-    //     // Serial.println(digitalRead(ENDSTOP_Z_UPPER_PIN));
-    //     delay(100);
-    // }
-    
-    // // Serial.println("Trigger ENDSTOP_Z_LOWER_PIN..");
-    // while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
-    //     // Serial.print("Z LO:");
-    //     // Serial.println(digitalRead(ENDSTOP_Z_LOWER_PIN));
-    //     delay(100);
-    // }
-    // // signaling led
-    // for(int i = 0; i < 3; i++){
-    //     digitalWrite(13, 1);
-    //     delay(500);
-    //     digitalWrite(13, 0);
-    //     delay(500);
-    // }
-    // // Serial.println("self-test done");
-    
-    // Serial.println("Calibration done");
 }
 
 void lifter_update(){
@@ -87,15 +50,28 @@ void lifter_update(){
     if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.setCurrentPosition(0);
     }
+
+    if(z_axis.distanceToGo() == 0 && running_z){
+        confirm(CMD_MOVE_POSZ);
+        running_z = false;
+    }
+
+    if(y_axis.distanceToGo() == 0 && running_y){
+        confirm(CMD_MOVE_POSY);
+        running_y = false;
+    }
+
     y_axis.run();
     z_axis.run();
 }
 
-void lifter_homeZ(){
+void lifter_homeZ(bool resp){
+    running_z = resp;
     z_axis.moveTo(0);
 }
 
-void lifter_homeY(){
+void lifter_homeY(bool resp){
+    running_y = resp;
     y_axis.moveTo(0);
 }
 
@@ -174,9 +150,11 @@ void lifter_move_relative(AXIS axis, long mm)
     // Serial.println(pos);
     if(axis == Y){
         // pos = pos > y_max ? y_max : pos;
+        running_y = true;
         y_axis.move(pos);
     }else if (axis == Z){
         // pos = pos > z_max ? z_max : pos;
+        running_z = true;
         z_axis.move(pos);
     }
 }
@@ -187,9 +165,11 @@ void lifter_move(AXIS axis, long mm)
     // Serial.println(pos);
     if(axis == Y){
         pos = pos > y_max ? y_max : pos;
+        running_y = true;
         y_axis.moveTo(pos);
     }else if (axis == Z){
         pos = pos > z_max ? z_max : pos;
+        running_z = true;
         z_axis.moveTo(pos);
     }
 }

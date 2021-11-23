@@ -137,7 +137,7 @@ void send_pwm_l(){
         digitalWrite(MOTOR_L_IN2_PIN, LOW);
         return;
     }
-    if(dir_l > 1){
+    if(dir_l < 1){
         // forward
         digitalWrite(MOTOR_L_IN2_PIN, LOW);
         analogWrite(MOTOR_L_IN1_PIN, pwm_l);
@@ -155,7 +155,7 @@ void send_pwm_r(){
         digitalWrite(MOTOR_R_IN2_PIN, LOW);
         return;
     }
-    if(dir_l > 1){
+    if(dir_l < 1){
         // forward
         digitalWrite(MOTOR_R_IN2_PIN, LOW);
         analogWrite(MOTOR_R_IN1_PIN, pwm_r);
