@@ -56,6 +56,7 @@ def findGround(img, markerSize=6):
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners, ids, rejected = aruco.detectMarkers(
         imgGray, arucoDict, parameters=arucoParam)
+    ID = -1
     if ids is not None:
         for x in ids:
             rvec_list_all, tvec_list_all = aruco.estimatePoseSingleMarkers(
