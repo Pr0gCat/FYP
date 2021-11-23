@@ -100,7 +100,7 @@ if __name__ == '__main__':
                     continue
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
-                distance = cy - 240
+                distance = cy - 320
                 print(distance)
                 # print('tag found')
                 if distance > 20:
