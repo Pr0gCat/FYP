@@ -95,7 +95,9 @@ if __name__ == '__main__':
             flag3 = True
         if flag3:
             arucoFound = findArucoMarkers(frame)
-            if len(arucoFound) > 0 and time.time() - t0 > 1:
+            if len(arucoFound) > 0:
+                if time.time() - t0 > 1:
+                    continue
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
                 distance = cy - 240
