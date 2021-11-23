@@ -4,9 +4,6 @@ import time
 import struct
 from enum import IntEnum, unique
 
-event = Event()
-communicat_id = 0
-
 class Car:
 
     @unique
@@ -31,18 +28,18 @@ class Car:
 
     def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00'):
         self.com = serial.Serial(port, baudrate=115200)
+        self.wait_flag = Event()
         print(self.com)
         time.sleep(1)
-        self.receiver = Thread(target=self._receiver_main, args=(communicat_id, ))
+        self.receiver = Thread(target=self._receiver_main)
         self.receiver.setDaemon(True)
         self.receiver.start()
 
         def __del__(self):
             self.com.close()
 
-    def _receiver_main(self, id):
+    def _receiver_main(self):
         print('[Receiver] Start receiving')
-        count = 0
         len1 = 0
         flag = 0
         data_len = 0
@@ -52,16 +49,12 @@ class Car:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
                     print(f'CAR: {data}')
-                    if data == id  and count == 2:
-                        print('setted')
-                        event.set()
-                    if data == 1:
-                        count = count + 1
-                    else :
-                        count = 0
-                        
-                    if ord(data) == 255 and flag == 0:
-                        flag =1
+                    
+                    if flag == 0:
+                        if ord(data) == 255:
+                            flag =1
+                        elif ord(data) == 1:
+                            self.wait_flag.set()
                     elif flag == 1:
                         len1 = ord(data)
                         flag = 2
@@ -72,7 +65,7 @@ class Car:
                             flag = 3
                     elif flag == 3:
                         cs = data
-                        print(msg)
+                        print(f'CAR say: {msg}')
                         len1 = 0
                         flag = 0
                         data_len = 0
@@ -82,12 +75,10 @@ class Car:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
 
-    def wait_ack(self, id, blocking):
-        communicat_id = id
-        while blocking:
-            if event.is_set():
-                break
-        
+    def wait_ack(self):
+        while not self.wait_flag.is_set():
+            pass
+
     def init_car(self):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
         cs = 0xff & sum(pkg)
