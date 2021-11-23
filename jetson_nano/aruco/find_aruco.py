@@ -56,6 +56,7 @@ def findArucoMarkers(img, markerSize=7, totalMarkers=250):
             marker.append(ids[count][0])
             marker.append(cX)
             marker.append(cY)
+            # distance between mid-point
             marker.append(round((((((cX-320)**2)+((cY-240)**2))**(0.5))),2))
             data.append(marker)
             count=count+1
