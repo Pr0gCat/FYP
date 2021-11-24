@@ -100,7 +100,7 @@ if __name__ == '__main__':
                     continue
                 print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
-                distance = cy - 390
+                distance = cy - 430 # threshold
                 print(distance)
                 # print('tag found')
                 if distance > 10:
@@ -114,6 +114,6 @@ if __name__ == '__main__':
                     time.sleep(60)
                 t0 = time.time()
             else:
-                car.move_posz(5)
+                car.move_posz(20)
 
         # time.sleep(0.1)
