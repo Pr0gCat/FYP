@@ -103,10 +103,10 @@ if __name__ == '__main__':
                 distance = cy - 390 # threshold
                 print(distance)
                 # print('tag found')
-                if distance > 10:
+                if distance > 5:
                     print('go down')
                     car.move_posz(-5)
-                elif distance < -10:
+                elif distance < -5:
                     print('go up')
                     car.move_posz(5)
                 else:
