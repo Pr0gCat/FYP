@@ -114,7 +114,7 @@ if __name__ == '__main__':
                     time.sleep(30)
                     car.move_posz(30)
                     time.sleep(10)
-                    car.move_posy(-200)
+                    car.move_posy(200)
                     time.sleep(30)
                     car.home_z()
                     time.sleep(60)
