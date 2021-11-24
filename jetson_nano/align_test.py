@@ -32,11 +32,11 @@ if __name__ == '__main__':
     car = Car()
     # input()
     car.init_car()
-    car.wait_ack()
-    print("Car initialized")
+    # car.wait_ack()
+    input("Car initialized")
     car.set_linefollow_mode()
     car.wait_ack()
-    input('ready')
+    print('ready')
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
     Screem_Height = 480
