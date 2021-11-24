@@ -111,7 +111,14 @@ if __name__ == '__main__':
                     car.move_posz(5)
                 else:
                     car.move_posy(-200)
+                    time.sleep(30)
+                    car.move_posz(30)
+                    time.sleep(10)
+                    car.move_posy(-200)
+                    time.sleep(30)
+                    car.home_z()
                     time.sleep(60)
+                    break
                 t0 = time.time()
             else:
                 car.move_posz(20)
