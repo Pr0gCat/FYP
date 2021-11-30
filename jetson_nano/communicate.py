@@ -49,7 +49,7 @@ class Car:
         self.com.flushInput()
         self.com.flushOutput()
         while True:
-            if (time.time()-t0) > 1 and flag != 0:
+            if (time.time()-t0) > 3 and flag != 0:
                 flag = 0
                 buff.clear()
             try:
@@ -106,7 +106,7 @@ class Car:
                 if self.latest_confirm == id:
                     break
             if time.time() - t0 > timeout:
-                print('[Communicate] Timeout')
+                print('[Communicate] Timeout id:', id)
                 break
             time.sleep(0.1)
 
