@@ -50,6 +50,7 @@ class Car:
         while True:
             if (time.time()-t0) > 1 and flag != 0:
                 flag = 0
+                buff.clear()
             try:
                 while self.com.in_waiting: # 若收到序列資料…
                     
