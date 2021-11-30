@@ -110,11 +110,13 @@ class Car:
                 break
             time.sleep(0.1)
 
-    def init_car(self):
+    def init_car(self, blocking=True, timeout=120):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.Init, timeout)
 
     def run_speed(self, left, right):
         pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
@@ -134,23 +136,29 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
 
-    def set_linefollow_mode(self):
+    def set_linefollow_mode(self, blocking=True, timeout=2):
         pkg = struct.pack('BB', self.CommandId.SetLinefollowMode, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.SetLinefollowMode, timeout)
 
-    def set_pickup_mode(self):
+    def set_pickup_mode(self, blocking=True, timeout=2):
         pkg = struct.pack('BB', self.CommandId.SetPickupMode, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.SetPickupMode, timeout)
 
-    def set_docking_mode(self):
+    def set_docking_mode(self, blocking=True, timeout=2):
         pkg = struct.pack('BB', self.CommandId.SetDockingMode, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.SetDockingMode, timeout)
 
     #TODO: 待測試
 
@@ -166,35 +174,45 @@ class Car:
     #     self.com.write(pkg)
     #     self.com.write(struct.pack('B', cs))
 
-    def move_posy(self, posy):
+    def move_posy(self, posy, blocking=True, timeout=5):
         pkg = struct.pack('BBh', self.CommandId.MovePosY, 2,posy)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.MovePosY, timeout)
 
-    def move_posz(self,posz):
+    def move_posz(self,posz, blocking=True, timeout=5):
         pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.MovePosZ, timeout)
 
-    def home_y(self):
+    def home_y(self, blocking=True, timeout=5):
         pkg = struct.pack('BB', self.CommandId.HomeY, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.MovePosY, timeout)
 
-    def home_z(self):
-        pkg = struct.pack('BB', self.CommandId.HomeZ, 0)
+    def home_z(self, blocking=True, timeout=5):
+        pkg = struct.pack('BB', self.CommandId.MovePosZ, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.MovePosZ, timeout)
 
-    def run_distance(self,left,right):
+    def run_distance(self,left,right, blocking=True, timeout=20):
         pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(self.CommandId.RunDistance, timeout)
 
     def get_run_speed(self):
         pkg = struct.pack('BB', self.CommandId.GetMotorSpeed, 0)
