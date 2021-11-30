@@ -54,7 +54,7 @@ class Car:
                 data_len = 0
             try:
                 while self.com.in_waiting: # 若收到序列資料…
-                    data = self.com.read() # 讀取一個字元
+                    data = int.from_bytes(self.com.read()) # 讀取一個字元
                     print(f'[Receiver] flag: {flag}, {data}')
                     if flag < 2:
                         buff.append(data) # 將資料存入buff
