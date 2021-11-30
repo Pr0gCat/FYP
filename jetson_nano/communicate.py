@@ -67,6 +67,7 @@ class Car:
                         buff.append(data)
                         t0 = time.time()
                         data_len += 1
+                        print(data_len, buff[1])
                         if data_len == buff[1]:
                             flag = 3
                     elif flag == 3:
