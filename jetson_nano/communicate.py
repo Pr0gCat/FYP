@@ -69,7 +69,7 @@ class Car:
                         t0 = time.time()
                         # print(buff[1], buff[2:])
                         if len(buff[2:]) == buff[1]:
-                            print('[Receiver] payload received')
+                            # print('[Receiver] payload received')
                             flag = 3
                     elif flag == 3:
                         pkt_cs = data
@@ -116,7 +116,7 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.Init, timeout)
+            self.wait_ack(self.CommandId.MovePosZ, timeout) # it should return moveposz
 
     def run_speed(self, left, right):
         pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
@@ -206,7 +206,7 @@ class Car:
         if blocking:
             self.wait_ack(self.CommandId.MovePosZ, timeout)
 
-    def run_distance(self,left,right, blocking=True, timeout=20):
+    def run_distance(self,left,right, blocking=True, timeout=10):
         pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
