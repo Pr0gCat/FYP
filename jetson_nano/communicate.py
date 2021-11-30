@@ -199,15 +199,15 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosY, timeout)
+            self.wait_ack(self.CommandId.HomeY, timeout)
 
     def home_z(self, blocking=True, timeout=30):
-        pkg = struct.pack('BB', self.CommandId.MovePosZ, 0)
+        pkg = struct.pack('BB', self.CommandId.HomeZ, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosZ, timeout)
+            self.wait_ack(self.CommandId.HomeZ, timeout)
 
     def run_distance(self,left,right, blocking=True, timeout=10):
         pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)

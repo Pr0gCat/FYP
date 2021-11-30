@@ -49,28 +49,40 @@ void lifter_update(){
         z_axis.setCurrentPosition(0);
     }
 
-    if(z_axis.distanceToGo() == 0 && running_z){
-        confirm(CMD_MOVE_POSZ);
-        running_z = false;
-    }
-
-    if(y_axis.distanceToGo() == 0 && running_y){
-        confirm(CMD_MOVE_POSY);
-        running_y = false;
-    }
-
     y_axis.run();
     z_axis.run();
 }
 
-void lifter_homeZ(bool resp){
-    running_z = resp;
-    z_axis.moveTo(0);
+void lifter_homeZ(){
+    z_axis.setSpeed(-4000);
+    while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
+        z_axis.runSpeed();
+        if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
+    }
+
+    // release Z lower limit
+    z_axis.setSpeed(400);
+    while(!digitalRead(ENDSTOP_Z_LOWER_PIN)){
+        z_axis.runSpeed();
+        if(digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
+    }
+    confirm(CMD_HOME_Z);
 }
 
-void lifter_homeY(bool resp){
-    running_y = resp;
-    y_axis.moveTo(0);
+void lifter_homeY(){
+    y_axis.setSpeed(-3000);
+    while(digitalRead(ENDSTOP_Y_LOWER_PIN)){
+        y_axis.runSpeed();
+        if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
+    }
+
+    // release Y lower limit
+    y_axis.setSpeed(400);
+    while(!digitalRead(ENDSTOP_Y_LOWER_PIN)){
+        y_axis.runSpeed();
+        if(digitalRead(ENDSTOP_Y_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
+    }
+    confirm(CMD_HOME_Y);
 }
 
 void calibrateY(){

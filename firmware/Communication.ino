@@ -111,10 +111,10 @@ void unpack()
     move_posz(data);
     break;
   case CMD_HOME_Y:
-    lifter_homeY(true);
+    lifter_homeY();
     break;
   case CMD_HOME_Z:
-    lifter_homeZ(true);
+    lifter_homeZ();
     break;
   case CMD_SET_MOTOR_SPEED:
     set_motor_speed(data);
@@ -143,8 +143,8 @@ void car_init()
   set_camera_mode(LineFollow);
   calibrateZ();
   calibrateY();
-  lifter_homeY(false);
-  lifter_homeZ(true); // Z axis is longer, so it has to be the one to ack
+  lifter_homeY();
+  lifter_homeZ(); // Z axis is longer, so it has to be the one to ack
 }
 
 void set_crawl_state(unsigned char data[])
