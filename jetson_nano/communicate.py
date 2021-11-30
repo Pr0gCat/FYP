@@ -60,14 +60,14 @@ class Car:
                         t0 = time.time()
                         flag += 1
                         if flag == 2 and buff[1] == 0:
-                            flag += 1
+                            flag = 3
 
                     elif flag == 2:
-                        buff.append(data)
-                        t0 = time.time()
                         if len(buff[1:]) == buff[1]:
                             print('[Receiver] payload received')
                             flag = 3
+                        buff.append(data)
+                        t0 = time.time()
                     elif flag == 3:
                         pkt_cs = data
                         checksum = 0xff & sum(buff)
