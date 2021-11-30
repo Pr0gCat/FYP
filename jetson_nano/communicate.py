@@ -64,6 +64,7 @@ class Car:
                         buff.append(data)
                         t0 = time.time()
                         if len(buff[1:]) == buff[1]:
+                            print('[Receiver] payload received')
                             flag = 3
                     elif flag == 3:
                         pkt_cs = data
