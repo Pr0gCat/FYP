@@ -111,6 +111,7 @@ class Car:
                 break
             time.sleep(0.1)
         self.latest_confirm = -1
+        print(f'[Sender] Ack {id} received')
 
     def init_car(self, blocking=True, timeout=120):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
