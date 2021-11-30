@@ -65,7 +65,7 @@ class Car:
 
                     elif flag == 2:
                         print(buff[1:])
-                        if len(buff[1:]) == buff[1]-1:
+                        if len(buff[2:]) == buff[1]:
                             print('[Receiver] payload received')
                             flag = 3
                         buff.append(data)
