@@ -106,18 +106,22 @@ if __name__ == '__main__':
                 if distance > 5:
                     print('go down')
                     car.move_posz(-10)
+                    car.wait_ack(1)
                 elif distance < -5:
                     print('go up')
                     car.move_posz(10)
+                    car.wait_ack(1)
                 else:
                     car.move_posy(-200)
-                    time.sleep(30)
+                    car.wait_ack(30)
                     car.move_posz(30)
-                    time.sleep(10)
+                    car.wait_ack(10)
                     car.move_posy(200)
-                    time.sleep(30)
+                    car.wait_ack(30)
                     car.home_z()
-                    time.sleep(60)
+                    car.wait_ack(30)
+                    car.move_posy(-200)
+                    car.wait_ack(30)
                     break
                 t0 = time.time()
             else:
