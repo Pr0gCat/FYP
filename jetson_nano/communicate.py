@@ -100,7 +100,7 @@ class Car:
         Wait for ack from car
         timout: seconds - set to negative value to wait forever
         """
-        print(f'[Sender] Waiting for ack {id}')
+        print(f'[Sender] Waiting for ack {repr(id)}')
         timeout = abs(timeout)
         t0 = time.time()
         while True:
@@ -111,7 +111,7 @@ class Car:
                 break
             time.sleep(0.1)
         self.latest_confirm = -1
-        print(f'[Sender] Ack {id} received')
+        print(f'[Sender] Ack {repr(id)} received')
 
     def init_car(self, blocking=True, timeout=120):
         pkg = struct.pack('BB', self.CommandId.Init, 0)

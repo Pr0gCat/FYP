@@ -58,13 +58,10 @@ void wheel_update()
     update_speed();
     if (in_distance_mode)
     {
-        update_distance();
-        if (target_dist_l < distance_l && target_dist_r < distance_r)
+        if (update_distance())
         {
             confirm(CMD_RUN_DISTANCE);
             in_distance_mode = false;
-            en_l = false;
-            en_r = false;
         }
     }
 
@@ -116,7 +113,7 @@ void stop_motor_r()
     en_r = false;
 }
 
-void update_distance()
+bool update_distance()
 {
     // update left motor
     if (target_dist_l < distance_l)
@@ -131,6 +128,8 @@ void update_distance()
         distance_r = 0;
         en_r = false;
     }
+
+    return !en_l && !en_r;
 }
 
 void update_speed()

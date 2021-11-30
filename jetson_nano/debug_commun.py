@@ -2,7 +2,7 @@ from communicate import Car
 
 if __name__ == '__main__':
     car = Car()
-    car.set_pickup_mode()
+    car.init_car()
     print('Car initialized')
-    input()
-    car.set_linefollow_mode()
+    car.move_posz(300)
+    car.home_z()
