@@ -1,4 +1,4 @@
-from threading import Thread, Event
+from threading import Thread, Lock
 import serial
 import time
 import struct
@@ -28,12 +28,13 @@ class Car:
 
     def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00'):
         self.com = serial.Serial(port, baudrate=115200)
-        self.wait_flag = Event()
+        self.wait_flag = Lock()
         print(self.com)
         time.sleep(1)
         self.receiver = Thread(target=self._receiver_main)
         self.receiver.setDaemon(True)
         self.receiver.start()
+        self.latest_confirm = -1
 
         def __del__(self):
             self.com.close()
@@ -87,22 +88,28 @@ class Car:
     def unpack_msg(self, payload):
         cmd = payload[0]
         if cmd == self.CommandId.Confirm:
-            self.wait_flag.set()
             print('[Receiver] Confirm Code: %d' % payload[2])
+            with self.wait_flag:
+                self.latest_confirm = payload[2]
+            
         elif cmd == self.CommandId.Msg:
             print('[Receiver] Msg: ', ''.join([chr(c) for c in payload[2:]]))
 
-    def wait_ack(self, timeout=10):
+    def wait_ack(self, id, timeout=10):
         """
         Wait for ack from car
         timout: seconds - set to negative value to wait forever
         """
         t0 = time.time()
-        while not self.wait_flag.is_set():
+        while True:
+            with self.wait_flag:
+                if self.latest_confirm == id:
+                    break
             if time.time() - t0 > timeout:
                 print('[Communicate] Timeout')
-                return
+                break
             time.sleep(0.1)
+        self.wait_flag.clear()
 
     def init_car(self):
         pkg = struct.pack('BB', self.CommandId.Init, 0)

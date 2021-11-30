@@ -32,7 +32,8 @@ void cmd_update() // run over and over
       time = millis();
       flag++;
       count++;
-      if(flag == 2 && !buff[1]){
+      if (flag == 2 && !buff[1])
+      {
         flag++;
       }
     }
@@ -79,7 +80,7 @@ void unpack()
   switch (cmd)
   {
   case CMD_INIT:
-    send_msg("Start initialization", 20);
+    send_msg("Start initialization");
     car_init();
     break;
   case CMD_SET_CLAW_STATE:
@@ -133,7 +134,7 @@ void confirm(int cmd)
     Serial.write(CMD_COFIRM);
     Serial.write(1);
     Serial.write(cmd);
-    Serial.write((2+cmd) & 0xff);
+    Serial.write((2 + cmd) & 0xff);
   }
 }
 
@@ -150,7 +151,6 @@ void set_crawl_state(unsigned char data[])
 {
   int16_t left = (data[0] + (data[1] << 8));
   int16_t right = (data[2] + (data[3] << 8));
-
 }
 
 void goto_posy(unsigned char data[])
@@ -192,16 +192,18 @@ void run_distance(unsigned char data[])
   run_distance(left, right, 200);
 }
 
-void send_msg(char msg[],int len)
+void send_msg(char msg[])
 {
+  int str_len = strlen(msg);
   Serial.write(CMD_MSG);
-  Serial.write(len);
+  Serial.write(str_len);
   Serial.write(msg);
-  int checksum =0;
-  checksum+=CMD_MSG;
-  checksum+=len;
-  for(int i=0;i<len;i++){
-    checksum+=msg[i];
+  int checksum = 0;
+  checksum += CMD_MSG;
+  checksum += str_len;
+  for (int i = 0; i < str_len; i++)
+  {
+    checksum += msg[i];
   }
   checksum = (0xff & checksum);
   Serial.write(checksum);
