@@ -39,12 +39,13 @@ class Car:
             self.com.close()
 
     def _receiver_main(self):
+        import time
         print('[Receiver] Start receiving')
         buff = []
         flag = 0
         checksum = 0
         data_len = 0
-        t0 = 0
+        t0 = time.time()
         self.com.flushInput()
         self.com.flushOutput()
         while True:
