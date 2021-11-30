@@ -54,18 +54,20 @@ class Car:
                 data_len = 0
             try:
                 while self.com.in_waiting: # 若收到序列資料…
+                    data = self.com.read() # 讀取一個字元
+                    print(f'[Receiver] flag: {flag}, {data}')
                     if flag < 2:
-                        buff.append(self.com.read()) # 將資料存入buff
+                        buff.append(data) # 將資料存入buff
                         time = time()
                         flag += 1
                     elif flag == 2:
-                        buff.append(self.com.read())
+                        buff.append(data)
                         t0 = time.time()
                         data_len += 1
                         if data_len == buff[1]:
                             flag += 1
                     elif flag == 3:
-                        pkt_cs = self.com.read()
+                        pkt_cs = data
                         checksum = 0xff & sum(buff)
                         if checksum == pkt_cs:
                             self.unpack_msg(buff)
