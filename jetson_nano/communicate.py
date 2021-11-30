@@ -44,14 +44,12 @@ class Car:
         buff = []
         flag = 0
         checksum = 0
-        data_len = 0
         t0 = time.time()
         self.com.flushInput()
         self.com.flushOutput()
         while True:
             if (time.time()-t0) > 1 and flag != 0:
                 flag = 0
-                data_len = 0
             try:
                 while self.com.in_waiting: # 若收到序列資料…
                     data = self.com.read()[0] # 讀取一個字元
@@ -65,8 +63,7 @@ class Car:
                     elif flag == 2:
                         buff.append(data)
                         t0 = time.time()
-                        data_len += 1
-                        if data_len == buff[1]-1:
+                        if len(buff[1:]) == buff[1]:
                             flag = 3
                     elif flag == 3:
                         pkt_cs = data
@@ -76,7 +73,6 @@ class Car:
                         else:
                             print('[Receiver] Checksum Error', buff, checksum, pkt_cs)
                         flag = 0
-                        data_len = 0
                         buff.clear()
                         
             except Exception as e:
