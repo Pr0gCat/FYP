@@ -84,6 +84,7 @@ class Car:
         t0 = time.time()
         while not self.wait_flag.is_set():
             if time.time() - t0 > timeout:
+                print('[Communicate] Timeout')
                 return
             time.sleep(0.1)
 
