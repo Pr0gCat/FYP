@@ -145,6 +145,7 @@ void car_init()
   calibrateY();
   lifter_homeY();
   lifter_homeZ(); // Z axis is longer, so it has to be the one to ack
+  confirm(CMD_INIT);
 }
 
 void set_crawl_state(unsigned char data[])

@@ -119,7 +119,7 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosZ, timeout) # it should return moveposz
+            self.wait_ack(self.CommandId.Init, timeout)
 
     def run_speed(self, left, right):
         pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
