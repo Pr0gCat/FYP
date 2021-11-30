@@ -63,6 +63,7 @@ class Car:
                             flag = 3
 
                     elif flag == 2:
+                        print(buff[1:])
                         if len(buff[1:]) == buff[1]:
                             print('[Receiver] payload received')
                             flag = 3
