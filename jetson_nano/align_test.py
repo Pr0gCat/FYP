@@ -98,7 +98,7 @@ if __name__ == '__main__':
             if len(arucoFound) > 0:
                 if time.time() - t0 < 1:
                     continue
-                print(arucoFound)
+                # print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
                 distance = cy - 405 # threshold
                 print(distance)
