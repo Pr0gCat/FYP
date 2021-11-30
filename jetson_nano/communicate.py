@@ -109,7 +109,6 @@ class Car:
                 print('[Communicate] Timeout')
                 break
             time.sleep(0.1)
-        self.wait_flag.clear()
 
     def init_car(self):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
