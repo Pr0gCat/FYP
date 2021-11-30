@@ -49,7 +49,6 @@ class Car:
         # self.com.flushInput()
         # self.com.flushOutput()
         while True:
-            print('[Receiver] Waiting for data')
             if (time.time()-t0) > 1 and flag != 0:
                 flag = 0
                 data_len = 0
