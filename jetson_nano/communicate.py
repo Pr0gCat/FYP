@@ -44,11 +44,12 @@ class Car:
         flag = 0
         data_len = 0
         msg=""
+        self.com.flushInput()
+        self.com.flushOutput()
         while True:
             try:
                 while self.com.in_waiting:          # 若收到序列資料…
                     data = self.com.read()
-                    print(f'CAR: {data}')
                     
                     if flag == 0:
                         if ord(data) == 255:
@@ -75,9 +76,16 @@ class Car:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
 
-    def wait_ack(self):
+    def wait_ack(self, timeout=10):
+        """
+        Wait for ack from car
+        timout: seconds - set to negative value to wait forever
+        """
+        t0 = time.time()
         while not self.wait_flag.is_set():
-            pass
+            if time.time() - t0 > timeout:
+                return
+            time.sleep(0.1)
 
     def init_car(self):
         pkg = struct.pack('BB', self.CommandId.Init, 0)

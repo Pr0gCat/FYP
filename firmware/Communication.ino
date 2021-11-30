@@ -83,6 +83,7 @@ void unpack()
   switch (cmd)
   {
   case CMD_INIT:
+    send_msg("Start initialization", 21);
     car_init();
     break;
   case CMD_SET_CLAW_STATE:
