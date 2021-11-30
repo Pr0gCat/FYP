@@ -86,7 +86,7 @@ class Car:
             self.wait_flag.set()
             print('[Receiver] Confirm Code: %d' % payload[2])
         elif cmd == self.CommandId.Msg:
-            print('[Receiver] Msg: ', ''.join([chr(c) for c in payload[1:]]))
+            print('[Receiver] Msg: ', ''.join([chr(c) for c in payload[2:]]))
 
     def wait_ack(self, timeout=10):
         """
