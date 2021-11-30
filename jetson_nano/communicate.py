@@ -46,8 +46,8 @@ class Car:
         checksum = 0
         data_len = 0
         t0 = time.time()
-        # self.com.flushInput()
-        # self.com.flushOutput()
+        self.com.flushInput()
+        self.com.flushOutput()
         while True:
             if (time.time()-t0) > 1 and flag != 0:
                 flag = 0
@@ -60,6 +60,9 @@ class Car:
                         buff.append(data) # 將資料存入buff
                         t0 = time.time()
                         flag += 1
+                        if flag == 2 and buff[1] == 0:
+                            flag += 1
+
                     elif flag == 2:
                         buff.append(data)
                         t0 = time.time()
