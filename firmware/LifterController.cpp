@@ -37,15 +37,13 @@ void lifter_update(){
     // Serial.println(z_axis.currentPosition());
     // unexpected collision
     if(!digitalRead(ENDSTOP_Y_UPPER_PIN) && y_axis.targetPosition() > 0){
-        y_axis.setCurrentPosition(y_axis.currentPosition());
-        y_max = y_axis.currentPosition();
+        y_axis.stop();
     }
     if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.setCurrentPosition(0);
     }
     if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > 0){
-        z_axis.setCurrentPosition(z_axis.currentPosition());
-        z_max = z_axis.currentPosition();
+        z_axis.stop();
     }
     if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.setCurrentPosition(0);
