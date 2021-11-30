@@ -74,6 +74,7 @@ class Car:
                             self.unpack_msg(buff)
                         flag = 0
                         data_len = 0
+                        buff.clear()
                         
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
