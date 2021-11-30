@@ -32,11 +32,10 @@ if __name__ == '__main__':
     car = Car()
     input('press to start')
     car.init_car()
-    car.wait_ack(120)
     print("Car initialized")
     car.set_linefollow_mode()
-    car.wait_ack(1)
     print('ready')
+
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
     Screem_Height = 480
@@ -76,10 +75,7 @@ if __name__ == '__main__':
                 time.sleep(2)
                 car.run_distance(800, 800)
                 print('doing', time.time())
-                car.wait_ack()
-                time.sleep(3)
                 car.run_distance(-470, 470)
-                time.sleep(3)
                 flag = True
             elif id[0] == 1:
                 car.run_speed(0,0)
@@ -88,10 +84,7 @@ if __name__ == '__main__':
         elif not flag3:
             print('move y')
             car.move_posy(200)
-            car.wait_ack()
-            time.sleep(10)
             car.set_pickup_mode()
-            car.wait_ack()
             flag3 = True
         if flag3:
             arucoFound = findArucoMarkers(frame)
@@ -106,22 +99,15 @@ if __name__ == '__main__':
                 if distance > 5:
                     print('go down')
                     car.move_posz(-10)
-                    car.wait_ack(1)
                 elif distance < -5:
                     print('go up')
                     car.move_posz(10)
-                    car.wait_ack(1)
                 else:
                     car.move_posy(-200)
-                    car.wait_ack(30)
                     car.move_posz(30)
-                    car.wait_ack(10)
                     car.move_posy(200)
-                    car.wait_ack(30)
                     car.home_z()
-                    car.wait_ack(30)
                     car.move_posy(-200)
-                    car.wait_ack(30)
                     break
                 t0 = time.time()
             else:
