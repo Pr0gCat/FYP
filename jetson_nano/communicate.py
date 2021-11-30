@@ -101,15 +101,16 @@ class Car:
         timout: seconds - set to negative value to wait forever
         """
         print(f'[Sender] Waiting for ack {id}')
+        timeout = abs(timeout)
         t0 = time.time()
         while True:
-            with self.wait_flag:
-                if self.latest_confirm == id:
-                    break
+            if self.latest_confirm == id:
+                break
             if timeout > 0 and time.time() - t0 > timeout:
                 print('[Communicate] Timeout id:', id)
                 break
             time.sleep(0.1)
+        self.latest_confirm = -1
 
     def init_car(self, blocking=True, timeout=120):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
@@ -181,7 +182,7 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosY, timeout)
+            self.wait_ack(self.CommandId.MovePosY, timeout * posy/10)
 
     def move_posz(self,posz, blocking=True, timeout=5):
         pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
@@ -189,9 +190,9 @@ class Car:
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosZ, timeout)
+            self.wait_ack(self.CommandId.MovePosZ, timeout * posz/10)
 
-    def home_y(self, blocking=True, timeout=5):
+    def home_y(self, blocking=True, timeout=30):
         pkg = struct.pack('BB', self.CommandId.HomeY, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
@@ -199,7 +200,7 @@ class Car:
         if blocking:
             self.wait_ack(self.CommandId.MovePosY, timeout)
 
-    def home_z(self, blocking=True, timeout=5):
+    def home_z(self, blocking=True, timeout=30):
         pkg = struct.pack('BB', self.CommandId.MovePosZ, 0)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
