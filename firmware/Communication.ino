@@ -32,13 +32,6 @@ void cmd_update() // run over and over
       time = millis();
       flag++;
       count++;
-      if(flag==2){
-        int len = buff[1];
-        if(len==0){
-          flag++;
-        }
-      }
-      
     }
     else if (flag == 2) // receive payload
     {

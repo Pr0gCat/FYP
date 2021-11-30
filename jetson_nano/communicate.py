@@ -40,41 +40,48 @@ class Car:
 
     def _receiver_main(self):
         print('[Receiver] Start receiving')
-        len1 = 0
+        buff = []
         flag = 0
+        checksum = 0
         data_len = 0
-        msg=""
+        t0 = 0
         self.com.flushInput()
         self.com.flushOutput()
         while True:
+            if (time.time()-t0) > 1 and flag != 0:
+                flag = 0
+                data_len = 0
             try:
-                while self.com.in_waiting:          # 若收到序列資料…
-                    data = self.com.read()
-                    
-                    if flag == 0:
-                        if ord(data) == 255:
-                            flag =1
-                        elif ord(data) == 1:
-                            self.wait_flag.set()
-                    elif flag == 1:
-                        len1 = ord(data)
-                        flag = 2
+                while self.com.in_waiting: # 若收到序列資料…
+                    if flag < 2:
+                        buff.append(self.com.read()) # 將資料存入buff
+                        time = time()
+                        flag += 1
                     elif flag == 2:
-                        msg += str(data.decode("utf-8"))
-                        data_len = data_len+1
-                        if data_len == len1:
-                            flag = 3
+                        buff.append(self.com.read())
+                        t0 = time.time()
+                        data_len += 1
+                        if data_len == buff[1]:
+                            flag += 1
                     elif flag == 3:
-                        cs = data
-                        print(f'CAR say: {msg}')
-                        len1 = 0
+                        pkt_cs = self.com.read()
+                        checksum = 0xff & sum(buff)
+                        if checksum == pkt_cs:
+                            self.unpack_msg(buff)
                         flag = 0
                         data_len = 0
-                        msg=""
                         
             except Exception as e:
                 print(f'[Receiver] Exception: {e}')
             time.sleep(0.2)
+
+    def unpack_msg(self, payload):
+        cmd = payload[0]
+        if cmd == self.CommandId.Confirm:
+            self.wait_flag.set()
+            print('[Receiver] Confirm')
+        elif cmd == self.CommandId.Msg:
+            print('[Receiver] Msg: ', payload[1:])
 
     def wait_ack(self, timeout=10):
         """
