@@ -46,8 +46,8 @@ class Car:
         checksum = 0
         data_len = 0
         t0 = time.time()
-        self.com.flushInput()
-        self.com.flushOutput()
+        # self.com.flushInput()
+        # self.com.flushOutput()
         while True:
             print('[Receiver] Waiting for data')
             if (time.time()-t0) > 1 and flag != 0:
