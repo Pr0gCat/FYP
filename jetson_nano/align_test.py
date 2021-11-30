@@ -30,7 +30,7 @@ def line_following(img):
 
 if __name__ == '__main__':
     car = Car()
-    # input()
+    input('press to start')
     car.init_car()
     car.wait_ack(120)
     print("Car initialized")
