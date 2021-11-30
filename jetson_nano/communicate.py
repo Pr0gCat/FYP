@@ -79,7 +79,7 @@ class Car:
         cmd = payload[0]
         if cmd == self.CommandId.Confirm:
             self.wait_flag.set()
-            print('[Receiver] Confirm')
+            print('[Receiver] Confirm Code: %d' % payload[2])
         elif cmd == self.CommandId.Msg:
             print('[Receiver] Msg: ', payload[1:])
 

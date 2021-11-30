@@ -130,6 +130,7 @@ void confirm(int cmd)
     Serial.write(CMD_COFIRM);
     Serial.write(1);
     Serial.write(cmd);
+    Serial.write((2+cmd) & 0xff);
   }
 }
 
