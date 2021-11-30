@@ -58,14 +58,14 @@ class Car:
                     print(f'[Receiver] flag: {flag}, {data}')
                     if flag < 2:
                         buff.append(data) # 將資料存入buff
-                        time = time()
+                        t0 = time.time()
                         flag += 1
                     elif flag == 2:
                         buff.append(data)
                         t0 = time.time()
                         data_len += 1
                         if data_len == buff[1]:
-                            flag += 1
+                            flag = 3
                     elif flag == 3:
                         pkt_cs = data
                         checksum = 0xff & sum(buff)
