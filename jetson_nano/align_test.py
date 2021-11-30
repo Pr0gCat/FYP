@@ -98,19 +98,19 @@ if __name__ == '__main__':
                 # print('tag found')
                 if distance > 5:
                     print('go down')
-                    car.move_posz(-10)
+                    car.move_posz(-10, blocking=False)
                 elif distance < -5:
                     print('go up')
-                    car.move_posz(10)
+                    car.move_posz(10, blocking=False)
                 else:
-                    car.move_posy(-200)
-                    car.move_posz(30)
-                    car.move_posy(200)
-                    car.home_z()
-                    car.move_posy(-200)
+                    car.move_posy(-200, timeout=20)
+                    car.move_posz(30, timeout=20)
+                    car.move_posy(200, timeout=20)
+                    car.home_z(timeout=20)
+                    car.move_posy(-200, timeout=20)
                     break
                 t0 = time.time()
             else:
-                car.move_posz(30)
+                car.move_posz(30, blocking=False)
 
         # time.sleep(0.1)

@@ -100,12 +100,13 @@ class Car:
         Wait for ack from car
         timout: seconds - set to negative value to wait forever
         """
+        print(f'[Sender] Waiting for ack {id}')
         t0 = time.time()
         while True:
             with self.wait_flag:
                 if self.latest_confirm == id:
                     break
-            if time.time() - t0 > timeout:
+            if timeout > 0 and time.time() - t0 > timeout:
                 print('[Communicate] Timeout id:', id)
                 break
             time.sleep(0.1)
