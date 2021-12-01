@@ -1,6 +1,6 @@
 
 #TODO: Refactor this
-# from threading import Thread, Lock
+from threading import Thread, Lock
 import serial
 import time
 import struct
