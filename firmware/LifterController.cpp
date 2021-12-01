@@ -49,7 +49,7 @@ void lifter_update(){
         z_max = z_axis.currentPosition();
         z_axis.setCurrentPosition(z_axis.currentPosition());
     }
-    if(!digitalRead(ENDSTOP_Z_LOWER_PIN) && z_axis.targetPosition() > 0){
+    if(!digitalRead(ENDSTOP_Z_LOWER_PIN) && z_axis.targetPosition() < 0){
         z_axis.setCurrentPosition(0);
     }
 

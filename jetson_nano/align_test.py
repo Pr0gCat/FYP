@@ -104,7 +104,7 @@ if __name__ == '__main__':
         if flag3:
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0:
-                if time.time() - t0 < 1:
+                if time.time() - t0 < 0.1:
                     continue
                 # print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
