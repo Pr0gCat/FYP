@@ -52,7 +52,7 @@ def findArucoMarkers(img, markerSize=7, totalMarkers=250):
             marker=[]
             cX = int((corners[count][0][0][0] + corners[count][0][2][0]) / 2.0)
             cY = int((corners[count][0][0][1] + corners[count][0][2][1]) / 2.0)
-            cv2.circle(img, (cX, cY), 4, (0, 0, 255), -1)
+            # cv2.circle(img, (cX, cY), 4, (0, 0, 255), -1)
             marker.append(ids[count][0])
             marker.append(cX)
             marker.append(cY)
@@ -60,7 +60,7 @@ def findArucoMarkers(img, markerSize=7, totalMarkers=250):
             marker.append(round((((((cX-320)**2)+((cY-240)**2))**(0.5))),2))
             data.append(marker)
             count=count+1
-        print(data)
+        # print(data)
         aruco.drawDetectedMarkers(img,corners)
 
     return data
