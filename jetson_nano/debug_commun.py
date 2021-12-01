@@ -5,5 +5,5 @@ if __name__ == '__main__':
     car.init_car()
     print('Car initialized')
     car.move_posy(300)
-    car.move_posz(100)
+    car.move_posy(100)
     car.home_y()
