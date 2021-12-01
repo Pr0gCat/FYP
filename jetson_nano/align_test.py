@@ -85,6 +85,7 @@ if __name__ == '__main__':
                     print('turn right')
                     car.run_distance(470, -470)
                 aruco_count += 1
+                _, frame = cap.read()
             elif id[0] == 1:
                 car.run_speed(0,0)
                 flag2 = True
