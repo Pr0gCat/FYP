@@ -8,6 +8,11 @@
 void setup(){
     Serial.begin(115200);
     while(!Serial){}
+    delay(100);
+    // flush serial buffer
+    while(Serial.available()){
+      Serial.read();
+    }
     wheel_setup();
     lifter_setup();
     endeffector_setup();

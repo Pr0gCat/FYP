@@ -46,8 +46,8 @@ class Car:
         flag = 0
         checksum = 0
         t0 = time.time()
-        self.com.flushInput()
-        self.com.flushOutput()
+        self.com.reset_output_buffer()
+        self.com.reset_output_buffer()
         while True:
             if (time.time()-t0) > 3 and flag != 0:
                 flag = 0
