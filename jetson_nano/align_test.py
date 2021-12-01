@@ -77,9 +77,11 @@ if __name__ == '__main__':
                 car.run_distance(800, 800)
                 # print('doing', time.time())
                 if aruco_count > 1:
+                    print('turn left')
                     car.run_distance(-470, 470)
                     flag = True
                 else:
+                    print('turn right')
                     car.run_distance(470, -470)
                 aruco_count += 1
             elif id[0] == 1:
