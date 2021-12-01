@@ -84,7 +84,6 @@ if __name__ == '__main__':
                 aruco_count += 1
             elif id[0] == 1:
                 car.run_speed(0,0)
-                
                 flag2 = True
         elif not flag3:
             print('move y')
