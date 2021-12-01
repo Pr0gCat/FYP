@@ -65,14 +65,15 @@ if __name__ == '__main__':
             compan = int(offset * factor)
             speed_l = min(MAX_SPPED, speed - compan)
             speed_r = min(MAX_SPPED, speed + compan)
-            print(offset, speed_l, speed_r)
+            # print(offset, speed_l, speed_r)
             if found: 
                 print(f'id: {id}')
             if not found and not flag2:
                 car.run_speed(speed_l, speed_r)
             elif id[0] == 0 and not flag:
-                print(aruco_count)
+                print('count: ', aruco_count)
                 car.run_speed(0, 0)
+                time.sleep(2)
                 car.run_distance(800, 800)
                 # print('doing', time.time())
                 if aruco_count > 1:
