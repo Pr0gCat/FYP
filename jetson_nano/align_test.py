@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 if distance > 5:
                     print('go down')
                     car.move_posz(-5)
-                elif distance < 5:
+                elif distance < -5:
                     print('go up')
                     car.move_posz(5)
                 else:
