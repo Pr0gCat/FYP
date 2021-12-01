@@ -40,7 +40,9 @@ void lifter_update(){
         y_max = y_axis.currentPosition();
         y_axis.setCurrentPosition(y_axis.currentPosition());
     }
-    if(!digitalRead(ENDSTOP_Y_LOWER_PIN) && y_axis.targetPosition() > 0){
+    if(!digitalRead(ENDSTOP_Y_LOWER_PIN) && y_axis.targetPosition() < 0){ // OMFG!!!!
+        // send_msg(String("targetY:" + String(y_axis.targetPosition())));
+        send_msg("triggered");
         y_axis.setCurrentPosition(0);
     }
     if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > z_max){

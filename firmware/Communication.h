@@ -23,5 +23,7 @@
 
 void cmd_update();
 void confirm(int cmd);
+void send_msg(String str);
+void send_msg(char[]);
 
 #endif
