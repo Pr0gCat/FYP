@@ -125,7 +125,7 @@ if __name__ == '__main__':
                     print('Lifting cargo...')
                     car.move_posz(30)
                     print('Pulling back...')
-                    car.move_posy(400)
+                    car.move_posy(250)
                     print('Placing cargo on the platform')
                     car.home_z()
                     print('Getting clearance...')
