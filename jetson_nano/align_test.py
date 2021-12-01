@@ -104,17 +104,17 @@ if __name__ == '__main__':
         if flag3:
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0:
-                if time.time() - t0 < 0.1:
-                    continue
+                # if time.time() - t0 < 0.1:
+                #     continue
                 # print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
                 distance = cy - 240
                 print(distance)
                 print('tag found')
-                if distance > 5:
+                if distance > 0:
                     print('go down')
                     car.move_posz(-10, blocking=False)
-                elif distance < -5:
+                elif distance < 0:
                     print('go up')
                     car.move_posz(10, blocking=False)
                 else:
@@ -140,7 +140,7 @@ if __name__ == '__main__':
                     car.home_z()
                     print('OP done')
                     break
-                t0 = time.time()
+                # t0 = time.time()
             else:
                 car.move_posz(30, blocking=False)
 
