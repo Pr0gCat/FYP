@@ -46,6 +46,7 @@ if __name__ == '__main__':
     flag = False
     flag2 = False
     flag3 = False
+    aruco_count = 0
     t0 = time.time()
     while True:
         ret, frame = cap.read()
@@ -70,13 +71,16 @@ if __name__ == '__main__':
             if not found and not flag2:
                 car.run_speed(speed_l, speed_r)
             elif id[0] == 0 and not flag:
-                print(flag)
+                # print(flag)
                 car.run_speed(0, 0)
-                time.sleep(2)
                 car.run_distance(800, 800)
-                print('doing', time.time())
-                car.run_distance(-470, 470)
-                flag = True
+                # print('doing', time.time())
+                if aruco_count > 1:
+                    car.run_distance(-470, 470)
+                    flag = True
+                else:
+                    car.run_distance(470, -470)
+                aruco_count += 1
             elif id[0] == 1:
                 car.run_speed(0,0)
                 
