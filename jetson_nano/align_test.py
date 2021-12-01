@@ -93,7 +93,7 @@ if __name__ == '__main__':
                     continue
                 # print(arucoFound)
                 id, cx, cy, _ = arucoFound[0]
-                distance = cy - 405 # threshold
+                distance = cy
                 print(distance)
                 # print('tag found')
                 if distance > 5:
@@ -103,6 +103,7 @@ if __name__ == '__main__':
                     print('go up')
                     car.move_posz(10, blocking=False)
                 else:
+                    car.move_posz(100)
                     car.move_posy(-200)
                     car.move_posz(30)
                     car.move_posy(200)
