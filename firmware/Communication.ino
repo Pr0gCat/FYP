@@ -59,6 +59,8 @@ void cmd_update() // run over and over
       {
         digitalWrite(13, 1);
         unpack();
+      }else{
+        send_msg(String("[Com] Invalid checksum!"));
       }
       count = 0;
       flag = 0;
@@ -208,4 +210,8 @@ void send_msg(char msg[])
   }
   checksum = (0xff & checksum);
   Serial.write(checksum);
+}
+
+void send_msg(String str){
+  send_msg(str.c_str());
 }

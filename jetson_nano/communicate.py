@@ -93,7 +93,7 @@ class Car:
                 self.latest_confirm = payload[2]
             
         elif cmd == self.CommandId.Msg:
-            print('[Receiver] Msg: ', ''.join([chr(c) for c in payload[2:]]))
+            print('Car > ', ''.join([chr(c) for c in payload[2:]]))
 
     def wait_ack(self, id, timeout=10):
         """

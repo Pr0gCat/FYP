@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define DEBUG
+// #define DEBUG
 
 // Marcos
 #define clamp(X, _min, _max) (max(_min, min(_max, X)))
