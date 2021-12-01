@@ -85,7 +85,13 @@ if __name__ == '__main__':
                     print('turn right')
                     car.run_distance(470, -470)
                 aruco_count += 1
-                _, frame = cap.read()
+                ret, frame = cap.read()
+                while True:
+                    if not ret:
+                        continue
+                    found, id, rot = findGround(frame)
+                    if not found:
+                        break
             elif id[0] == 1:
                 car.run_speed(0,0)
                 flag2 = True
