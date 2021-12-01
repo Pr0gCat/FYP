@@ -107,7 +107,10 @@ if __name__ == '__main__':
                     car.move_posz(30)
                     car.move_posy(200)
                     car.home_z()
-                    car.move_posy(-200)
+                    car.move_posy(200)
+                    car.move_posz(600)
+                    car.home_y()
+                    car.home_z()
                     break
                 t0 = time.time()
             else:
