@@ -36,21 +36,41 @@ void lifter_update(){
     // Serial.print("Z: ");
     // Serial.println(z_axis.currentPosition());
     // unexpected collision
-    if(!digitalRead(ENDSTOP_Y_UPPER_PIN) && y_axis.targetPosition() > 0){
-        y_axis.stop();
+    if(!digitalRead(ENDSTOP_Y_UPPER_PIN) && y_axis.targetPosition() > y_max){
+        y_max = y_axis.currentPosition();
+        y_axis.setCurrentPosition(y_axis.currentPosition());
     }
     if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){
         y_axis.setCurrentPosition(0);
     }
-    if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > 0){
-        z_axis.stop();
+    if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > z_max){
+        z_max = z_axis.currentPosition();
+        z_axis.setCurrentPosition(z_axis.currentPosition());
     }
     if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.setCurrentPosition(0);
     }
 
+    if(running_y && !y_axis.isRunning()){
+        confirm(CMD_MOVE_POSY);
+        running_y = false;
+    }
+
+    if(running_z && !z_axis.isRunning()){
+        confirm(CMD_MOVE_POSZ);
+        running_z = false;
+    }
+
+
     y_axis.run();
     z_axis.run();
+}
+
+void lifter_stop(){
+    y_axis.setCurrentPosition(y_axis.currentPosition());
+    z_axis.setCurrentPosition(y_axis.currentPosition());
+    running_y = false;
+    running_z = false;
 }
 
 void lifter_homeZ(){
@@ -66,6 +86,7 @@ void lifter_homeZ(){
         z_axis.runSpeed();
         if(digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
+    z_axis.setCurrentPosition(0);
     confirm(CMD_HOME_Z);
 }
 
@@ -82,6 +103,7 @@ void lifter_homeY(){
         y_axis.runSpeed();
         if(digitalRead(ENDSTOP_Y_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
     }
+    y_axis.setCurrentPosition(0);
     confirm(CMD_HOME_Y);
 }
 
@@ -168,6 +190,7 @@ void lifter_move_relative(AXIS axis, long mm)
         running_z = true;
         z_axis.move(pos);
     }
+    
 }
 
 void lifter_move(AXIS axis, long mm)
