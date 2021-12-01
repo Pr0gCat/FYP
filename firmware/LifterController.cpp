@@ -40,14 +40,14 @@ void lifter_update(){
         y_max = y_axis.currentPosition();
         y_axis.setCurrentPosition(y_axis.currentPosition());
     }
-    if(!digitalRead(ENDSTOP_Y_LOWER_PIN)){
+    if(!digitalRead(ENDSTOP_Y_LOWER_PIN) && y_axis.targetPosition() > 0){
         y_axis.setCurrentPosition(0);
     }
     if(!digitalRead(ENDSTOP_Z_UPPER_PIN) && z_axis.targetPosition() > z_max){
         z_max = z_axis.currentPosition();
         z_axis.setCurrentPosition(z_axis.currentPosition());
     }
-    if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){
+    if(!digitalRead(ENDSTOP_Z_LOWER_PIN) && z_axis.targetPosition() > 0){
         z_axis.setCurrentPosition(0);
     }
 

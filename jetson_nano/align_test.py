@@ -111,36 +111,36 @@ if __name__ == '__main__':
                 distance = cy
                 print(distance)
                 # print('tag found')
-                if distance > 5:
-                    print('go down')
-                    car.move_posz(-10, blocking=False)
-                elif distance < -5:
-                    print('go up')
-                    car.move_posz(10, blocking=False)
-                else:
-                    print('Conpensate offset betweewn thr fork and camera...')
-                    car.move_posz(100)
-                    print('Inserting fork...')
-                    car.move_posy(-200)
-                    print('Lifting cargo...')
-                    car.move_posz(30)
-                    print('Pulling back...')
-                    car.move_posy(400)
-                    print('Placing cargo on the platform')
-                    car.home_z()
-                    print('Getting clearance...')
-                    car.run_distance(-800, -800)
-                    print('Pulling out the fork...')
-                    car.move_posy(200)
-                    # avoid collision by lifting the fork
-                    car.move_posz(600)
-                    print('Homing Y...')
-                    car.home_y()
-                    print('Homing Z...')
-                    car.home_z()
-                    print('OP done')
-                    break
-                t0 = time.time()
+                # if distance > 5:
+                #     print('go down')
+                #     car.move_posz(-10, blocking=False)
+                # elif distance < -5:
+                #     print('go up')
+                #     car.move_posz(10, blocking=False)
+                # else:
+                #     print('Conpensate offset betweewn thr fork and camera...')
+                #     car.move_posz(100)
+                #     print('Inserting fork...')
+                #     car.move_posy(-200)
+                #     print('Lifting cargo...')
+                #     car.move_posz(30)
+                #     print('Pulling back...')
+                #     car.move_posy(400)
+                #     print('Placing cargo on the platform')
+                #     car.home_z()
+                #     print('Getting clearance...')
+                #     car.run_distance(-800, -800)
+                #     print('Pulling out the fork...')
+                #     car.move_posy(200)
+                #     # avoid collision by lifting the fork
+                #     car.move_posz(600)
+                #     print('Homing Y...')
+                #     car.home_y()
+                #     print('Homing Z...')
+                #     car.home_z()
+                #     print('OP done')
+                #     break
+                # t0 = time.time()
             else:
                 car.move_posz(30, blocking=False)
 
