@@ -111,15 +111,15 @@ if __name__ == '__main__':
                 distance = cy - 240
                 print(distance)
                 print('tag found')
-                if distance > 0:
+                if distance > 5:
                     print('go down')
                     car.move_posz(-5)
-                elif distance < 0:
+                elif distance < 5:
                     print('go up')
                     car.move_posz(5)
                 else:
                     print('Conpensate offset betweewn thr fork and camera...')
-                    car.move_posz(100)
+                    car.move_posz(90)
                     print('Inserting fork...')
                     car.move_posy(-200)
                     print('Lifting cargo...')
