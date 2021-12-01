@@ -119,7 +119,7 @@ if __name__ == '__main__':
                     car.move_posz(5)
                 else:
                     print('Conpensate offset betweewn thr fork and camera...')
-                    car.move_posz(90)
+                    car.move_posz(90-28)
                     print('Inserting fork...')
                     car.move_posy(-200)
                     print('Lifting cargo...')
