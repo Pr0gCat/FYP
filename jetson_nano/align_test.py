@@ -42,6 +42,7 @@ if __name__ == '__main__':
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(3, Screen_Weight)
     cap.set(4, Screem_Height)
+    cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 1);
     retutn_data = []
     flag = False
     flag2 = False
