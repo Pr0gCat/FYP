@@ -1,4 +1,6 @@
-from threading import Thread, Lock
+
+#TODO: Refactor this
+# from threading import Thread, Lock
 import serial
 import time
 import struct
@@ -100,18 +102,19 @@ class Car:
         Wait for ack from car
         timout: seconds - set to negative value to wait forever
         """
-        print(f'[Sender] Waiting for ack {repr(id)}')
+        print(f'[Communicate] Waiting for ack {repr(id)}')
         timeout = abs(timeout)
         t0 = time.time()
         while True:
             if self.latest_confirm == id:
+                print(f'[Communicate] Ack {repr(id)} received')
                 break
             if timeout > 0 and time.time() - t0 > timeout:
                 print('[Communicate] Timeout id:', id)
                 break
             time.sleep(0.1)
         self.latest_confirm = -1
-        print(f'[Sender] Ack {repr(id)} received')
+        print(f'[Communicate] Spend {round(time.time() - t0, 3)}s on this call')
 
     def init_car(self, blocking=True, timeout=120):
         pkg = struct.pack('BB', self.CommandId.Init, 0)
@@ -177,21 +180,21 @@ class Car:
     #     self.com.write(pkg)
     #     self.com.write(struct.pack('B', cs))
 
-    def move_posy(self, posy, blocking=True, timeout=5):
+    def move_posy(self, posy, blocking=True, timeout=60):
         pkg = struct.pack('BBh', self.CommandId.MovePosY, 2,posy)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosY, timeout * posy/10)
+            self.wait_ack(self.CommandId.MovePosY, timeout)
 
-    def move_posz(self,posz, blocking=True, timeout=5):
+    def move_posz(self,posz, blocking=True, timeout=60):
         pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
         cs = 0xff & sum(pkg)
         self.com.write(pkg)
         self.com.write(struct.pack('B', cs))
         if blocking:
-            self.wait_ack(self.CommandId.MovePosZ, timeout * posz/10)
+            self.wait_ack(self.CommandId.MovePosZ, timeout)
 
     def home_y(self, blocking=True, timeout=30):
         pkg = struct.pack('BB', self.CommandId.HomeY, 0)

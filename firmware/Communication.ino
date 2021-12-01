@@ -125,6 +125,7 @@ void unpack()
     run_distance(data);
     break;
   default:
+    send_msg(String("[Com] Unknown command id found: " + String(cmd)));
     return;
   }
 }
