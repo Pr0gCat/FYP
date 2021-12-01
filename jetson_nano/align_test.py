@@ -92,6 +92,7 @@ if __name__ == '__main__':
                     found, id, rot = findGround(frame)
                     if not found:
                         break
+                    ret, frame = cap.read()
             elif id[0] == 1:
                 car.run_speed(0,0)
                 flag2 = True
