@@ -42,7 +42,7 @@ if __name__ == '__main__':
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(3, Screen_Weight)
     cap.set(4, Screem_Height)
-    cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
+    # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
     flag = False
     flag2 = False
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             elif id[0] == 0 and not flag:
                 print('count: ', aruco_count)
                 car.run_speed(0, 0)
-                time.sleep(2)
+                # time.sleep(2)
                 car.run_distance(800, 800)
                 # print('doing', time.time())
                 if aruco_count > 1:
