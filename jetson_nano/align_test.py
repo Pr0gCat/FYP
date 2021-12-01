@@ -71,7 +71,7 @@ if __name__ == '__main__':
             if not found and not flag2:
                 car.run_speed(speed_l, speed_r)
             elif id[0] == 0 and not flag:
-                # print(flag)
+                print(aruco_count)
                 car.run_speed(0, 0)
                 car.run_distance(800, 800)
                 # print('doing', time.time())
