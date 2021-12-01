@@ -141,7 +141,7 @@ if __name__ == '__main__':
                 #     print('OP done')
                 #     break
                 # t0 = time.time()
-            else:
-                car.move_posz(30, blocking=False)
+            # else:
+            #     car.move_posz(30, blocking=False)
 
         # time.sleep(0.1)
