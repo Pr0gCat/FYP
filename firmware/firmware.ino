@@ -1,3 +1,5 @@
+//TODO: Cleanup inconsistent naming
+
 #include "LifterController.h"
 #include "Communication.h"
 #include "WheelController.h"
@@ -17,6 +19,7 @@ void loop(){
     if(!Serial){
       stop_motor_l();
       stop_motor_r();
+      lifter_stop();
     }
     t0 = millis();
   }
