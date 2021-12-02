@@ -46,8 +46,8 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
-    flag = False
-    flag2 = False
+    flag = True
+    flag2 = True
     flag3 = False
     flag4 = True
     aruco_count = 0
