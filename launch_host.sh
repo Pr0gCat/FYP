@@ -1,0 +1,1 @@
+cd host && python3 main.py

@@ -123,7 +123,7 @@ void calibrateY(){
     delay(500);
 
     // move all the way to the top
-    y_axis.setSpeed(3000);
+    y_axis.setSpeed(5000);
     while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
         y_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -156,7 +156,7 @@ void calibrateZ(){
     delay(500);
 
     // move all the way to the top
-    z_axis.setSpeed(3000);
+    z_axis.setSpeed(5000);
     while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -176,6 +176,7 @@ void calibrateZ(){
 
 void lifter_move_rel(AXIS axis, long mm)
 {
+    move_rel = true;
     long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     if(axis == Y){
         y_running = true;
@@ -189,6 +190,7 @@ void lifter_move_rel(AXIS axis, long mm)
 
 void lifter_move_abs(AXIS axis, long mm)
 {
+    move_rel = false;
     long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     // Serial.println(pos);
     if(axis == Y){
