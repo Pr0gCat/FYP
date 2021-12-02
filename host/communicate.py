@@ -165,3 +165,9 @@ class Car:
 
     def run_distance(self,left,right, blocking=True, timeout=10):
         self.send_pkt(self.CommandId.RunDistance, struct.pack('hh', left, right), blocking=blocking, timeout=timeout)
+
+    def stop_y(self, blocking=True, timeout=10):
+        self.send_pkt(self.CommandId.StopY, blocking=blocking, timeout=timeout)
+
+    def stop_z(self, blocking=True, timeout=10):
+        self.send_pkt(self.CommandId.StopZ, blocking=blocking, timeout=timeout)

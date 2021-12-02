@@ -123,7 +123,7 @@ void calibrateY(){
     delay(500);
 
     // move all the way to the top
-    y_axis.setSpeed(5000);
+    y_axis.setSpeed(3000);
     while(digitalRead(ENDSTOP_Y_UPPER_PIN)){
         y_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Y_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -140,7 +140,7 @@ void calibrateY(){
 
 void calibrateZ(){
 
-    z_axis.setSpeed(-4000);
+    z_axis.setSpeed(-3000);
     while(digitalRead(ENDSTOP_Z_LOWER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_LOWER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
@@ -156,7 +156,7 @@ void calibrateZ(){
     delay(500);
 
     // move all the way to the top
-    z_axis.setSpeed(5000);
+    z_axis.setSpeed(3000);
     while(digitalRead(ENDSTOP_Z_UPPER_PIN)){
         z_axis.runSpeed();
         if(!digitalRead(ENDSTOP_Z_UPPER_PIN)){ delay(ENDSTOP_DEBRONCE_TIME); }
