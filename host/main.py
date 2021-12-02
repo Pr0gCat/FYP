@@ -104,7 +104,7 @@ if __name__ == '__main__':
             car.move_relY(200)
             car.set_pickup_mode()
             flag3 = True
-        if flag3:
+        if flag3 and not flag4:
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0:
                 # if time.time() - t0 < 0.1:
@@ -145,7 +145,6 @@ if __name__ == '__main__':
 
                     print('OP done')
                     flag4 = True
-                    flag3 = False
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
