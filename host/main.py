@@ -184,8 +184,8 @@ if __name__ == '__main__':
             print('go up')
             car.move_relZ(200)
             print('go back')
-            car.move_relY(270)
+            car.move_relY(400)
             car.home_z()
-            car.move_relY(-200)
             car.move_relZ(400)
+            car.move_relY(-200)
             break
