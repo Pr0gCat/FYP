@@ -2,3 +2,4 @@
 firmware/.vscode/*.json
 build/
 __pycache__/
+push.sh

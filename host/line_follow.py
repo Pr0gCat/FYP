@@ -193,24 +193,3 @@ def ojb_detect(image):
             size = box_size
             chosen = data_dict
     return chosen
-
-cap = cv2.VideoCapture(1 + cv2.CAP_DSHOW)
-Screen_Weight = 720
-Screem_Height = 480
-cap.set(cv2.CAP_PROP_FPS, 30)
-cap.set(3, Screen_Weight)
-cap.set(4, Screem_Height)
-retutn_data = []
-while True:
-    ret, frame = cap.read()
-    if ret:
-        #qrdata = decoder(frame)
-        #linedata = line_following(frame)
-        detect = cross_detect(frame)
-        retutn_data.clear()
-        retutn_data.append(str('Cross : ' + str(detect)))
-        #retutn_data.append(str('QR : ' + str(qrdata)))
-        #retutn_data.append(str('line : ' + str(linedata)))
-
-        if test(frame):
-            break
