@@ -30,11 +30,11 @@ def line_following(img):
 
 if __name__ == '__main__':
     car = Car()
-    input('press to start')
     car.init_car()
     print("Car initialized")
     car.set_linefollow_mode()
     print('ready')
+    input('press to start')
 
     cap = cv2.VideoCapture(0)
     Screen_Weight = 720
