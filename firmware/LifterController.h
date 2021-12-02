@@ -6,6 +6,8 @@
 
 void lifter_setup();
 void lifter_update();
+void lifter_stop_y();
+void lifter_stop_z();
 void lifter_stop();
 void lifter_homeZ();
 void lifter_homeY();

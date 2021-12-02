@@ -117,6 +117,14 @@ void unpack()
     lifter_move_rel(Z, data[0] + (data[1] << 8));
     break;
 
+  case CMD_STOP_Y:
+    lifter_stop_y();
+    break;
+
+  case CMD_STOP_Z:
+    lifter_stop_z();
+    break;
+
   case CMD_HOME_Y:
     lifter_homeY();
     break;

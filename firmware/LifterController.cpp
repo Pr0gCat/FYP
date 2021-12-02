@@ -63,6 +63,18 @@ void lifter_update(){
     z_axis.run();
 }
 
+void lifter_stop_y(){
+    y_axis.setCurrentPosition(y_axis.currentPosition());
+    y_running = false;
+    confirm(CMD_STOP_Y);
+}
+
+void lifter_stop_z(){
+    z_axis.setCurrentPosition(z_axis.currentPosition());
+    z_running = false;
+    confirm(CMD_STOP_Z);
+}
+
 void lifter_stop(){
     y_axis.setCurrentPosition(y_axis.currentPosition());
     z_axis.setCurrentPosition(y_axis.currentPosition());
