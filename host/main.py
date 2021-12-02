@@ -193,4 +193,6 @@ if __name__ == '__main__':
             car.move_relZ(-20)
             car.run_distance(-250, -250)
             car.home_z()
+            car.run_distance(470, -470)
+            car.run_distance(470, -470)
             break
