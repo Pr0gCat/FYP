@@ -145,6 +145,7 @@ if __name__ == '__main__':
 
                     print('OP done')
                     flag4 = True
+                    flag3 = False
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
