@@ -46,7 +46,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
-    flag = 0
+    flag = 3
     aruco_count = 0
     t0 = time.time()
     while True:
