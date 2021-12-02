@@ -99,7 +99,7 @@ if __name__ == '__main__':
             elif id[0] == 1:
                 car.run_speed(0,0)
                 flag2 = True
-        elif not flag3:
+        elif not flag3 and not flag4:
             print('move y')
             car.move_relY(200)
             car.set_pickup_mode()
