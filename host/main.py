@@ -46,7 +46,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
-    flag = 0
+    flag = 5
     aruco_count = 0
     t0 = time.time()
     while True:
@@ -179,9 +179,13 @@ if __name__ == '__main__':
                     ret, frame = cap.read()
             elif id[0] == 4:
                 car.run_speed(0,0)
-                break
-
-                    # turn left
-                    # turn left
-                    # until see id = 4
-        # time.sleep(0.1)
+                flag = 5
+        if flag == 5:
+            print('go up')
+            car.move_relZ(200)
+            print('go back')
+            car.move_relY(270)
+            car.home_z()
+            car.move_relY(-200)
+            car.move_relZ(400)
+            break
