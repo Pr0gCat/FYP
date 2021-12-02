@@ -32,7 +32,7 @@ def line_following(img):
 
 if __name__ == '__main__':
     car = Car()
-    # car.init_car()
+    car.init_car()
     print("Car initialized")
     car.set_linefollow_mode()
     print('ready')
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
-    flag = 3
+    flag = 0
     aruco_count = 0
     t0 = time.time()
     while True:
