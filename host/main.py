@@ -32,7 +32,7 @@ def line_following(img):
 
 if __name__ == '__main__':
     car = Car()
-    car.init_car()
+    # car.init_car()
     print("Car initialized")
     car.set_linefollow_mode()
     print('ready')
@@ -163,7 +163,6 @@ if __name__ == '__main__':
             if not found:
                 car.run_speed(speed_l, speed_r)
             elif id[0] == 0:
-                print('count: ', aruco_count)
                 car.run_speed(0, 0)
                 # time.sleep(2)
                 car.run_distance(800, 800)
@@ -172,12 +171,10 @@ if __name__ == '__main__':
                 car.run_distance(-470, 470)
 
                 ret, frame = cap.read()
-                while True:
+                while found:
                     if not ret:
                         continue
                     found, id, rot = findGround(frame)
-                    if not found:
-                        break
                     ret, frame = cap.read()
             elif id[0] == 4:
                 car.run_speed(0,0)
