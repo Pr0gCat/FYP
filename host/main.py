@@ -49,7 +49,7 @@ if __name__ == '__main__':
     flag = False
     flag2 = False
     flag3 = False
-    flag4 = False
+    flag4 = True
     aruco_count = 0
     t0 = time.time()
     while True:
@@ -150,6 +150,7 @@ if __name__ == '__main__':
             else:
                 car.move_relZ(30, blocking=False)
         if flag4:
+            print('go back')
             car.run_distance(-470, 470)
             found, id, rot = findGround(frame)
             offset = line_following(frame)
