@@ -16,12 +16,14 @@ PIDController speed_controller_l, speed_controller_r;
 
 void encoder_tick_l()
 {
+    //called when left encoder ticks
     encoder_l++;
     distance_l++;
 }
 
 void encoder_tick_r()
 {
+    //called when right encoder ticks
     encoder_r++;
     distance_r++;
 }
@@ -52,6 +54,7 @@ void wheel_setup()
 void wheel_update()
 {
     static long unsigned int last_time = millis();
+    // maintaing update interval
     if (millis() - last_time < REFRESH_INTERVAL)
         return;
 

@@ -5,7 +5,8 @@ AccelStepper y_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Y_STEP_PIN, STE
 AccelStepper z_axis = AccelStepper(AccelStepper::DRIVER, STEPPER_Z_STEP_PIN, STEPPER_Z_DIR_PIN);
 uint32_t y_max = 0;
 uint32_t z_max = 0;
-bool running_z = false, running_y = false;
+bool z_running = false, y_running = false;
+bool move_rel = false;
 void calibrateZ();
 void calibrateY();
 
@@ -31,11 +32,6 @@ void lifter_setup(){
 }
 
 void lifter_update(){
-    // Serial.print("Y: ");
-    // Serial.println(y_axis.currentPosition());
-    // Serial.print("Z: ");
-    // Serial.println(z_axis.currentPosition());
-    // unexpected collision
     if(!digitalRead(ENDSTOP_Y_UPPER_PIN) && y_axis.targetPosition() > y_max){
         y_max = y_axis.currentPosition();
         y_axis.setCurrentPosition(y_axis.currentPosition());
@@ -53,16 +49,15 @@ void lifter_update(){
         z_axis.setCurrentPosition(0);
     }
 
-    if(running_y && !y_axis.isRunning()){
-        confirm(CMD_MOVE_POSY);
-        running_y = false;
+    if(y_running && !y_axis.isRunning()){
+        confirm(move_rel ? CMD_MOVE_RELY : CMD_MOVE_ABSY);
+        y_running = false;
     }
 
-    if(running_z && !z_axis.isRunning()){
-        confirm(CMD_MOVE_POSZ);
-        running_z = false;
+    if(z_running && !z_axis.isRunning()){
+        confirm(move_rel ? CMD_MOVE_RELY : CMD_MOVE_ABSY);
+        z_running = false;
     }
-
 
     y_axis.run();
     z_axis.run();
@@ -71,8 +66,8 @@ void lifter_update(){
 void lifter_stop(){
     y_axis.setCurrentPosition(y_axis.currentPosition());
     z_axis.setCurrentPosition(y_axis.currentPosition());
-    running_y = false;
-    running_z = false;
+    y_running = false;
+    z_running = false;
 }
 
 void lifter_homeZ(){
@@ -179,33 +174,30 @@ void calibrateZ(){
     z_max = z_axis.currentPosition();
 }
 
-void lifter_move_relative(AXIS axis, long mm)
+void lifter_move_rel(AXIS axis, long mm)
 {
     long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
-    // Serial.println(pos);
     if(axis == Y){
-        // pos = pos > y_max ? y_max : pos;
-        running_y = true;
+        y_running = true;
         y_axis.move(pos);
     }else if (axis == Z){
-        // pos = pos > z_max ? z_max : pos;
-        running_z = true;
+        z_running = true;
         z_axis.move(pos);
     }
     
 }
 
-void lifter_move(AXIS axis, long mm)
+void lifter_move_abs(AXIS axis, long mm)
 {
     long pos = mm * MICROSTEP * STEPS_PER_REV / SCREW_LEAD;
     // Serial.println(pos);
     if(axis == Y){
         pos = pos > y_max ? y_max : pos;
-        running_y = true;
+        y_running = true;
         y_axis.moveTo(pos);
     }else if (axis == Z){
         pos = pos > z_max ? z_max : pos;
-        running_z = true;
+        z_running = true;
         z_axis.moveTo(pos);
     }
 }

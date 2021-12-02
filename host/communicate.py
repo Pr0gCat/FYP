@@ -12,27 +12,33 @@ class Car:
     class CommandId(IntEnum):
         Confirm = 1
         Init = 2
-        GetClawState = 3
-        SetClawState = 4
-        SetLinefollowMode = 5
-        SetPickupMode = 6
-        SetDropOffMode = 7
-        MovePosY = 8
-        MovePosZ = 9
-        GotoPosY = 10
-        GotoPosZ = 11
+        # Camera position
+        SetLinefollowMode = 3
+        SetPickupMode = 4
+        SetDropOffMode = 5
+        # Lifter
+        MoveRelY = 6
+        MoveRelZ = 7
+        GotoPosY = 8
+        GotoPosZ = 9
+        StopY = 10
+        StopZ = 11
         HomeY = 12
         HomeZ = 13
+        # Wheels
         RunDistance = 14
-        GetMotorSpeed = 15
-        SetMotorSpeed = 16
+        RunSpeed = 15
         Msg = 255
 
     def __init__(self, port='/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00'):
         self.com = serial.Serial(port, baudrate=115200)
-        self.wait_flag = Lock()
+        # make sure the serial buffers are empty
+        self.com.reset_output_buffer()
+        self.com.reset_output_buffer()
         print(self.com)
         time.sleep(1)
+        
+        self.wait_flag = Lock()
         self.receiver = Thread(target=self._receiver_main)
         self.receiver.setDaemon(True)
         self.receiver.start()
@@ -48,9 +54,9 @@ class Car:
         flag = 0
         checksum = 0
         t0 = time.time()
-        self.com.reset_output_buffer()
-        self.com.reset_output_buffer()
+        
         while True:
+            # timeout when no data received for 3s while waiting for ack
             if (time.time()-t0) > 3 and flag != 0:
                 flag = 0
                 buff.clear()
@@ -58,7 +64,7 @@ class Car:
                 while self.com.in_waiting: # 若收到序列資料…
                     
                     data = self.com.read()[0] # 讀取一個字元
-                    print(f'[Receiver] flag: {flag}, data: {data}')
+                    # print(f'[Receiver] flag: {flag}, data: {data}')
                     if flag < 2:
                         buff.append(data) # 將資料存入buff
                         t0 = time.time()
@@ -69,7 +75,6 @@ class Car:
                     elif flag == 2:
                         buff.append(data)
                         t0 = time.time()
-                        # print(buff[1], buff[2:])
                         if len(buff[2:]) == buff[1]:
                             # print('[Receiver] payload received')
                             flag = 3
@@ -90,12 +95,14 @@ class Car:
     def unpack_msg(self, payload):
         cmd = payload[0]
         if cmd == self.CommandId.Confirm:
-            print('[Receiver] Confirm Code: %d' % payload[2])
+            # print('[Receiver] Confirm Code: %d' % payload[2])
             with self.wait_flag:
                 self.latest_confirm = payload[2]
             
         elif cmd == self.CommandId.Msg:
-            print('Car > ', ''.join([chr(c) for c in payload[2:]]))
+            print(f'Car > "{"".join([chr(c) for c in payload[2:]])}"')
+        else:
+            print('[Receiver] Unknown command: %d' % cmd)
 
     def wait_ack(self, id, timeout=10):
         """
@@ -110,119 +117,51 @@ class Car:
                 print(f'[Communicate] Ack {repr(id)} received')
                 break
             if timeout > 0 and time.time() - t0 > timeout:
-                print('[Communicate] Timeout id:', id)
+                print(f'\t- Timeout id: {repr(id)}')
                 break
-            time.sleep(0.1)
+            time.sleep(0.1) # let receiver thread run
         self.latest_confirm = -1
-        print(f'[Communicate] Spend {round(time.time() - t0, 3)}s on this call')
+        print(f'\t- Spend {round(time.time() - t0, 3)}s on this call')
+
+    def send_pkt(self, cmd, payload=None, blocking=True, timeout=30):
+        if payload:
+            pkg = struct.pack('BB', cmd, len(payload)) + payload
+        else:
+            pkg = struct.pack('BB', cmd, 0)
+        cs = 0xff & sum(pkg)
+        self.com.write(pkg)
+        self.com.write(struct.pack('B', cs))
+        if blocking:
+            self.wait_ack(cmd, timeout)
+
 
     def init_car(self, blocking=True, timeout=120):
-        pkg = struct.pack('BB', self.CommandId.Init, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.Init, timeout)
+        self.send_pkt(self.CommandId.Init, blocking=blocking, timeout=timeout)
 
     def run_speed(self, left, right):
-        pkg = struct.pack('BBhh', self.CommandId.SetMotorSpeed, 4, left, right)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-
-    def get_car_claw(self):
-        pkg = struct.pack('BB', self.CommandId.GetClawState, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-
-    def set_car_claw(self,left,right):
-        pkg = struct.pack('BBbb', self.CommandId.SetClawState,2,left,right)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
+        # this won't ack
+        self.send_pkt(self.CommandId.RunSpeed, struct.pack('hh', left, right), blocking=False)
 
     def set_linefollow_mode(self, blocking=True, timeout=2):
-        pkg = struct.pack('BB', self.CommandId.SetLinefollowMode, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.SetLinefollowMode, timeout)
+        self.send_pkt(self.CommandId.SetLinefollowMode, blocking=blocking, timeout=timeout)
 
     def set_pickup_mode(self, blocking=True, timeout=2):
-        pkg = struct.pack('BB', self.CommandId.SetPickupMode, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.SetPickupMode, timeout)
+        self.send_pkt(self.CommandId.SetPickupMode, blocking=blocking, timeout=timeout)
 
-    def set_docking_mode(self, blocking=True, timeout=2):
-        pkg = struct.pack('BB', self.CommandId.SetDockingMode, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.SetDockingMode, timeout)
+    def set_dropoff_mode(self, blocking=True, timeout=2):
+        self.send_pkt(self.CommandId.SetDropOffMode, blocking=blocking, timeout=timeout)
 
-    #TODO: 待測試
+    def move_relY(self, posy, blocking=True, timeout=60):
+        self.send_pkt(self.CommandId.MoveRelY, struct.pack('h', posy), blocking=blocking, timeout=timeout)
 
-    # def goto_posy(self, posy):
-    #     pkg = struct.pack('BBI', self.CommandId.GetPosY, 0)
-    #     cs = 0xff & sum(pkg)
-    #     self.com.write(pkg)
-    #     self.com.write(struct.pack('B', cs))
+    def move_relZ(self,posz, blocking=True, timeout=60):
+        self.send_pkt(self.CommandId.MoveRelZ, struct.pack('h', posz), blocking=blocking, timeout=timeout)
 
-    # def goto_posz(self, posz):
-    #     pkg = struct.pack('BBI', self.CommandId.GetPosZ, 0)
-    #     cs = 0xff & sum(pkg)
-    #     self.com.write(pkg)
-    #     self.com.write(struct.pack('B', cs))
+    def home_y(self, timeout=30):
+        self.send_pkt(self.CommandId.HomeY, timeout=timeout)
 
-    def move_posy(self, posy, blocking=True, timeout=60):
-        pkg = struct.pack('BBh', self.CommandId.MovePosY, 2,posy)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.MovePosY, timeout)
-
-    def move_posz(self,posz, blocking=True, timeout=60):
-        pkg = struct.pack('BBh', self.CommandId.MovePosZ, 2, posz)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.MovePosZ, timeout)
-
-    def home_y(self, blocking=True, timeout=30):
-        pkg = struct.pack('BB', self.CommandId.HomeY, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.HomeY, timeout)
-
-    def home_z(self, blocking=True, timeout=30):
-        pkg = struct.pack('BB', self.CommandId.HomeZ, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.HomeZ, timeout)
+    def home_z(self, timeout=30):
+        self.send_pkt(self.CommandId.HomeZ, timeout=timeout)
 
     def run_distance(self,left,right, blocking=True, timeout=10):
-        pkg = struct.pack('BBhh', self.CommandId.RunDistance, 4,left,right)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        if blocking:
-            self.wait_ack(self.CommandId.RunDistance, timeout)
-
-    def get_run_speed(self):
-        pkg = struct.pack('BB', self.CommandId.GetMotorSpeed, 0)
-        cs = 0xff & sum(pkg)
-        self.com.write(pkg)
-        self.com.write(struct.pack('B', cs))
-        
+        self.send_pkt(self.CommandId.RunDistance, struct.pack('hh', left, right), blocking=blocking, timeout=timeout)

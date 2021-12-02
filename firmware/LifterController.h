@@ -18,6 +18,6 @@ typedef enum {
     Z,
 } AXIS;
 
-void lifter_move(AXIS axis, long mm);
-void lifter_move_relative(AXIS axis, long mm);
+void lifter_move_abs(AXIS axis, long mm);
+void lifter_move_rel(AXIS axis, long mm);
 #endif

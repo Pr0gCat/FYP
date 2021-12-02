@@ -14,7 +14,7 @@ uint32_t time = 0;
 
 void cmd_update() // run over and over
 {
-  if ((millis() - time) > Time_OUT && flag != 0)
+  if ((millis() - time) > COM_TIMEOUT && flag != 0)
   {
     flag = 0;
     count = 0;
@@ -22,7 +22,6 @@ void cmd_update() // run over and over
     data_len = 0;
   }
   digitalWrite(13, 0);
-  // Serial.println("cmd_update");
   while (Serial.available())
   {
     if (flag < 2) // Command & length
@@ -79,54 +78,65 @@ void unpack()
   {
     data[i] = buff[2 + i];
   }
+  //TODO: you should check the length of data before using it
   switch (cmd)
   {
   case CMD_INIT:
     send_msg("Start initialization");
     car_init();
     break;
-  case CMD_SET_CLAW_STATE:
-    set_crawl_state(data);
-    break;
+
   case CMD_SET_LINEFOLLOW_MODE:
     set_camera_mode(LineFollow);
     confirm(cmd);
     break;
+
   case CMD_SET_PICKUP_MODE:
     set_camera_mode(PickUp);
     confirm(cmd);
     break;
+
   case CMD_SET_DROPOFF_MODE:
     set_camera_mode(DropOff);
     confirm(cmd);
     break;
-  case CMD_GOTO_POSY:
-    goto_posy(data);
+
+  case CMD_MOVE_ABSY:
+    lifter_move_abs(Y, data[0] + (data[1] << 8));
     break;
-  case CMD_GOTO_POSZ:
-    goto_posz(data);
+
+  case CMD_MOVE_ABSZ:
+    lifter_move_abs(Z, data[0] + (data[1] << 8));
     break;
-  case CMD_MOVE_POSY:
-    move_posy(data);
+
+  case CMD_MOVE_RELY:
+    lifter_move_rel(Y, data[0] + (data[1] << 8));  
     break;
-  case CMD_MOVE_POSZ:
-    move_posz(data);
+
+  case CMD_MOVE_RELZ:
+    lifter_move_rel(Z, data[0] + (data[1] << 8));
     break;
+
   case CMD_HOME_Y:
     lifter_homeY();
     break;
+
   case CMD_HOME_Z:
     lifter_homeZ();
     break;
-  case CMD_SET_MOTOR_SPEED:
-    set_motor_speed(data);
+
+  case CMD_RUN_SPEED:
+    run_speed(data[0] + (data[1] << 8),\
+     data[2] + (data[3] << 8));
     break;
+
   case CMD_RUN_DISTANCE:
-    run_distance(data);
+    run_distance(data[0] + (data[1] << 8), \
+    data[2] + (data[3] << 8), 200);
     break;
+
   default:
     send_msg(String("[Com] Unknown command id found: " + String(cmd)));
-    return;
   }
 }
 
@@ -138,62 +148,24 @@ void confirm(int cmd)
     Serial.write(1);
     Serial.write(cmd);
     Serial.write((2 + cmd) & 0xff);
+  }else{
+    send_msg("[Com] Attempt to send confirm to the host");
   }
 }
 
 void car_init()
 {
+  set_camera_mode(DropOff);
+  delay(500);
   set_camera_mode(LineFollow);
+  delay(500);
+  set_camera_mode(PickUp);
+  
   calibrateZ();
   calibrateY();
   lifter_homeY();
-  lifter_homeZ(); // Z axis is longer, so it has to be the one to ack
+  lifter_homeZ();
   confirm(CMD_INIT);
-}
-
-void set_crawl_state(unsigned char data[])
-{
-  int16_t left = (data[0] + (data[1] << 8));
-  int16_t right = (data[2] + (data[3] << 8));
-}
-
-void goto_posy(unsigned char data[])
-{
-  int16_t pos = (data[0] + (data[1] << 8));
-  lifter_move(Y, pos);
-}
-
-void goto_posz(unsigned char data[])
-{
-  int16_t pos = (data[0] + (data[1] << 8));
-  lifter_move(Z, pos);
-}
-
-void move_posy(unsigned char data[])
-{
-  int16_t pos = (data[0] + (data[1] << 8));
-  lifter_move_relative(Y, pos);
-}
-
-void move_posz(unsigned char data[])
-{
-  int16_t pos = (data[0] + (data[1] << 8));
-  lifter_move_relative(Z, pos);
-}
-
-void set_motor_speed(unsigned char data[])
-{
-  int16_t left = (data[0] + (data[1] << 8));
-  int16_t right = (data[2] + (data[3] << 8));
-  run_speed(left, right);
-}
-
-void run_distance(unsigned char data[])
-{
-  int16_t left = (data[0] + (data[1] << 8));
-  int16_t right = (data[2] + (data[3] << 8));
-
-  run_distance(left, right, 200);
 }
 
 void send_msg(char msg[])
