@@ -142,15 +142,15 @@ if __name__ == '__main__':
                     car.home_y()
                     print('Homing Z...')
                     car.home_z()
-
+                    print('go back')
+                    car.run_distance(-470, 470)
                     print('OP done')
                     flag4 = True
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
         if flag4:
-            print('go back')
-            car.run_distance(-470, 470)
+            
             found, id, rot = findGround(frame)
             offset = line_following(frame)
             # print(offset)
