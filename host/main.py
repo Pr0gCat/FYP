@@ -46,11 +46,7 @@ if __name__ == '__main__':
     cap.set(4, Screem_Height)
     # cap.set(cv2.CV_CAP_PROP_BUFFERSIZE, 0);
     retutn_data = []
-    flag = True
-    flag2 = True
-    flag3 = False
-    flag4 = True
-    flag5 = False
+    flag = 0
     aruco_count = 0
     t0 = time.time()
     while True:
@@ -60,7 +56,7 @@ if __name__ == '__main__':
         factor = 300
         if not ret:
             continue
-        if not flag2:
+        if flag == 0:
             found, id, rot = findGround(frame)
             offset = line_following(frame)
             # print(offset)
@@ -73,9 +69,9 @@ if __name__ == '__main__':
             # print(offset, speed_l, speed_r)
             if found: 
                 print(f'id: {id}')
-            if not found and not flag2:
+            if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id[0] == 0 and not flag:
+            elif id[0] == 0:
                 print('count: ', aruco_count)
                 car.run_speed(0, 0)
                 # time.sleep(2)
@@ -84,7 +80,6 @@ if __name__ == '__main__':
                 if aruco_count > 1:
                     print('turn left')
                     car.run_distance(-470, 470)
-                    flag = True
                 else:
                     print('turn right')
                     car.run_distance(470, -470)
@@ -99,13 +94,13 @@ if __name__ == '__main__':
                     ret, frame = cap.read()
             elif id[0] == 1:
                 car.run_speed(0,0)
-                flag2 = True
-        elif not flag3 and not flag4:
+                flag = 1
+        if flag == 1:            
             print('move y')
             car.move_relY(200)
             car.set_pickup_mode()
-            flag3 = True
-        if flag3 and not flag4:
+            flag = 2
+        if flag == 2:
             arucoFound = findArucoMarkers(frame)
             if len(arucoFound) > 0:
                 # if time.time() - t0 < 0.1:
@@ -145,14 +140,14 @@ if __name__ == '__main__':
                     car.home_z()
                     print('go back')
                     print('OP done')
-                    flag4 = True
+                    flag = 3
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
-        if flag4 and not flag5:
+        if flag == 3:
             car.run_distance(-470, 470)
-            flag5 = True
-        if flag5:
+            flag = 4
+        if flag == 4:
             found, id, rot = findGround(frame)
             offset = line_following(frame)
             # print(offset)
