@@ -6,7 +6,7 @@
 void setup(){
     Serial.begin(115200);
     while(!Serial){}
-    delay(100);
+    delay(1000);
     wheel_setup();
     lifter_setup();
     endeffector_setup();

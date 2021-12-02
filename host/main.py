@@ -113,10 +113,10 @@ if __name__ == '__main__':
                 print('tag found')
                 if distance > 5:
                     print('go down')
-                    car.move_relZ(-10, blocking=False)
+                    car.move_relZ(-5, blocking=False)
                 elif distance < -5:
                     print('go up')
-                    car.move_relZ(10, blocking=False)
+                    car.move_relZ(5, blocking=False)
                 else:
                     car.stop_z()
                     print('Conpensate offset betweewn thr fork and camera...')
