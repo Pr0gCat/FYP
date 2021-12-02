@@ -55,7 +55,7 @@ void lifter_update(){
     }
 
     if(z_running && !z_axis.isRunning()){
-        confirm(move_rel ? CMD_MOVE_RELY : CMD_MOVE_ABSY);
+        confirm(move_rel ? CMD_MOVE_RELZ : CMD_MOVE_ABSZ);
         z_running = false;
     }
 
