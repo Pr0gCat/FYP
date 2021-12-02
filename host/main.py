@@ -50,6 +50,7 @@ if __name__ == '__main__':
     flag2 = True
     flag3 = False
     flag4 = True
+    flag5 = True
     aruco_count = 0
     t0 = time.time()
     while True:
@@ -143,14 +144,15 @@ if __name__ == '__main__':
                     print('Homing Z...')
                     car.home_z()
                     print('go back')
-                    car.run_distance(-470, 470)
                     print('OP done')
                     flag4 = True
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
-        if flag4:
-            
+        if flag4 and not flag5:
+            car.run_distance(-470, 470)
+            flag5 = True
+        if flag5:
             found, id, rot = findGround(frame)
             offset = line_following(frame)
             # print(offset)
