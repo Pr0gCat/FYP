@@ -142,9 +142,7 @@ if __name__ == '__main__':
                     car.home_y()
                     print('Homing Z...')
                     car.home_z()
-                    print('turn left')
-                    car.run_distance(-470, 470)
-                    
+
                     print('OP done')
                     flag4 = True
                 # t0 = time.time()
@@ -164,9 +162,9 @@ if __name__ == '__main__':
             # print(offset, speed_l, speed_r)
             if found: 
                 print(f'id: {id}')
-            if not found and not flag2:
+            if not found:
                 car.run_speed(speed_l, speed_r)
-            elif id[0] == 0 and not flag:
+            elif id[0] == 0:
                 print('count: ', aruco_count)
                 car.run_speed(0, 0)
                 # time.sleep(2)
