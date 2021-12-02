@@ -146,7 +146,7 @@ if __name__ == '__main__':
                     car.run_distance(-470, 470)
                     
                     print('OP done')
-                    break
+                    flag4 = True
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
