@@ -98,7 +98,7 @@ if __name__ == '__main__':
                 flag2 = True
         elif not flag3:
             print('move y')
-            car.move_rely(200)
+            car.move_relY(200)
             car.set_pickup_mode()
             flag3 = True
         if flag3:
@@ -113,27 +113,27 @@ if __name__ == '__main__':
                 print('tag found')
                 if distance > 5:
                     print('go down')
-                    car.move_relz(-5)
+                    car.move_relZ(-5)
                 elif distance < -5:
                     print('go up')
-                    car.move_relz(5)
+                    car.move_relZ(5)
                 else:
                     print('Conpensate offset betweewn thr fork and camera...')
-                    car.move_relz(90-28)
+                    car.move_relZ(90-28)
                     print('Inserting fork...')
-                    car.move_rely(-200)
+                    car.move_relY(-200)
                     print('Lifting cargo...')
-                    car.move_relz(30)
+                    car.move_relZ(30)
                     print('Pulling back...')
-                    car.move_rely(230)
+                    car.move_relY(230)
                     print('Placing cargo on the platform')
                     car.home_z()
                     print('Getting clearance...')
                     car.run_distance(-800, -800)
                     print('Pulling out the fork...')
-                    car.move_rely(240)
+                    car.move_relY(240)
                     # avoid collision by lifting the fork
-                    car.move_relz(600)
+                    car.move_relZ(600)
                     print('Homing Y...')
                     car.home_y()
                     print('Homing Z...')
@@ -142,6 +142,6 @@ if __name__ == '__main__':
                     break
                 # t0 = time.time()
             else:
-                car.move_relz(30, blocking=False)
+                car.move_relZ(30, blocking=False)
 
         # time.sleep(0.1)
