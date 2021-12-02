@@ -186,6 +186,11 @@ if __name__ == '__main__':
             print('go back')
             car.move_relY(400)
             car.home_z()
-            car.move_relZ(400)
             car.move_relY(-200)
+            car.run_distance(250, 250)
+            car.move_relZ(400)
+            car.home_y()
+            car.move_relZ(-20)
+            car.run_distance(-250, -250)
+            car.home_z()
             break
