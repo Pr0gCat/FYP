@@ -146,6 +146,7 @@ if __name__ == '__main__':
                 car.move_relZ(30, blocking=False)
         if flag == 3:
             car.run_distance(-470, 470)
+            car.set_linefollow_mode()
             flag = 4
         if flag == 4:
             found, id, rot = findGround(frame)
