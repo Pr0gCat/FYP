@@ -1,4 +1,6 @@
 from dis import dis
+
+from cv2 import FILE_STORAGE_BASE64
 from communicate import Car
 from aruco.find_aruco import findGround, findArucoMarkers
 import cv2
@@ -47,6 +49,7 @@ if __name__ == '__main__':
     flag = False
     flag2 = False
     flag3 = False
+    flag4 = False
     aruco_count = 0
     t0 = time.time()
     while True:
@@ -132,17 +135,59 @@ if __name__ == '__main__':
                     print('Getting clearance...')
                     car.run_distance(-800, -800)
                     print('Pulling out the fork...')
-                    car.move_relY(240)
+                    car.move_relY(250)
                     # avoid collision by lifting the fork
                     car.move_relZ(600)
                     print('Homing Y...')
                     car.home_y()
                     print('Homing Z...')
                     car.home_z()
+                    print('turn left')
+                    car.run_distance(-470, 470)
+                    
                     print('OP done')
                     break
                 # t0 = time.time()
             else:
                 car.move_relZ(30, blocking=False)
+        if flag4:
+            car.run_distance(-470, 470)
+            found, id, rot = findGround(frame)
+            offset = line_following(frame)
+            # print(offset)
+            if offset is None:
+                # print('no line')
+                continue
+            compan = int(offset * factor)
+            speed_l = min(MAX_SPPED, speed - compan)
+            speed_r = min(MAX_SPPED, speed + compan)
+            # print(offset, speed_l, speed_r)
+            if found: 
+                print(f'id: {id}')
+            if not found and not flag2:
+                car.run_speed(speed_l, speed_r)
+            elif id[0] == 0 and not flag:
+                print('count: ', aruco_count)
+                car.run_speed(0, 0)
+                # time.sleep(2)
+                car.run_distance(800, 800)
+                # print('doing', time.time())
+                print('turn left')
+                car.run_distance(-470, 470)
 
+                ret, frame = cap.read()
+                while True:
+                    if not ret:
+                        continue
+                    found, id, rot = findGround(frame)
+                    if not found:
+                        break
+                    ret, frame = cap.read()
+            elif id[0] == 4:
+                car.run_speed(0,0)
+                break
+
+                    # turn left
+                    # turn left
+                    # until see id = 4
         # time.sleep(0.1)
