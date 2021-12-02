@@ -50,7 +50,7 @@ if __name__ == '__main__':
     flag2 = True
     flag3 = False
     flag4 = True
-    flag5 = True
+    flag5 = False
     aruco_count = 0
     t0 = time.time()
     while True:
