@@ -133,7 +133,7 @@ if __name__ == '__main__':
                     print('Pulling out the fork...')
                     car.move_relY(250)
                     # avoid collision by lifting the fork
-                    car.move_relZ(600)
+                    car.move_relZ(200)
                     print('Homing Y...')
                     car.home_y()
                     print('Homing Z...')
