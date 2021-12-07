@@ -27,7 +27,7 @@ typedef void (*CallbackFunc)();
 */
 #define REFRESH_INTERVAL 100
 
-#define SPEED_L_Kp 5.5
+#define SPEED_L_Kp 6
 #define SPEED_L_Ki 0.05
 #define SPEED_L_Kd 0
 
