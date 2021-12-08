@@ -1,6 +1,3 @@
-from dis import dis
-
-from cv2 import FILE_STORAGE_BASE64
 from communicate import Car
 from aruco.find_aruco import findGround, findArucoMarkers
 import cv2
@@ -119,7 +116,7 @@ if __name__ == '__main__':
                 else:
                     car.stop_z()
                     print('Conpensate offset betweewn thr fork and camera...')
-                    car.move_relZ(90-10)
+                    car.move_relZ(90-5)
                     print('Inserting fork...')
                     car.move_relY(-200)
                     print('Lifting cargo...')
